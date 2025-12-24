@@ -1,0 +1,134 @@
+-- Procedimiento 1: RegistrarFactura
+-- RegistrarFactura: recibe totales ya calculados
+CREATE OR REPLACE FUNCTION RegistrarFactura(
+    p_id_cliente INT,
+    p_id_usuario INT,
+    p_tipo VARCHAR,
+    p_subtotal NUMERIC,
+    p_impuesto NUMERIC,
+    p_total NUMERIC
+) RETURNS INT AS $$
+DECLARE
+    v_id_venta INT;
+BEGIN
+    -- Insertar la venta (solo cabecera)
+    INSERT INTO ventas(id_cliente, id_usuario, tipo, subtotal, impuesto, total)
+    VALUES (p_id_cliente, p_id_usuario, p_tipo, p_subtotal, p_impuesto, p_total)
+    RETURNING id_venta INTO v_id_venta;
+
+    -- Si es a crédito, crear registro en CxC
+    IF p_tipo = 'credito' THEN
+        INSERT INTO cxc(id_venta, fecha_emision, fecha_vencimiento, total, saldo, estado)
+        VALUES (v_id_venta, CURRENT_DATE, CURRENT_DATE + INTERVAL '30 days', p_total, p_total, 'pendiente');
+    END IF;
+
+    -- Retornar el ID de la venta creada
+    RETURN v_id_venta;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedimiento 1.5: insertar detalles de venta
+CREATE OR REPLACE FUNCTION RegistrarDetalleFactura(
+    p_id_venta INT,
+    p_id_producto INT,
+    p_cantidad INT,
+    p_precio_unitario NUMERIC,
+    p_impuesto_porcentaje NUMERIC,
+    p_descuento NUMERIC
+) RETURNS VOID AS $$
+BEGIN
+    -- Insertar detalle de la venta
+    INSERT INTO ventas_detalle(
+        id_venta, id_producto, cantidad, precio_unitario, impuesto_porcentaje, descuento
+    )
+    VALUES (
+        p_id_venta, p_id_producto, p_cantidad, p_precio_unitario, p_impuesto_porcentaje, p_descuento
+    );
+
+    -- Actualizar stock del product
+    -- Registrar movimiento en auditoría
+    PERFORM ActualizarStock(p_id_producto, p_cantidad, 'salida',(SELECT id_usuario FROM ventas WHERE id_venta = p_id_venta),CONCAT('Venta #', p_id_venta) )
+    
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedimiento 2: ActualizarStock
+-- Modifica el stock de un producto tras una venta o entrada
+CREATE OR REPLACE FUNCTION ActualizarStock(
+    p_id_producto INT,
+    p_cantidad INT,
+    p_tipo_movimiento VARCHAR, -- 'entrada' o 'salida'
+    p_usuario INT,
+    p_referencia VARCHAR
+) RETURNS VOID AS $$
+BEGIN
+    IF p_tipo_movimiento = 'entrada' THEN
+        UPDATE productos SET stock = stock + p_cantidad WHERE id_producto = p_id_producto;
+    ELSIF p_tipo_movimiento = 'salida' THEN
+        UPDATE productos SET stock = stock - p_cantidad WHERE id_producto = p_id_producto;
+    END IF;
+
+    -- Registrar en auditoría
+    INSERT INTO producto_aud(id_producto, tipo_movimiento, cantidad, referencia, usuario)
+    VALUES (p_id_producto, p_tipo_movimiento, p_cantidad, p_referencia, p_usuario);
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedimiento 3: ConsultarClientePorDocumento
+-- Devuelve los datos de un cliente por su ID
+CREATE OR REPLACE FUNCTION ConsultarClientePorDocumento(p_documento VARCHAR)
+RETURNS TABLE(
+    id_cliente INT,
+    documento_identificacion VARCHAR,
+    nombre VARCHAR,
+    telefono VARCHAR,
+    correo VARCHAR,
+    direccion TEXT,
+    limite_credito NUMERIC,
+    dias_gracia INT,
+    activo BOOLEAN
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT id_cliente, documento_identificacion, nombre, telefono, correo, direccion, limite_credito, dias_gracia, activo
+    FROM clientes
+    WHERE documento_identificacion = p_documento;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Procedimiento 4: ListarProductosBajoStock
+-- Lista productos con stock menor a un umbral
+CREATE OR REPLACE FUNCTION ListarProductosBajoStock(p_umbral INT)
+RETURNS TABLE(
+    id_producto INT,
+    nombre VARCHAR,
+    stock INT
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT id_producto, nombre, stock
+    FROM productos
+    WHERE stock < p_umbral AND activo = TRUE;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Procedimiento 5: ValidarUsuario
+-- Verifica las credenciales de un usuario para el login
+CREATE OR REPLACE FUNCTION ValidarUsuario(p_usuario VARCHAR, p_password VARCHAR)
+RETURNS BOOLEAN AS $$
+DECLARE
+    v_count INT;
+BEGIN
+    SELECT COUNT(*) INTO v_count
+    FROM usuarios
+    WHERE usuario = p_usuario
+      AND password = p_password
+      AND activo = TRUE;
+
+    RETURN v_count > 0;
+END;
+$$ LANGUAGE plpgsql;

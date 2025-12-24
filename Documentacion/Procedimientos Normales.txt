@@ -1,0 +1,178 @@
+CREATE OR REPLACE FUNCTION GuardarRol(
+    p_accion VARCHAR,         -- 'insertar' o 'actualizar'
+    p_id_rol INT,
+    p_nombre VARCHAR,
+    p_descripcion VARCHAR
+) RETURNS VOID AS $$
+BEGIN
+    IF p_accion = 'insertar' THEN
+        INSERT INTO roles(nombre, descripcion)
+        VALUES (p_nombre, p_descripcion);
+
+    ELSIF p_accion = 'actualizar' THEN
+        UPDATE roles
+        SET nombre = p_nombre,
+            descripcion = p_descripcion
+        WHERE id_rol = p_id_rol;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION GuardarPermiso(
+    p_accion VARCHAR,         -- 'insertar' o 'actualizar'
+    p_id_permiso INT,
+    p_codigo VARCHAR,
+    p_descripcion VARCHAR
+) RETURNS VOID AS $$
+BEGIN
+    IF p_accion = 'insertar' THEN
+        INSERT INTO permisos(codigo, descripcion)
+        VALUES (p_codigo, p_descripcion);
+
+    ELSIF p_accion = 'actualizar' THEN
+        UPDATE permisos
+        SET codigo = p_codigo,
+            descripcion = p_descripcion
+        WHERE id_permiso = p_id_permiso;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION GuardarCategoriaProducto(
+    p_accion VARCHAR,         -- 'insertar' o 'actualizar'
+    p_id_categoria INT,
+    p_nombre VARCHAR,
+    p_descripcion VARCHAR,
+    p_activo BOOLEAN
+) RETURNS VOID AS $$
+BEGIN
+    IF p_accion = 'insertar' THEN
+        INSERT INTO categoria_producto(nombre, descripcion, activo)
+        VALUES (p_nombre, p_descripcion, p_activo);
+
+    ELSIF p_accion = 'actualizar' THEN
+        UPDATE categoria_producto
+        SET nombre = p_nombre,
+            descripcion = p_descripcion,
+            activo = p_activo
+        WHERE id_categoria = p_id_categoria;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION GuardarInventario(
+    p_accion VARCHAR,         -- 'insertar' o 'actualizar'
+    p_id_inventario INT,
+    p_lugar VARCHAR,
+    p_tramo VARCHAR
+) RETURNS VOID AS $$
+BEGIN
+    IF p_accion = 'insertar' THEN
+        INSERT INTO inventario(lugar, tramo)
+        VALUES (p_lugar, p_tramo);
+
+    ELSIF p_accion = 'actualizar' THEN
+        UPDATE inventario
+        SET lugar = p_lugar,
+            tramo = p_tramo
+        WHERE id_inventario = p_id_inventario;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION GuardarDescuento(
+    p_accion VARCHAR,         -- 'insertar' o 'actualizar'
+    p_id_descuento INT,
+    p_descuento VARCHAR,
+    p_porcentaje INT,
+    p_id_producto INT,
+    p_activo BOOLEAN
+) RETURNS VOID AS $$
+BEGIN
+    IF p_accion = 'insertar' THEN
+        INSERT INTO descuentos(descuento, porcentaje_descuento, id_producto, activo)
+        VALUES (p_descuento, p_porcentaje, p_id_producto, p_activo);
+
+    ELSIF p_accion = 'actualizar' THEN
+        UPDATE descuentos
+        SET descuento = p_descuento,
+            porcentaje_descuento = p_porcentaje,
+            id_producto = p_id_producto,
+            activo = p_activo
+        WHERE id_descuento = p_id_descuento;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION RegistrarPago(
+    p_id_venta INT,
+    p_metodo VARCHAR,
+    p_monto NUMERIC,
+    p_referencia VARCHAR,
+    p_usuario INT
+) RETURNS INT AS $$
+DECLARE
+    v_id_pago INT;
+BEGIN
+    -- Insertar pago
+    INSERT INTO pagos(id_venta, metodo, monto, referencia, usuario)
+    VALUES (p_id_venta, p_metodo, p_monto, p_referencia, p_usuario)
+    RETURNING id_pago INTO v_id_pago;
+
+    -- Retornar el ID del pago creado
+    RETURN v_id_pago;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION RegistrarProductoNuevo(
+    p_codigo_barra VARCHAR,
+    p_nombre VARCHAR,
+    p_descripcion TEXT,
+    p_precio NUMERIC,
+    p_costo NUMERIC,
+    p_stock_inicial INT,
+    p_id_categoria INT,
+    p_impuestos VARCHAR,
+    p_usuario INT,
+    p_referencia VARCHAR,
+    p_id_inventario INT
+) RETURNS INT AS $$
+DECLARE
+    v_id_producto INT;
+BEGIN
+    -- 1. Insertar producto nuevo
+    INSERT INTO productos(codigo_barra, nombre, descripcion, precio, costo, stock, id_categoria, impuestos, activo)
+    VALUES (p_codigo_barra, p_nombre, p_descripcion, p_precio, p_costo, p_stock_inicial, p_id_categoria, p_impuestos, TRUE)
+    RETURNING id_producto INTO v_id_producto;
+
+    -- 2. Registrar auditoría de entrada inicial
+    INSERT INTO producto_aud(id_producto, tipo_movimiento, cantidad, referencia, usuario)
+    VALUES (v_id_producto, 'entrada', p_stock_inicial, p_referencia, p_usuario);
+
+    -- 3. Asignar producto al inventario
+    INSERT INTO productos_inventario(id_producto, id_inventario)
+    VALUES (v_id_producto, p_id_inventario);
+
+    RETURN v_id_producto;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION EntradaProductoExistente(
+    p_id_producto INT,
+    p_cantidad INT,
+    p_referencia VARCHAR,
+    p_usuario INT
+) RETURNS VOID AS $$
+BEGIN
+    -- 1. Actualizar stock
+    UPDATE productos
+    SET stock = stock + p_cantidad
+    WHERE id_producto = p_id_producto;
+
+    -- 2. Registrar auditoría
+    INSERT INTO producto_aud(id_producto, tipo_movimiento, cantidad, referencia, usuario)
+    VALUES (p_id_producto, 'entrada', p_cantidad, p_referencia, p_usuario);
+END;
+$$ LANGUAGE plpgsql;

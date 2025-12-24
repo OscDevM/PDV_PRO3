@@ -1,0 +1,142 @@
+Create database PDV
+
+
+-- Roles y permisos
+CREATE TABLE roles (
+    id_rol SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) UNIQUE NOT NULL,
+    descripcion VARCHAR(150)
+);
+
+CREATE TABLE permisos (
+    id_permiso SERIAL PRIMARY KEY,
+    codigo VARCHAR(50) UNIQUE NOT NULL, -- ej: PRODUCTO_CREAR, VENTA_REGISTRAR
+    descripcion VARCHAR(150) NOT NULL
+);
+
+CREATE TABLE rol_permiso (
+    id_rol INT REFERENCES roles(id_rol) ON DELETE CASCADE,
+    id_permiso INT REFERENCES permisos(id_permiso) ON DELETE CASCADE,
+    PRIMARY KEY (id_rol, id_permiso)
+);
+
+CREATE TABLE usuarios (
+    id_usuario SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    usuario VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    activo BOOLEAN NOT NULL DEFAULT TRUE,
+    id_rol INT REFERENCES roles(id_rol)
+);
+
+-- Clientes y crédito
+CREATE TABLE clientes (
+    id_cliente SERIAL PRIMARY KEY,
+    documento_identificacion VARCHAR(15) UNIQUE NOT NULL,
+    nombre VARCHAR(120) NOT NULL,
+    telefono VARCHAR(20),
+    correo VARCHAR(120),
+    direccion TEXT,
+    limite_credito NUMERIC(12,2) DEFAULT 0,
+    dias_gracia INT DEFAULT 30,
+    activo BOOLEAN DEFAULT TRUE
+);
+
+-- Productos e inventario
+CREATE TABLE categoria_producto(
+    id_categoria SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion VARCHAR(200),
+    activo BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE productos (
+    id_producto SERIAL PRIMARY KEY,
+    codigo_barra VARCHAR(50) UNIQUE NOT NULL,
+    nombre VARCHAR(120) NOT NULL,
+    descripcion TEXT,
+    precio NUMERIC(12,2) NOT NULL CHECK (precio >= 0),
+    costo NUMERIC(12,2) NOT NULL DEFAULT 0,
+    stock INT NOT NULL DEFAULT 0,
+    id_categoria INT REFERENCES categoria_producto(id_categoria) NOT NULL,
+    impuestos VARCHAR(6) NOT NULL CHECK (impuestos IN ('Exento','Sujeto')),
+    activo BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE producto_aud (
+    id_aud SERIAL PRIMARY KEY,
+    id_producto INT REFERENCES productos(id_producto),
+    tipo_movimiento VARCHAR(20) CHECK (tipo_movimiento IN ('entrada','salida','ajuste')),
+    cantidad INT NOT NULL CHECK (cantidad > 0),
+    referencia VARCHAR(100), -- ej venta #, compra #, ajuste
+    fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    usuario INT REFERENCES usuarios(id_usuario) NOT NULL
+);
+
+CREATE TABLE inventario (
+    id_inventario SERIAL PRIMARY KEY,
+    lugar VARCHAR(15) NOT NULL,
+    tramo VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE productos_inventario (
+    id_producto INT REFERENCES productos(id_producto) ON DELETE CASCADE,
+    id_inventario INT REFERENCES inventario(id_inventario) ON DELETE CASCADE,
+    PRIMARY KEY (id_producto, id_inventario)
+);
+
+
+CREATE TABLE descuentos(
+    id_descuento SERIAL PRIMARY KEY,
+    descuento VARCHAR(100) NOT NULL,
+    porcentaje_descuento INT NOT NULL,
+    id_producto INT REFERENCES productos(id_producto),
+    activo BOOLEAN DEFAULT TRUE
+);
+
+
+-- Ventas, detalle y pagos
+CREATE TABLE ventas (
+    id_venta SERIAL PRIMARY KEY,
+    fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    id_cliente INT REFERENCES clientes(id_cliente),
+    id_usuario INT REFERENCES usuarios(id_usuario) NOT NULL,
+    tipo VARCHAR(15) CHECK (tipo IN ('contado','credito')) NOT NULL,
+    subtotal NUMERIC(12,2) NOT NULL,
+    impuesto NUMERIC(12,2) NOT NULL,
+    total NUMERIC(12,2) NOT NULL,
+    estado VARCHAR(20) CHECK (estado IN ('emitida','anulada','pagada','parcial')) NOT NULL DEFAULT 'emitida'
+);
+
+CREATE TABLE ventas_detalle (
+    id_detalle SERIAL PRIMARY KEY,
+    id_venta INT REFERENCES ventas(id_venta) ON DELETE CASCADE,
+    id_producto INT REFERENCES productos(id_producto),
+    cantidad INT NOT NULL CHECK (cantidad > 0),
+    precio_unitario NUMERIC(12,2) NOT NULL,
+    impuesto_porcentaje NUMERIC(5,2) NOT NULL DEFAULT 0,
+    descuento NUMERIC(12,2) NOT NULL DEFAULT 0,
+    subtotal NUMERIC(12,2) GENERATED ALWAYS AS ((cantidad * precio_unitario) - descuento) STORED
+);
+
+CREATE TABLE pagos (
+    id_pago SERIAL PRIMARY KEY,
+    id_venta INT REFERENCES ventas(id_venta),
+    fecha TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    metodo VARCHAR(20) CHECK (metodo IN ('efectivo','tarjeta','transferencia','cheque')),
+    monto NUMERIC(12,2) NOT NULL CHECK (monto > 0),
+    referencia VARCHAR(100),
+    usuario INT REFERENCES usuarios(id_usuario)
+);
+
+-- Cuentas por cobrar (estado de facturas a crédito)
+CREATE TABLE cxc (
+    id_cxc SERIAL PRIMARY KEY,
+    id_venta INT UNIQUE REFERENCES ventas(id_venta),
+    fecha_emision DATE NOT NULL,
+    fecha_vencimiento DATE NOT NULL,
+    total NUMERIC(12,2) NOT NULL,
+    saldo NUMERIC(12,2) NOT NULL,
+    estado VARCHAR(20) CHECK (estado IN ('pendiente','parcial','pagada','vencida')) NOT NULL
+);
+

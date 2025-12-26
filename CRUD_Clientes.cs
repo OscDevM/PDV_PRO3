@@ -12,6 +12,7 @@ namespace PDV_PRO3
 {
     public partial class CRUD_Clientes : Form
     {
+
         public CRUD_Clientes()
         {
             InitializeComponent();
@@ -130,5 +131,22 @@ namespace PDV_PRO3
         {
             e.Handled = !char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar);
         }
+
+        private void CRUD_Clientes_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                using (var con = Conexion.GetConexion())
+                {
+                    MessageBox.Show("Conexión exitosa ✅");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
     }
 }
+

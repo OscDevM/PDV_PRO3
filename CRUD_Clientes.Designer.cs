@@ -475,6 +475,7 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "CRUD_Clientes";
             this.Text = "CRUD_Clientes";
+            this.Load += new System.EventHandler(this.CRUD_Clientes_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();

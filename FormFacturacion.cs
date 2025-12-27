@@ -70,10 +70,10 @@ namespace PDV_PRO3
         {
             /*solo validar que cuando la factura sea a credito tenga cliente despues las facturas permiten el campo id_cliente null 
              para permitir que las facturas pasen sin la necesidad de tener que tener el cliente agregado, solo es necesario cuando es
-             a credito*/ 
-            if (cbTipoVenta.SelectedIndex == 1 || txtNombreCliente.Tag == null)
+             a credito*/
+            if (cbTipoVenta.SelectedIndex == 1 && txtNombreCliente.Tag == null)
             {
-                MessageBox.Show("Debe seleccionar cliente para poder continual con el tipo de venta a credito");
+                MessageBox.Show("Debe seleccionar cliente para poder continuar con el tipo de venta a credito");
                 return;
             }
 
@@ -84,7 +84,7 @@ namespace PDV_PRO3
             {
                 idCliente = Convert.ToInt32(txtNombreCliente.Tag);
             }
-            
+
             int idUsuario = 1; // Usuario logueado (luego de que de haga y conecta al login), Sebastian: Usuario admin agregado con el ID 1 para pruebas
             string tipo;
             if (cbTipoVenta.SelectedIndex == 0)
@@ -96,31 +96,32 @@ namespace PDV_PRO3
                 tipo = "credito";
             }
 
-                int idVenta;
-
+            int idVenta;
+            double total = Convert.ToDouble(txtTotal.Text);
+            double subtotal = Convert.ToDouble(txtSubtotal.Text);
+            double pagado = Convert.ToDouble(txtPagado.Text);
+            double itbis = Convert.ToDouble(txtITBIS.Text);
 
             using (var con = Conexion.GetConexion())
             {
                 con.Open();
 
                 var cmd = new NpgsqlCommand(
-                    "SELECT RegistrarFactura(@id_cliente,@id_usuario,@tipo,@subtotal,@impuesto,@total,@pago)", con);
+                    "SELECT RegistrarFactura(@id_cliente,@id_usuario,@tipo,@subtotal,@impuesto,@total,@pagado)", con);
                 if (hayCliente)
                 {
-
-                    cmd.Parameters.AddWithValue("@id_cliente", idCliente);
+                    cmd.Parameters.AddWithValue("@id_cliente", NpgsqlTypes.NpgsqlDbType.Integer, idCliente);
                 }
                 else
                 {
-
-                    cmd.Parameters.AddWithValue("@id_cliente", "null");
+                    cmd.Parameters.AddWithValue("@id_cliente", DBNull.Value);
                 }
-                    cmd.Parameters.AddWithValue("@id_usuario", idUsuario);
-                cmd.Parameters.AddWithValue("@tipo", tipo);
-                cmd.Parameters.AddWithValue("@subtotal", txtSubtotal.Text);
-                cmd.Parameters.AddWithValue("@impuesto", txtITBIS.Text);
-                cmd.Parameters.AddWithValue("@total", txtTotal.Text);
-                cmd.Parameters.AddWithValue("@pagado", txtPagado.Text);
+                cmd.Parameters.AddWithValue("@id_usuario", NpgsqlTypes.NpgsqlDbType.Integer, idUsuario);
+                cmd.Parameters.AddWithValue("@tipo", NpgsqlTypes.NpgsqlDbType.Varchar, tipo);
+                cmd.Parameters.AddWithValue("@subtotal", NpgsqlTypes.NpgsqlDbType.Numeric, subtotal);
+                cmd.Parameters.AddWithValue("@impuesto", NpgsqlTypes.NpgsqlDbType.Numeric, itbis);
+                cmd.Parameters.AddWithValue("@total", NpgsqlTypes.NpgsqlDbType.Numeric, total);
+                cmd.Parameters.AddWithValue("@pagado", NpgsqlTypes.NpgsqlDbType.Numeric, pagado);
 
                 idVenta = Convert.ToInt32(cmd.ExecuteScalar());
 
@@ -129,28 +130,28 @@ namespace PDV_PRO3
                 foreach (DataGridViewRow row in dgvDetalle.Rows)
                 {
                     fila = row.Index;
-                    var cmdDet = new NpgsqlCommand(
-                        "SELECT RegistrarDetalleFactura(@id_venta,@id_producto,@cantidad,@precio_unitario,@impuesto,@descuento)", con);
                     /*codigos para sacar id del producto en base al codigo de barras: el id no se suele mostrar en la factura ya que
                       es un valor propio de la empresa*/
-                    var cmdID = new NpgsqlCommand("select id_productos from productos where codigo_barra = @codigo_barra");
-                    cmdID.Parameters.AddWithValue("@codigo_barra", dgvDetalle.Rows[fila].Cells["codigo_barra"].Value);
-                    idProducto = Convert.ToInt32(cmdDet.ExecuteScalar());
+                    var cmdID = new NpgsqlCommand("select id_producto from productos where codigo_barra = @codigo_barra", con);
+                    cmdID.Parameters.AddWithValue("@codigo_barra", dgvDetalle.Rows[fila].Cells["Codigo_de_Barra"].Value);
+                    idProducto = Convert.ToInt32(cmdID.ExecuteScalar());
 
+                    var cmdDet = new NpgsqlCommand(
+                        "SELECT RegistrarDetalleFactura(@id_venta,@id_producto,@cantidad,@precio_unitario,@impuesto,@descuento)", con);
 
-
-                    cmdDet.Parameters.AddWithValue("@v", idVenta);
-                    cmdDet.Parameters.AddWithValue("@p", row.Cells["colIdProducto"].Value);
-                    cmdDet.Parameters.AddWithValue("@c", row.Cells["colCantidad"].Value);
-                    cmdDet.Parameters.AddWithValue("@pu", row.Cells["colPrecio"].Value);
-                    cmdDet.Parameters.AddWithValue("@d", row.Cells["colDescuento"].Value);
+                    cmdDet.Parameters.AddWithValue("@id_venta", NpgsqlTypes.NpgsqlDbType.Integer, idVenta);
+                    cmdDet.Parameters.AddWithValue("@id_producto", NpgsqlTypes.NpgsqlDbType.Integer, idProducto);
+                    cmdDet.Parameters.AddWithValue("@cantidad", NpgsqlTypes.NpgsqlDbType.Integer, row.Cells["cantidad"].Value);
+                    cmdDet.Parameters.AddWithValue("@precio_unitario", NpgsqlTypes.NpgsqlDbType.Numeric, row.Cells["precio"].Value);
+                    cmdDet.Parameters.AddWithValue("@impuesto", NpgsqlTypes.NpgsqlDbType.Numeric, row.Cells["itbis"].Value);
+                    cmdDet.Parameters.AddWithValue("@descuento", NpgsqlTypes.NpgsqlDbType.Numeric, row.Cells["descuento"].Value);
 
                     cmdDet.ExecuteScalar();
                 }
             }
 
             MessageBox.Show("Factura registrada correctamente");
-            this.Close();
+
         }
 
 

@@ -115,7 +115,7 @@ CREATE TABLE ventas_detalle (
     id_producto INT REFERENCES productos(id_producto),
     cantidad INT NOT NULL CHECK (cantidad > 0),
     precio_unitario NUMERIC(12,2) NOT NULL,
-    impuesto_porcentaje NUMERIC(5,2) NOT NULL DEFAULT 0,
+    impuesto NUMERIC(12,2) NOT NULL DEFAULT 0,
     descuento NUMERIC(12,2) NOT NULL DEFAULT 0,
     subtotal NUMERIC(12,2) GENERATED ALWAYS AS ((cantidad * precio_unitario) - descuento) STORED
 );

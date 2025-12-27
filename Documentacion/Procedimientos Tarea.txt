@@ -38,7 +38,7 @@ CREATE OR REPLACE FUNCTION RegistrarDetalleFactura(
     p_id_producto INT,
     p_cantidad INT,
     p_precio_unitario NUMERIC,
-    p_impuesto_porcentaje NUMERIC,
+    p_impuesto NUMERIC,
     p_descuento NUMERIC
 ) RETURNS VOID AS $$
 BEGIN

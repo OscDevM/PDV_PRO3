@@ -143,6 +143,8 @@ namespace PDV_PRO3
             this.Close();
         }
 
+
+
         // =========================
         // EVENTOS VACÍOS (DESIGNER)
         // =========================
@@ -182,6 +184,7 @@ namespace PDV_PRO3
 
                         //select que busca el producto analiza si tiene descuento 
                         NpgsqlCommand cmd = new NpgsqlCommand("SELECT " +
+                            "p.id_producto as id," +
                             "p.codigo_barra as Codigo_de_Barra," +
                             " p.nombre as Nombre, " +
                             "p.precio as Precio, " +

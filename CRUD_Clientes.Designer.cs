@@ -351,6 +351,8 @@
             this.dgvEliminar.Name = "dgvEliminar";
             this.dgvEliminar.Size = new System.Drawing.Size(567, 165);
             this.dgvEliminar.TabIndex = 12;
+            this.dgvEliminar.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEliminar_CellContentClick);
+            this.dgvEliminar.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvEliminar_CellContentDoubleClick);
             // 
             // label13
             // 

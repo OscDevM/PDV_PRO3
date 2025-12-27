@@ -136,17 +136,35 @@ namespace PDV_PRO3
         {
             try
             {
-                using (var con = Conexion.GetConexion())
+                using (var conn = Conexion.GetConexion())
                 {
-                    MessageBox.Show("Conexión exitosa ✅");
+                    conn.Open();
+                    MessageBox.Show("Conexión exitosa con PostgreSQL ✅");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show("Error de conexión:\n" + ex.Message);
             }
         }
 
+        private void dgvEliminar_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dgvEliminar_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            DataGridViewRow fila = dgvEliminar.Rows[e.RowIndex];
+
+            txtCedulaEliminar.Text = fila.Cells["cedula"].Value.ToString();
+            txtNombreEliminar.Text = fila.Cells["nombre"].Value.ToString();
+            txtTelefonoEliminar.Text = fila.Cells["telefono"].Value.ToString();
+            txtCorreoEliminar.Text = fila.Cells["correo"].Value.ToString();
+            txtDireccionEliminar.Text = fila.Cells["direccion"].Value.ToString();
+        }
     }
 }
 

@@ -66,6 +66,7 @@
             this.btnFacturar = new System.Windows.Forms.Button();
             this.btnAnular = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.gbCliente.SuspendLayout();
             this.gbProducto.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudCantidad)).BeginInit();
@@ -94,7 +95,7 @@
             // lblFechaValor
             // 
             this.lblFechaValor.AutoSize = true;
-            this.lblFechaValor.Location = new System.Drawing.Point(144, 49);
+            this.lblFechaValor.Location = new System.Drawing.Point(434, 76);
             this.lblFechaValor.Name = "lblFechaValor";
             this.lblFechaValor.Size = new System.Drawing.Size(72, 13);
             this.lblFechaValor.TabIndex = 2;
@@ -112,7 +113,7 @@
             // lblUsuarioValor
             // 
             this.lblUsuarioValor.AutoSize = true;
-            this.lblUsuarioValor.Location = new System.Drawing.Point(329, 49);
+            this.lblUsuarioValor.Location = new System.Drawing.Point(481, 9);
             this.lblUsuarioValor.Name = "lblUsuarioValor";
             this.lblUsuarioValor.Size = new System.Drawing.Size(94, 13);
             this.lblUsuarioValor.TabIndex = 4;
@@ -426,11 +427,22 @@
             this.label1.TabIndex = 12;
             this.label1.Text = "Tipo Venta:";
             // 
-            // FrmFacturacion
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.CustomFormat = "dd/MM/yyyy";
+            this.dateTimePicker1.Enabled = false;
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePicker1.Location = new System.Drawing.Point(131, 49);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(85, 20);
+            this.dateTimePicker1.TabIndex = 13;
+            // 
+            // FormFacturacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(596, 846);
+            this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnAnular);
             this.Controls.Add(this.btnFacturar);
@@ -444,7 +456,7 @@
             this.Controls.Add(this.lblFechaValor);
             this.Controls.Add(this.lblFecha);
             this.Controls.Add(this.lblTitulo);
-            this.Name = "FrmFacturacion";
+            this.Name = "FormFacturacion";
             this.Text = "Usuario:";
             this.Load += new System.EventHandler(this.FrmFacturacion_Load);
             this.gbCliente.ResumeLayout(false);
@@ -500,6 +512,7 @@
         private System.Windows.Forms.Button btnFacturar;
         private System.Windows.Forms.Button btnAnular;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
     }
 }
 

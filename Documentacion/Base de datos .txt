@@ -105,6 +105,7 @@ CREATE TABLE ventas (
     subtotal NUMERIC(12,2) NOT NULL,
     impuesto NUMERIC(12,2) NOT NULL,
     total NUMERIC(12,2) NOT NULL,
+    pagado NUMERIC(12,2) NOT NULL,
     estado VARCHAR(20) CHECK (estado IN ('emitida','anulada','pagada','parcial')) NOT NULL DEFAULT 'emitida'
 );
 

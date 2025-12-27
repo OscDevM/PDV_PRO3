@@ -295,11 +295,12 @@
             // 
             // cbTipoVenta
             // 
+            this.cbTipoVenta.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbTipoVenta.FormattingEnabled = true;
             this.cbTipoVenta.Items.AddRange(new object[] {
-            "contado",
-            "crédito"});
-            this.cbTipoVenta.Location = new System.Drawing.Point(31, 197);
+            "Contado",
+            "Credito"});
+            this.cbTipoVenta.Location = new System.Drawing.Point(30, 187);
             this.cbTipoVenta.Name = "cbTipoVenta";
             this.cbTipoVenta.Size = new System.Drawing.Size(121, 21);
             this.cbTipoVenta.TabIndex = 9;

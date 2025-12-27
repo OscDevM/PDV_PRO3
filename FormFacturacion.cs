@@ -16,9 +16,9 @@ namespace PDV_PRO3
         //declaracion de datatable al principion  para almacenar todos los productos
         DataTable dt = new DataTable();
 
-        decimal subtotal = 0;
-        decimal impuesto = 0;
-        decimal total = 0;
+        //para saber si en la factura habra un cliente o no
+        bool hayCliente = false;
+
 
         public FormFacturacion()
         {
@@ -28,6 +28,7 @@ namespace PDV_PRO3
         private void FrmFacturacion_Load(object sender, EventArgs e)
         {
             lblFechaValor.Text = DateTime.Now.ToString("dd/MM/yyyy");
+            cbTipoVenta.SelectedIndex = 0;
         }
 
 
@@ -48,6 +49,9 @@ namespace PDV_PRO3
                 {
                     txtNombreCliente.Text = dr["nombre"].ToString();
                     txtNombreCliente.Tag = dr["id_cliente"];
+
+                    //si hay un cliente
+                    hayCliente = true;
                 }
                 else
                 {
@@ -58,64 +62,65 @@ namespace PDV_PRO3
             }
         }
 
-        // =========================
-        // AGREGAR PRODUCTO
-        // =========================
-        private void btnAgregarProducto_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        // =========================
-        // CALCULAR TOTALES
-        // =========================
-        private void CalcularTotales()
-        {
-            subtotal = 0;
-
-            foreach (DataGridViewRow row in dgvDetalle.Rows)
-            {
-                subtotal += Convert.ToDecimal(row.Cells["colSubtotal"].Value);
-            }
-
-            impuesto = subtotal * 0.18m;
-            total = subtotal + impuesto;
-
-            txtSubtotal.Text = subtotal.ToString("N2");
-            txtITBIS.Text = impuesto.ToString("N2");
-            txtTotal.Text = total.ToString("N2");
-        }
 
         // =========================
         // FACTURAR
         // =========================
         private void btnFacturar_Click(object sender, EventArgs e)
         {
-            if (dgvDetalle.Rows.Count == 0 || txtNombreCliente.Tag == null)
+            /*solo validar que cuando la factura sea a credito tenga cliente despues las facturas permiten el campo id_cliente null 
+             para permitir que las facturas pasen sin la necesidad de tener que tener el cliente agregado, solo es necesario cuando es
+             a credito*/ 
+            if (cbTipoVenta.SelectedIndex == 1 || txtNombreCliente.Tag == null)
             {
-                MessageBox.Show("Debe seleccionar cliente y productos");
+                MessageBox.Show("Debe seleccionar cliente para poder continual con el tipo de venta a credito");
                 return;
             }
 
-            int idCliente = Convert.ToInt32(txtNombreCliente.Tag);
-            int idUsuario = 1; // Usuario logueado (luego de que de haga y conecta al login)
-            string tipo = "contado";
+            int idCliente = 0;
 
-            int idVenta;
+            //verfificar si hay un cliente
+            if (hayCliente)
+            {
+                idCliente = Convert.ToInt32(txtNombreCliente.Tag);
+            }
+            
+            int idUsuario = 1; // Usuario logueado (luego de que de haga y conecta al login), Sebastian: Usuario admin agregado con el ID 1 para pruebas
+            string tipo;
+            if (cbTipoVenta.SelectedIndex == 0)
+            {
+                tipo = "contado";
+            }
+            else
+            {
+                tipo = "credito";
+            }
+
+                int idVenta;
+
 
             using (var con = Conexion.GetConexion())
             {
                 con.Open();
 
                 var cmd = new NpgsqlCommand(
-                    "SELECT RegistrarFactura(@c,@u,@t,@s,@i,@to)", con);
+                    "SELECT RegistrarFactura(@id_cliente,@id_usuario,@tipo,@subtotal,@impuesto,@total,@pago)", con);
+                if (hayCliente)
+                {
 
-                cmd.Parameters.AddWithValue("@c", idCliente);
-                cmd.Parameters.AddWithValue("@u", idUsuario);
-                cmd.Parameters.AddWithValue("@t", tipo);
-                cmd.Parameters.AddWithValue("@s", subtotal);
-                cmd.Parameters.AddWithValue("@i", impuesto);
-                cmd.Parameters.AddWithValue("@to", total);
+                    cmd.Parameters.AddWithValue("@id_cliente", idCliente);
+                }
+                else
+                {
+
+                    cmd.Parameters.AddWithValue("@id_cliente", "null");
+                }
+                    cmd.Parameters.AddWithValue("@id_usuario", idUsuario);
+                cmd.Parameters.AddWithValue("@tipo", tipo);
+                cmd.Parameters.AddWithValue("@subtotal", txtSubtotal.Text);
+                cmd.Parameters.AddWithValue("@impuesto", txtITBIS.Text);
+                cmd.Parameters.AddWithValue("@total", txtTotal.Text);
+                cmd.Parameters.AddWithValue("@pagado", txtPagado.Text);
 
                 idVenta = Convert.ToInt32(cmd.ExecuteScalar());
 
@@ -234,7 +239,6 @@ namespace PDV_PRO3
                 fila = Row.Index;
                 subtotal += Convert.ToDouble(dgvDetalle.Rows[fila].Cells["subtotal"].Value);
             }
-            MessageBox.Show(subtotal.ToString());
             return subtotal;
         }
         
@@ -247,7 +251,6 @@ namespace PDV_PRO3
                 fila = Row.Index;
                 ITBIS += Convert.ToDouble(dgvDetalle.Rows[fila].Cells["itbis"].Value);
             }
-            MessageBox.Show(ITBIS.ToString());
             return ITBIS;
         }
 

@@ -147,31 +147,61 @@ namespace PDV_PRO3
         //buscar los productos en base al codigo de barras
         private void txtProducto_TextChanged(object sender, EventArgs e)
         {
+            //se utilizara para saber si el producto esta ya en el datagridview
+            bool productoEsta = false;
+
+            //almacenaremos el indice en caso de que si este
+            int fila = 0;
+
             //valida que sean 13 numeros como todos los codigos de barras
             if(txtProducto.TextLength == 13)
             {
-                using (var con = Conexion.GetConexion())
+                foreach(DataGridViewRow Row in dgvDetalle.Rows)
                 {
-                    con.Open();
-
-                    //select que busca el producto analiza si tiene descuento 
-                    NpgsqlCommand cmd = new NpgsqlCommand("SELECT p.codigo_barra as Codigo_de_Barra," +
-                        " p.nombre as Nombre, " +
-                        "p.precio as Precio, " +
-                        "1 as cantidad, " +
-                        "CASE WHEN p.impuestos = 'Sujeto' THEN 0.18 * p.precio ELSE 0 END AS ITBIS, " +
-                        "COALESCE(d.porcentaje_descuento, 0) AS Descuento," +
-                        "(p.precio + CASE WHEN p.impuestos = 'Sujeto' THEN 0.18 * p.precio ELSE 0 END - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100) ) AS total " +
-                        "FROM productos p LEFT JOIN descuentos d ON p.id_producto = d.id_producto AND d.activo = TRUE " +
-                        "WHERE p.codigo_barra = @codigo_barras;", con);
-
-                    cmd.Parameters.AddWithValue("@codigo_barras",txtProducto.Text);
-                    NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(cmd);
-                    adapter.Fill(dt);
-                    dgvDetalle.DataSource = dt;
-                    con.Close();
+                    fila = Row.Index;
+                    
+                    //almacena el codigo de barras del indice actual
+                    string codigoDeBarras = Row.Cells[0].Value.ToString();
+                    if(codigoDeBarras == txtProducto.Text)
+                    {
+                        productoEsta = true;
+                        break;
+                    }
                 }
-            }
+
+                if (productoEsta == false)
+                {
+                    using (var con = Conexion.GetConexion())
+                    {
+                        con.Open();
+
+                        //select que busca el producto analiza si tiene descuento 
+                        NpgsqlCommand cmd = new NpgsqlCommand("SELECT p.codigo_barra as Codigo_de_Barra," +
+                            " p.nombre as Nombre, " +
+                            "p.precio as Precio, " +
+                            "1 as cantidad, " +
+                            "CASE WHEN p.impuestos = 'Sujeto' THEN 0.18 * p.precio ELSE 0 END AS ITBIS, " +
+                            "COALESCE(d.porcentaje_descuento, 0) AS Descuento," +
+                            "(p.precio + CASE WHEN p.impuestos = 'Sujeto' THEN 0.18 * p.precio ELSE 0 END - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100) ) AS total " +
+                            "FROM productos p LEFT JOIN descuentos d ON p.id_producto = d.id_producto AND d.activo = TRUE " +
+                            "WHERE p.codigo_barra = @codigo_barras;", con);
+
+                        cmd.Parameters.AddWithValue("@codigo_barras", txtProducto.Text);
+                        NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(cmd);
+                        adapter.Fill(dt);
+                        dgvDetalle.DataSource = dt;
+                        con.Close();
+                    }
+                }
+                else
+                {
+                    //aumenta la cantidad de el producto
+                    dgvDetalle.Rows[fila].Cells["cantidad"].Value = Convert.ToString(Convert.ToInt32(dgvDetalle.Rows[fila].Cells["cantidad"].Value) + 1);
+                    dgvDetalle.Rows[fila].Cells["itbis"].Value = Convert.ToString((Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["precio"].Value) * Convert.ToDecimal(0.18)) * Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["cantidad"].Value));
+                    dgvDetalle.Rows[fila].Cells["total"].Value = Convert.ToString((Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["precio"].Value) * Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["cantidad"].Value) + Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["itbis"].Value)));
+                }
+
+            } 
         }
     }
 }

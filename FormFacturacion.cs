@@ -176,13 +176,15 @@ namespace PDV_PRO3
                         con.Open();
 
                         //select que busca el producto analiza si tiene descuento 
-                        NpgsqlCommand cmd = new NpgsqlCommand("SELECT p.codigo_barra as Codigo_de_Barra," +
+                        NpgsqlCommand cmd = new NpgsqlCommand("SELECT " +
+                            "p.codigo_barra as Codigo_de_Barra," +
                             " p.nombre as Nombre, " +
                             "p.precio as Precio, " +
                             "1 as cantidad, " +
-                            "CASE WHEN p.impuestos = 'Sujeto' THEN 0.18 * p.precio ELSE 0 END AS ITBIS, " +
                             "COALESCE(d.porcentaje_descuento, 0) AS Descuento," +
-                            "(p.precio + CASE WHEN p.impuestos = 'Sujeto' THEN 0.18 * p.precio ELSE 0 END - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100) ) AS total " +
+                            "p.precio - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100) as Subtotal," +
+                            "CASE WHEN p.impuestos = 'Sujeto' THEN ROUND((p.precio - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100)) * 0.18, 2) ELSE 0 END AS ITBIS, " +
+                            "ROUND( (p.precio - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100))  + CASE WHEN p.impuestos = 'Sujeto' THEN (p.precio - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100)) * 0.18 ELSE 0 END, 2 ) AS total " +
                             "FROM productos p LEFT JOIN descuentos d ON p.id_producto = d.id_producto AND d.activo = TRUE " +
                             "WHERE p.codigo_barra = @codigo_barras;", con);
 
@@ -190,6 +192,7 @@ namespace PDV_PRO3
                         NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(cmd);
                         adapter.Fill(dt);
                         dgvDetalle.DataSource = dt;
+
                         con.Close();
                     }
                 }
@@ -197,13 +200,56 @@ namespace PDV_PRO3
                 {
                     //aumenta la cantidad de el producto
                     dgvDetalle.Rows[fila].Cells["cantidad"].Value = Convert.ToString(Convert.ToInt32(dgvDetalle.Rows[fila].Cells["cantidad"].Value) + 1);
-                    //saca ITBIS
-                    dgvDetalle.Rows[fila].Cells["itbis"].Value = Convert.ToString((Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["precio"].Value) * Convert.ToDecimal(0.18)) * Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["cantidad"].Value));
-                    //saca el total
-                    dgvDetalle.Rows[fila].Cells["total"].Value = Convert.ToString((Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["precio"].Value) * Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["cantidad"].Value) + Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["itbis"].Value)));
-                }
+                    
+                    //sacar el total y el ITBIS
+                    
+                    double precio = Convert.ToDouble(dgvDetalle.Rows[fila].Cells["precio"].Value);
+                    double cantidad = Convert.ToDouble(dgvDetalle.Rows[fila].Cells["cantidad"].Value);
+                    double descuento = Convert.ToDouble(dgvDetalle.Rows[fila].Cells["descuento"].Value);
+                    double subtotal = cantidad * precio;
+                    double itbis = (subtotal - (subtotal * (descuento / 100))) * 0.18;
+                    double total = (subtotal - (subtotal * (descuento / 100))) + itbis;
+                    
 
+                    dgvDetalle.Rows[fila].Cells["total"].Value = total;
+                    
+                    dgvDetalle.Rows[fila].Cells["itbis"].Value = itbis;
+
+                    dgvDetalle.Rows[fila].Cells["subtotal"].Value = total - itbis;
+                }
+                txtProducto.Clear();
+
+                txtSubtotal.Text = SacarSubTotal().ToString("0.00");
+                txtITBIS.Text = SacarITBIS().ToString("0.00");
+                txtTotal.Text = Convert.ToString(Convert.ToDouble(txtSubtotal.Text) + Convert.ToDouble(txtITBIS.Text));
             } 
         }
+
+        private double SacarSubTotal()
+        {
+            int fila;
+            double subtotal = 0;
+            foreach(DataGridViewRow Row in dgvDetalle.Rows)
+            {
+                fila = Row.Index;
+                subtotal += Convert.ToDouble(dgvDetalle.Rows[fila].Cells["subtotal"].Value);
+            }
+            MessageBox.Show(subtotal.ToString());
+            return subtotal;
+        }
+        
+        private double SacarITBIS()
+        {
+            int fila;
+            double ITBIS = 0;
+            foreach (DataGridViewRow Row in dgvDetalle.Rows)
+            {
+                fila = Row.Index;
+                ITBIS += Convert.ToDouble(dgvDetalle.Rows[fila].Cells["itbis"].Value);
+            }
+            MessageBox.Show(ITBIS.ToString());
+            return ITBIS;
+        }
+
     }
 }

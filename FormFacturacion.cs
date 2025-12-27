@@ -197,7 +197,9 @@ namespace PDV_PRO3
                 {
                     //aumenta la cantidad de el producto
                     dgvDetalle.Rows[fila].Cells["cantidad"].Value = Convert.ToString(Convert.ToInt32(dgvDetalle.Rows[fila].Cells["cantidad"].Value) + 1);
+                    //saca ITBIS
                     dgvDetalle.Rows[fila].Cells["itbis"].Value = Convert.ToString((Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["precio"].Value) * Convert.ToDecimal(0.18)) * Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["cantidad"].Value));
+                    //saca el total
                     dgvDetalle.Rows[fila].Cells["total"].Value = Convert.ToString((Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["precio"].Value) * Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["cantidad"].Value) + Convert.ToDecimal(dgvDetalle.Rows[fila].Cells["itbis"].Value)));
                 }
 

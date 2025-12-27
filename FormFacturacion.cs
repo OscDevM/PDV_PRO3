@@ -13,6 +13,9 @@ namespace PDV_PRO3
 {
     public partial class FormFacturacion : Form
     {
+        //declaracion de datatable al principion  para almacenar todos los productos
+        DataTable dt = new DataTable();
+
         decimal subtotal = 0;
         decimal impuesto = 0;
         decimal total = 0;
@@ -25,48 +28,8 @@ namespace PDV_PRO3
         private void FrmFacturacion_Load(object sender, EventArgs e)
         {
             lblFechaValor.Text = DateTime.Now.ToString("dd/MM/yyyy");
-            CargarProductos();
-            InicializarGrid();
         }
 
-        // =========================
-        // INICIALIZAR GRID
-        // =========================
-        private void InicializarGrid()
-        {
-            dgvDetalle.Rows.Clear();
-            dgvDetalle.Columns.Clear();
-
-            dgvDetalle.Columns.Add("colIdProducto", "ID");
-            dgvDetalle.Columns.Add("colProducto", "Producto");
-            dgvDetalle.Columns.Add("colCantidad", "Cantidad");
-            dgvDetalle.Columns.Add("colPrecio", "Precio");
-            dgvDetalle.Columns.Add("colDescuento", "Descuento");
-            dgvDetalle.Columns.Add("colSubtotal", "Subtotal");
-
-            dgvDetalle.Columns["colIdProducto"].Visible = false;
-            dgvDetalle.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        }
-
-        // =========================
-        // CARGAR PRODUCTOS
-        // =========================
-        private void CargarProductos()
-        {
-            using (var con = Conexion.GetConexion())
-            {
-                con.Open();
-                string sql = "SELECT id_producto, nombre, precio FROM productos WHERE activo = true";
-                NpgsqlDataAdapter da = new NpgsqlDataAdapter(sql, con);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-
-                cbProducto.DataSource = dt;
-                cbProducto.DisplayMember = "nombre";
-                cbProducto.ValueMember = "id_producto";
-                cbProducto.SelectedIndex = -1;
-            }
-        }
 
         // =========================
         // BUSCAR CLIENTE
@@ -100,28 +63,7 @@ namespace PDV_PRO3
         // =========================
         private void btnAgregarProducto_Click(object sender, EventArgs e)
         {
-            if (cbProducto.SelectedIndex == -1)
-                return;
-
-            int idProducto = Convert.ToInt32(cbProducto.SelectedValue);
-            string nombre = cbProducto.Text;
-            int cantidad = (int)nudCantidad.Value;
-            decimal descuento = string.IsNullOrEmpty(txtDescuento.Text) ? 0 : Convert.ToDecimal(txtDescuento.Text);
-            decimal precio;
-
-            using (var con = Conexion.GetConexion())
-            {
-                con.Open();
-                string sql = "SELECT precio FROM productos WHERE id_producto = @id";
-                var cmd = new NpgsqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@id", idProducto);
-                precio = Convert.ToDecimal(cmd.ExecuteScalar());
-            }
-
-            decimal sub = (cantidad * precio) - descuento;
-
-            dgvDetalle.Rows.Add(idProducto, nombre, cantidad, precio, descuento, sub);
-            CalcularTotales();
+            
         }
 
         // =========================
@@ -201,5 +143,35 @@ namespace PDV_PRO3
         // =========================
         private void gbCliente_Enter(object sender, EventArgs e) { }
         private void btnAnular_Click(object sender, EventArgs e) { }
+
+        //buscar los productos en base al codigo de barras
+        private void txtProducto_TextChanged(object sender, EventArgs e)
+        {
+            //valida que sean 13 numeros como todos los codigos de barras
+            if(txtProducto.TextLength == 13)
+            {
+                using (var con = Conexion.GetConexion())
+                {
+                    con.Open();
+
+                    //select que busca el producto analiza si tiene descuento 
+                    NpgsqlCommand cmd = new NpgsqlCommand("SELECT p.codigo_barra as Codigo_de_Barra," +
+                        " p.nombre as Nombre, " +
+                        "p.precio as Precio, " +
+                        "1 as cantidad, " +
+                        "CASE WHEN p.impuestos = 'Sujeto' THEN 0.18 * p.precio ELSE 0 END AS ITBIS, " +
+                        "COALESCE(d.porcentaje_descuento, 0) AS Descuento," +
+                        "(p.precio + CASE WHEN p.impuestos = 'Sujeto' THEN 0.18 * p.precio ELSE 0 END - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100) ) AS total " +
+                        "FROM productos p LEFT JOIN descuentos d ON p.id_producto = d.id_producto AND d.activo = TRUE " +
+                        "WHERE p.codigo_barra = @codigo_barras;", con);
+
+                    cmd.Parameters.AddWithValue("@codigo_barras",txtProducto.Text);
+                    NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(cmd);
+                    adapter.Fill(dt);
+                    dgvDetalle.DataSource = dt;
+                    con.Close();
+                }
+            }
+        }
     }
 }

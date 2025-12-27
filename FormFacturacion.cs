@@ -124,10 +124,20 @@ namespace PDV_PRO3
 
                 idVenta = Convert.ToInt32(cmd.ExecuteScalar());
 
+                int idProducto;
+                int fila;
                 foreach (DataGridViewRow row in dgvDetalle.Rows)
                 {
+                    fila = row.Index;
                     var cmdDet = new NpgsqlCommand(
-                        "SELECT RegistrarDetalleFactura(@v,@p,@c,@pu,18,@d)", con);
+                        "SELECT RegistrarDetalleFactura(@id_venta,@id_producto,@cantidad,@precio_unitario,@impuesto,@descuento)", con);
+                    /*codigos para sacar id del producto en base al codigo de barras: el id no se suele mostrar en la factura ya que
+                      es un valor propio de la empresa*/
+                    var cmdID = new NpgsqlCommand("select id_productos from productos where codigo_barra = @codigo_barra");
+                    cmdID.Parameters.AddWithValue("@codigo_barra", dgvDetalle.Rows[fila].Cells["codigo_barra"].Value);
+                    idProducto = Convert.ToInt32(cmdDet.ExecuteScalar());
+
+
 
                     cmdDet.Parameters.AddWithValue("@v", idVenta);
                     cmdDet.Parameters.AddWithValue("@p", row.Cells["colIdProducto"].Value);
@@ -142,6 +152,7 @@ namespace PDV_PRO3
             MessageBox.Show("Factura registrada correctamente");
             this.Close();
         }
+
 
 
 
@@ -184,13 +195,12 @@ namespace PDV_PRO3
 
                         //select que busca el producto analiza si tiene descuento 
                         NpgsqlCommand cmd = new NpgsqlCommand("SELECT " +
-                            "p.id_producto as id," +
                             "p.codigo_barra as Codigo_de_Barra," +
                             " p.nombre as Nombre, " +
                             "p.precio as Precio, " +
                             "1 as cantidad, " +
-                            "COALESCE(d.porcentaje_descuento, 0) AS Descuento," +
-                            "p.precio - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100) as Subtotal," +
+                            "ROUND((p.precio * COALESCE(d.porcentaje_descuento, 0) / 100)) AS Descuento," +
+                            "ROUND(p.precio - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100)) as Subtotal," +
                             "CASE WHEN p.impuestos = 'Sujeto' THEN ROUND((p.precio - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100)) * 0.18, 2) ELSE 0 END AS ITBIS, " +
                             "ROUND( (p.precio - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100))  + CASE WHEN p.impuestos = 'Sujeto' THEN (p.precio - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100)) * 0.18 ELSE 0 END, 2 ) AS total " +
                             "FROM productos p LEFT JOIN descuentos d ON p.id_producto = d.id_producto AND d.activo = TRUE " +
@@ -208,22 +218,23 @@ namespace PDV_PRO3
                 {
                     //aumenta la cantidad de el producto
                     dgvDetalle.Rows[fila].Cells["cantidad"].Value = Convert.ToString(Convert.ToInt32(dgvDetalle.Rows[fila].Cells["cantidad"].Value) + 1);
+                    dgvDetalle.Rows[fila].Cells["descuento"].Value = Convert.ToString(Convert.ToDouble(dgvDetalle.Rows[fila].Cells["cantidad"].Value) * Convert.ToDouble(dgvDetalle.Rows[fila].Cells["descuento"].Value));
+                    
                     
                     //sacar el total y el ITBIS
-                    
                     double precio = Convert.ToDouble(dgvDetalle.Rows[fila].Cells["precio"].Value);
                     double cantidad = Convert.ToDouble(dgvDetalle.Rows[fila].Cells["cantidad"].Value);
                     double descuento = Convert.ToDouble(dgvDetalle.Rows[fila].Cells["descuento"].Value);
-                    double subtotal = cantidad * precio;
-                    double itbis = (subtotal - (subtotal * (descuento / 100))) * 0.18;
-                    double total = (subtotal - (subtotal * (descuento / 100))) + itbis;
+                    double subtotal = (cantidad * precio) - descuento;
+                    double itbis = subtotal * 0.18;
+                    double total = subtotal + itbis;
                     
 
                     dgvDetalle.Rows[fila].Cells["total"].Value = total;
                     
                     dgvDetalle.Rows[fila].Cells["itbis"].Value = itbis;
 
-                    dgvDetalle.Rows[fila].Cells["subtotal"].Value = total - itbis;
+                    dgvDetalle.Rows[fila].Cells["subtotal"].Value =subtotal;
                 }
                 txtProducto.Clear();
 

@@ -10,6 +10,7 @@ namespace PDV_PRO3
 {
     public class ClienteDAO
     {
+        // BUSCAR CLIENTE
         public DataTable BuscarCliente(string campo, string valor)
         {
             DataTable dt = new DataTable();
@@ -17,10 +18,11 @@ namespace PDV_PRO3
             string sql = $@"
                 SELECT 
                     id_cliente,
-                    documento_identificacion AS cedula,
+                    documento_identificacion,
                     nombre,
                     telefono,
                     correo,
+                    direccion,
                     limite_credito,
                     activo
                 FROM clientes
@@ -29,7 +31,7 @@ namespace PDV_PRO3
                 ORDER BY nombre;
             ";
 
-            using (var conexion = Conexion.GetConexion())
+            using (var conexion = Conexion.Con())
             {
                 conexion.Open();
 
@@ -47,6 +49,7 @@ namespace PDV_PRO3
             return dt;
         }
 
+        // AGREGAR CLIENTE
         public bool AgregarCliente(string nombre, string cedula, string telefono, string correo, string direccion)
         {
             string sql = @"
@@ -56,7 +59,8 @@ namespace PDV_PRO3
                     nombre,
                     telefono,
                     correo,
-                    direccion
+                    direccion,
+                    activo
                 )
                 VALUES
                 (
@@ -64,11 +68,12 @@ namespace PDV_PRO3
                     @nombre,
                     @telefono,
                     @correo,
-                    @direccion
+                    @direccion,
+                    TRUE
                 );
             ";
 
-            using (var conexion = Conexion.GetConexion())
+            using (var conexion = Conexion.Con())
             {
                 conexion.Open();
 
@@ -85,26 +90,124 @@ namespace PDV_PRO3
             }
         }
 
+        // VALIDAR CÉDULA
         public bool ExisteCedula(string cedula)
         {
+
             string sql = @"
                 SELECT COUNT(1)
                 FROM clientes
-                WHERE documento_identificacion = @cedula;
+                WHERE documento_identificacion = @cedula
+                  AND activo = TRUE;
             ";
 
-            using (var conexion = Conexion.GetConexion())
+            using (var conexion = Conexion.Con())
             {
-                conexion.Open(); 
+                conexion.Open();
 
                 using (var cmd = new NpgsqlCommand(sql, conexion))
                 {
-                    
                     cmd.Parameters.AddWithValue("@cedula", cedula);
                     return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
                 }
             }
         }
+
+
+        // LISTAR CLIENTES
+        public DataTable ListarClientes()
+        {
+            DataTable dt = new DataTable();
+
+            string sql = @"
+                SELECT 
+                    id_cliente,
+                    documento_identificacion,
+                    nombre,
+                    telefono,
+                    correo,
+                    direccion
+                FROM clientes
+                WHERE activo = TRUE
+                ORDER BY nombre;
+            ";
+
+            using (var con = Conexion.Con())
+            {
+                con.Open();
+
+                using (var cmd = new NpgsqlCommand(sql, con))
+                using (var da = new NpgsqlDataAdapter(cmd))
+                {
+                    da.Fill(dt);
+                }
+            }
+
+            return dt;
+        }
+
+        // ELIMINAR CLIENTE
+        public bool EliminarCliente(int idCliente)
+        {
+            string sql = @"
+                UPDATE clientes
+                SET activo = FALSE
+                WHERE id_cliente = @id;
+            ";
+
+            using (var con = Conexion.Con())
+            {
+                con.Open();
+
+                using (var cmd = new NpgsqlCommand(sql, con))
+                {
+                    cmd.Parameters.AddWithValue("@id", idCliente);
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+        }
+
+        // EDITAR LOS FOKIN CLIENTES
+
+        public bool EditarCliente(
+                    int idCliente,
+                    string nombre,
+                    string cedula,
+                    string telefono,
+                    string correo,
+                    string direccion
+)
+        {
+            string sql = @"
+        UPDATE clientes
+        SET
+            nombre = @nombre,
+            documento_identificacion = @cedula,
+            telefono = @telefono,
+            correo = @correo,
+            direccion = @direccion
+        WHERE id_cliente = @id;
+    ";
+
+            using (var con = Conexion.Con())
+            {
+                con.Open();
+
+                using (var cmd = new NpgsqlCommand(sql, con))
+                {
+                    cmd.Parameters.AddWithValue("@id", idCliente);
+                    cmd.Parameters.AddWithValue("@nombre", nombre);
+                    cmd.Parameters.AddWithValue("@cedula", cedula);
+                    cmd.Parameters.AddWithValue("@telefono", telefono);
+                    cmd.Parameters.AddWithValue("@correo", correo);
+                    cmd.Parameters.AddWithValue("@direccion", direccion);
+
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+        }
+
+
     }
 }
 

@@ -14,12 +14,12 @@ namespace PDV_PRO3
 
     public class Conexion
     {
-            public static NpgsqlConnection GetConexion()
+            public static NpgsqlConnection Con()
             {
-                string cadena =
-                    "User Id=postgres.gcdmhkypzedogttworxr;Password=Germo01122006@;Server=aws-1-us-east-1.pooler.supabase.com;Port=6543;Database=postgres";
+            string cadena = "Host=db.gcdmhkypzedogttworxr.supabase.co;Database=postgres;Username=postgres;Password=Germo0112200;SSL Mode=Require;Trust Server Certificate=true"
 
-                return new NpgsqlConnection(cadena);
+
+            return new NpgsqlConnection(cadena);
             }
     }
 }

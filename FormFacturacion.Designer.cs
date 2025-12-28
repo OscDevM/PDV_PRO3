@@ -232,6 +232,7 @@
             this.txtPagado.Name = "txtPagado";
             this.txtPagado.Size = new System.Drawing.Size(100, 20);
             this.txtPagado.TabIndex = 7;
+            this.txtPagado.Text = "0";
             // 
             // lblPagado
             // 

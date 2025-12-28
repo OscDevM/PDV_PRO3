@@ -68,14 +68,11 @@ namespace PDV_PRO3
         // =========================
         private void btnFacturar_Click(object sender, EventArgs e)
         {
-            /*solo validar que cuando la factura sea a credito tenga cliente despues las facturas permiten el campo id_cliente null 
-             para permitir que las facturas pasen sin la necesidad de tener que tener el cliente agregado, solo es necesario cuando es
-             a credito*/
-            if (cbTipoVenta.SelectedIndex == 1 && txtNombreCliente.Tag == null)
+            if (ValidarFactura() == false)
             {
-                MessageBox.Show("Debe seleccionar cliente para poder continuar con el tipo de venta a credito");
                 return;
             }
+
 
             int idCliente = 0;
 
@@ -132,6 +129,7 @@ namespace PDV_PRO3
                     fila = row.Index;
                     /*codigos para sacar id del producto en base al codigo de barras: el id no se suele mostrar en la factura ya que
                       es un valor propio de la empresa*/
+
                     var cmdID = new NpgsqlCommand("select id_producto from productos where codigo_barra = @codigo_barra", con);
                     cmdID.Parameters.AddWithValue("@codigo_barra", dgvDetalle.Rows[fila].Cells["Codigo_de_Barra"].Value);
                     idProducto = Convert.ToInt32(cmdID.ExecuteScalar());
@@ -151,10 +149,62 @@ namespace PDV_PRO3
             }
 
             MessageBox.Show("Factura registrada correctamente");
+            Limpiar(this);
 
         }
 
+        public bool ValidarFactura()
+        {
+            if (cbTipoVenta.SelectedIndex == 0 && Convert.ToDouble(txtPagado.Text) < Convert.ToDouble(txtTotal.Text))
+            {
+                MessageBox.Show("Factura no puede ser al contado y el pago menor al total favor revisar");
+                return false;
+            }
+            if (cbTipoVenta.SelectedIndex == 1 && Convert.ToDouble(txtPagado.Text) >= Convert.ToDouble(txtTotal.Text))
+            {
+                MessageBox.Show("Factura no puede ser a credito y el pago mayor o igual al total favor revisar");
+                return false;
+            }
+            /*solo validar que cuando la factura sea a credito tenga cliente despues las facturas permiten el campo id_cliente null 
+             para permitir que las facturas pasen sin la necesidad de tener que tener el cliente agregado, solo es necesario cuando es
+             a credito*/
+            if (cbTipoVenta.SelectedIndex == 1 && txtNombreCliente.Tag == null)
+            {
+                MessageBox.Show("Debe seleccionar cliente para poder continuar con el tipo de venta a credito");
+                return false;
+            }
 
+            return true;
+        }
+
+        public void Limpiar(Form C)
+        {
+            dgvDetalle.DataSource = null;
+            hayCliente = false;
+            foreach(var c in C.Controls)
+            {
+                if(c is TextBox)
+                {
+                    ((TextBox)c).Clear();
+                }
+                if (c is ComboBox)
+                {
+                    ((ComboBox)c).SelectedIndex = 0;
+                }
+                if(c is GroupBox)
+                {
+                    foreach(var i in ((GroupBox)c).Controls)
+                    {
+
+                        if (i is TextBox)
+                        {
+                            ((TextBox)i).Clear();
+                        }
+                    }
+                }
+            }
+
+        }
 
 
         // =========================

@@ -13,9 +13,12 @@ namespace PDV_PRO3
 {
     public partial class FormFacturacion : Form
     {
-        decimal subtotal = 0;
-        decimal impuesto = 0;
-        decimal total = 0;
+        //declaracion de datatable al principion  para almacenar todos los productos
+        DataTable dt = new DataTable();
+
+        //para saber si en la factura habra un cliente o no
+        bool hayCliente = false;
+
 
         public FormFacturacion()
         {
@@ -25,48 +28,9 @@ namespace PDV_PRO3
         private void FrmFacturacion_Load(object sender, EventArgs e)
         {
             lblFechaValor.Text = DateTime.Now.ToString("dd/MM/yyyy");
-            CargarProductos();
-            InicializarGrid();
+            cbTipoVenta.SelectedIndex = 0;
         }
 
-        // =========================
-        // INICIALIZAR GRID
-        // =========================
-        private void InicializarGrid()
-        {
-            dgvDetalle.Rows.Clear();
-            dgvDetalle.Columns.Clear();
-
-            dgvDetalle.Columns.Add("colIdProducto", "ID");
-            dgvDetalle.Columns.Add("colProducto", "Producto");
-            dgvDetalle.Columns.Add("colCantidad", "Cantidad");
-            dgvDetalle.Columns.Add("colPrecio", "Precio");
-            dgvDetalle.Columns.Add("colDescuento", "Descuento");
-            dgvDetalle.Columns.Add("colSubtotal", "Subtotal");
-
-            dgvDetalle.Columns["colIdProducto"].Visible = false;
-            dgvDetalle.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-        }
-
-        // =========================
-        // CARGAR PRODUCTOS
-        // =========================
-        private void CargarProductos()
-        {
-            using (var con = Conexion.GetConexion())
-            {
-                con.Open();
-                string sql = "SELECT id_producto, nombre, precio FROM productos WHERE activo = true";
-                NpgsqlDataAdapter da = new NpgsqlDataAdapter(sql, con);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-
-                cbProducto.DataSource = dt;
-                cbProducto.DisplayMember = "nombre";
-                cbProducto.ValueMember = "id_producto";
-                cbProducto.SelectedIndex = -1;
-            }
-        }
 
         // =========================
         // BUSCAR CLIENTE
@@ -85,6 +49,9 @@ namespace PDV_PRO3
                 {
                     txtNombreCliente.Text = dr["nombre"].ToString();
                     txtNombreCliente.Tag = dr["id_cliente"];
+
+                    //si hay un cliente
+                    hayCliente = true;
                 }
                 else
                 {
@@ -95,111 +62,262 @@ namespace PDV_PRO3
             }
         }
 
-        // =========================
-        // AGREGAR PRODUCTO
-        // =========================
-        private void btnAgregarProducto_Click(object sender, EventArgs e)
-        {
-            if (cbProducto.SelectedIndex == -1)
-                return;
-
-            int idProducto = Convert.ToInt32(cbProducto.SelectedValue);
-            string nombre = cbProducto.Text;
-            int cantidad = (int)nudCantidad.Value;
-            decimal descuento = string.IsNullOrEmpty(txtDescuento.Text) ? 0 : Convert.ToDecimal(txtDescuento.Text);
-            decimal precio;
-
-            using (var con = Conexion.GetConexion())
-            {
-                con.Open();
-                string sql = "SELECT precio FROM productos WHERE id_producto = @id";
-                var cmd = new NpgsqlCommand(sql, con);
-                cmd.Parameters.AddWithValue("@id", idProducto);
-                precio = Convert.ToDecimal(cmd.ExecuteScalar());
-            }
-
-            decimal sub = (cantidad * precio) - descuento;
-
-            dgvDetalle.Rows.Add(idProducto, nombre, cantidad, precio, descuento, sub);
-            CalcularTotales();
-        }
-
-        // =========================
-        // CALCULAR TOTALES
-        // =========================
-        private void CalcularTotales()
-        {
-            subtotal = 0;
-
-            foreach (DataGridViewRow row in dgvDetalle.Rows)
-            {
-                subtotal += Convert.ToDecimal(row.Cells["colSubtotal"].Value);
-            }
-
-            impuesto = subtotal * 0.18m;
-            total = subtotal + impuesto;
-
-            txtSubtotal.Text = subtotal.ToString("N2");
-            txtITBIS.Text = impuesto.ToString("N2");
-            txtTotal.Text = total.ToString("N2");
-        }
 
         // =========================
         // FACTURAR
         // =========================
         private void btnFacturar_Click(object sender, EventArgs e)
         {
-            if (dgvDetalle.Rows.Count == 0 || txtNombreCliente.Tag == null)
+            if (ValidarFactura() == false)
             {
-                MessageBox.Show("Debe seleccionar cliente y productos");
                 return;
             }
 
-            int idCliente = Convert.ToInt32(txtNombreCliente.Tag);
-            int idUsuario = 1; // Usuario logueado (luego de que de haga y conecta al login)
-            string tipo = "contado";
+
+            int idCliente = 0;
+
+            //verfificar si hay un cliente
+            if (hayCliente)
+            {
+                idCliente = Convert.ToInt32(txtNombreCliente.Tag);
+            }
+
+            int idUsuario = 1; // Usuario logueado (luego de que de haga y conecta al login), Sebastian: Usuario admin agregado con el ID 1 para pruebas
+            string tipo;
+            if (cbTipoVenta.SelectedIndex == 0)
+            {
+                tipo = "contado";
+            }
+            else
+            {
+                tipo = "credito";
+            }
 
             int idVenta;
+            double total = Convert.ToDouble(txtTotal.Text);
+            double subtotal = Convert.ToDouble(txtSubtotal.Text);
+            double pagado = Convert.ToDouble(txtPagado.Text);
+            double itbis = Convert.ToDouble(txtITBIS.Text);
 
             using (var con = Conexion.GetConexion())
             {
                 con.Open();
 
                 var cmd = new NpgsqlCommand(
-                    "SELECT RegistrarFactura(@c,@u,@t,@s,@i,@to)", con);
-
-                cmd.Parameters.AddWithValue("@c", idCliente);
-                cmd.Parameters.AddWithValue("@u", idUsuario);
-                cmd.Parameters.AddWithValue("@t", tipo);
-                cmd.Parameters.AddWithValue("@s", subtotal);
-                cmd.Parameters.AddWithValue("@i", impuesto);
-                cmd.Parameters.AddWithValue("@to", total);
+                    "SELECT RegistrarFactura(@id_cliente,@id_usuario,@tipo,@subtotal,@impuesto,@total,@pagado)", con);
+                if (hayCliente)
+                {
+                    cmd.Parameters.AddWithValue("@id_cliente", NpgsqlTypes.NpgsqlDbType.Integer, idCliente);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@id_cliente", DBNull.Value);
+                }
+                cmd.Parameters.AddWithValue("@id_usuario", NpgsqlTypes.NpgsqlDbType.Integer, idUsuario);
+                cmd.Parameters.AddWithValue("@tipo", NpgsqlTypes.NpgsqlDbType.Varchar, tipo);
+                cmd.Parameters.AddWithValue("@subtotal", NpgsqlTypes.NpgsqlDbType.Numeric, subtotal);
+                cmd.Parameters.AddWithValue("@impuesto", NpgsqlTypes.NpgsqlDbType.Numeric, itbis);
+                cmd.Parameters.AddWithValue("@total", NpgsqlTypes.NpgsqlDbType.Numeric, total);
+                cmd.Parameters.AddWithValue("@pagado", NpgsqlTypes.NpgsqlDbType.Numeric, pagado);
 
                 idVenta = Convert.ToInt32(cmd.ExecuteScalar());
 
+                int idProducto;
+                int fila;
                 foreach (DataGridViewRow row in dgvDetalle.Rows)
                 {
-                    var cmdDet = new NpgsqlCommand(
-                        "SELECT RegistrarDetalleFactura(@v,@p,@c,@pu,18,@d)", con);
+                    fila = row.Index;
+                    /*codigos para sacar id del producto en base al codigo de barras: el id no se suele mostrar en la factura ya que
+                      es un valor propio de la empresa*/
 
-                    cmdDet.Parameters.AddWithValue("@v", idVenta);
-                    cmdDet.Parameters.AddWithValue("@p", row.Cells["colIdProducto"].Value);
-                    cmdDet.Parameters.AddWithValue("@c", row.Cells["colCantidad"].Value);
-                    cmdDet.Parameters.AddWithValue("@pu", row.Cells["colPrecio"].Value);
-                    cmdDet.Parameters.AddWithValue("@d", row.Cells["colDescuento"].Value);
+                    var cmdID = new NpgsqlCommand("select id_producto from productos where codigo_barra = @codigo_barra", con);
+                    cmdID.Parameters.AddWithValue("@codigo_barra", dgvDetalle.Rows[fila].Cells["Codigo_de_Barra"].Value);
+                    idProducto = Convert.ToInt32(cmdID.ExecuteScalar());
+
+                    var cmdDet = new NpgsqlCommand(
+                        "SELECT RegistrarDetalleFactura(@id_venta,@id_producto,@cantidad,@precio_unitario,@impuesto,@descuento)", con);
+
+                    cmdDet.Parameters.AddWithValue("@id_venta", NpgsqlTypes.NpgsqlDbType.Integer, idVenta);
+                    cmdDet.Parameters.AddWithValue("@id_producto", NpgsqlTypes.NpgsqlDbType.Integer, idProducto);
+                    cmdDet.Parameters.AddWithValue("@cantidad", NpgsqlTypes.NpgsqlDbType.Integer, row.Cells["cantidad"].Value);
+                    cmdDet.Parameters.AddWithValue("@precio_unitario", NpgsqlTypes.NpgsqlDbType.Numeric, row.Cells["precio"].Value);
+                    cmdDet.Parameters.AddWithValue("@impuesto", NpgsqlTypes.NpgsqlDbType.Numeric, row.Cells["itbis"].Value);
+                    cmdDet.Parameters.AddWithValue("@descuento", NpgsqlTypes.NpgsqlDbType.Numeric, row.Cells["descuento"].Value);
 
                     cmdDet.ExecuteScalar();
                 }
             }
 
             MessageBox.Show("Factura registrada correctamente");
-            this.Close();
+            Limpiar(this);
+
         }
+
+        public bool ValidarFactura()
+        {
+            if (cbTipoVenta.SelectedIndex == 0 && Convert.ToDouble(txtPagado.Text) < Convert.ToDouble(txtTotal.Text))
+            {
+                MessageBox.Show("Factura no puede ser al contado y el pago menor al total favor revisar");
+                return false;
+            }
+            if (cbTipoVenta.SelectedIndex == 1 && Convert.ToDouble(txtPagado.Text) >= Convert.ToDouble(txtTotal.Text))
+            {
+                MessageBox.Show("Factura no puede ser a credito y el pago mayor o igual al total favor revisar");
+                return false;
+            }
+            /*solo validar que cuando la factura sea a credito tenga cliente despues las facturas permiten el campo id_cliente null 
+             para permitir que las facturas pasen sin la necesidad de tener que tener el cliente agregado, solo es necesario cuando es
+             a credito*/
+            if (cbTipoVenta.SelectedIndex == 1 && txtNombreCliente.Tag == null)
+            {
+                MessageBox.Show("Debe seleccionar cliente para poder continuar con el tipo de venta a credito");
+                return false;
+            }
+
+            return true;
+        }
+
+        public void Limpiar(Form C)
+        {
+            dgvDetalle.DataSource = null;
+            hayCliente = false;
+            foreach(var c in C.Controls)
+            {
+                if(c is TextBox)
+                {
+                    ((TextBox)c).Clear();
+                }
+                if (c is ComboBox)
+                {
+                    ((ComboBox)c).SelectedIndex = 0;
+                }
+                if(c is GroupBox)
+                {
+                    foreach(var i in ((GroupBox)c).Controls)
+                    {
+
+                        if (i is TextBox)
+                        {
+                            ((TextBox)i).Clear();
+                        }
+                    }
+                }
+            }
+
+        }
+
 
         // =========================
         // EVENTOS VACÍOS (DESIGNER)
         // =========================
         private void gbCliente_Enter(object sender, EventArgs e) { }
         private void btnAnular_Click(object sender, EventArgs e) { }
+
+        //buscar los productos en base al codigo de barras
+        private void txtProducto_TextChanged(object sender, EventArgs e)
+        {
+            //se utilizara para saber si el producto esta ya en el datagridview
+            bool productoEsta = false;
+
+            //almacenaremos el indice en caso de que si este
+            int fila = 0;
+
+            //valida que sean 13 numeros como todos los codigos de barras
+            if(txtProducto.TextLength == 13)
+            {
+                foreach(DataGridViewRow Row in dgvDetalle.Rows)
+                {
+                    fila = Row.Index;
+                    
+                    //almacena el codigo de barras del indice actual
+                    string codigoDeBarras = Row.Cells[0].Value.ToString();
+                    if(codigoDeBarras == txtProducto.Text)
+                    {
+                        productoEsta = true;
+                        break;
+                    }
+                }
+
+                if (productoEsta == false)
+                {
+                    using (var con = Conexion.GetConexion())
+                    {
+                        con.Open();
+
+                        //select que busca el producto analiza si tiene descuento 
+                        NpgsqlCommand cmd = new NpgsqlCommand("SELECT " +
+                            "p.codigo_barra as Codigo_de_Barra," +
+                            " p.nombre as Nombre, " +
+                            "p.precio as Precio, " +
+                            "1 as cantidad, " +
+                            "ROUND((p.precio * COALESCE(d.porcentaje_descuento, 0) / 100)) AS Descuento," +
+                            "ROUND(p.precio - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100)) as Subtotal," +
+                            "CASE WHEN p.impuestos = 'Sujeto' THEN ROUND((p.precio - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100)) * 0.18, 2) ELSE 0 END AS ITBIS, " +
+                            "ROUND( (p.precio - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100))  + CASE WHEN p.impuestos = 'Sujeto' THEN (p.precio - (p.precio * COALESCE(d.porcentaje_descuento, 0) / 100)) * 0.18 ELSE 0 END, 2 ) AS total " +
+                            "FROM productos p LEFT JOIN descuentos d ON p.id_producto = d.id_producto AND d.activo = TRUE " +
+                            "WHERE p.codigo_barra = @codigo_barras;", con);
+
+                        cmd.Parameters.AddWithValue("@codigo_barras", txtProducto.Text);
+                        NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(cmd);
+                        adapter.Fill(dt);
+                        dgvDetalle.DataSource = dt;
+
+                        con.Close();
+                    }
+                }
+                else
+                {
+                    //aumenta la cantidad de el producto
+                    dgvDetalle.Rows[fila].Cells["cantidad"].Value = Convert.ToString(Convert.ToInt32(dgvDetalle.Rows[fila].Cells["cantidad"].Value) + 1);
+                    dgvDetalle.Rows[fila].Cells["descuento"].Value = Convert.ToString(Convert.ToDouble(dgvDetalle.Rows[fila].Cells["cantidad"].Value) * Convert.ToDouble(dgvDetalle.Rows[fila].Cells["descuento"].Value));
+                    
+                    
+                    //sacar el total y el ITBIS
+                    double precio = Convert.ToDouble(dgvDetalle.Rows[fila].Cells["precio"].Value);
+                    double cantidad = Convert.ToDouble(dgvDetalle.Rows[fila].Cells["cantidad"].Value);
+                    double descuento = Convert.ToDouble(dgvDetalle.Rows[fila].Cells["descuento"].Value);
+                    double subtotal = (cantidad * precio) - descuento;
+                    double itbis = subtotal * 0.18;
+                    double total = subtotal + itbis;
+                    
+
+                    dgvDetalle.Rows[fila].Cells["total"].Value = total;
+                    
+                    dgvDetalle.Rows[fila].Cells["itbis"].Value = itbis;
+
+                    dgvDetalle.Rows[fila].Cells["subtotal"].Value =subtotal;
+                }
+                txtProducto.Clear();
+
+                txtSubtotal.Text = SacarSubTotal().ToString("0.00");
+                txtITBIS.Text = SacarITBIS().ToString("0.00");
+                txtTotal.Text = Convert.ToString(Convert.ToDouble(txtSubtotal.Text) + Convert.ToDouble(txtITBIS.Text));
+            } 
+        }
+
+        private double SacarSubTotal()
+        {
+            int fila;
+            double subtotal = 0;
+            foreach(DataGridViewRow Row in dgvDetalle.Rows)
+            {
+                fila = Row.Index;
+                subtotal += Convert.ToDouble(dgvDetalle.Rows[fila].Cells["subtotal"].Value);
+            }
+            return subtotal;
+        }
+        
+        private double SacarITBIS()
+        {
+            int fila;
+            double ITBIS = 0;
+            foreach (DataGridViewRow Row in dgvDetalle.Rows)
+            {
+                fila = Row.Index;
+                ITBIS += Convert.ToDouble(dgvDetalle.Rows[fila].Cells["itbis"].Value);
+            }
+            return ITBIS;
+        }
+
     }
 }

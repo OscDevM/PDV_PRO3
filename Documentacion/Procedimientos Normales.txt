@@ -121,10 +121,15 @@ BEGIN
     VALUES (p_id_venta, p_metodo, p_monto, p_referencia, p_usuario)
     RETURNING id_pago INTO v_id_pago;
 
+    -- Actualizar saldo en cxc
+    UPDATE cxc SET saldo = saldo + p_monto 
+    WHERE id_venta = p_id_venta;
+
     -- Retornar el ID del pago creado
     RETURN v_id_pago;
 END;
 $$ LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION RegistrarProductoNuevo(
     p_codigo_barra VARCHAR,

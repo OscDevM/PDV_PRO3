@@ -568,7 +568,7 @@
             this.txtTelefonoEditar.Name = "txtTelefonoEditar";
             this.txtTelefonoEditar.Size = new System.Drawing.Size(173, 22);
             this.txtTelefonoEditar.TabIndex = 18;
-            this.txtTelefonoEditar.TextChanged += new System.EventHandler(this.txtTelefonoEditar_TextChanged);
+//            this.txtTelefonoEditar.TextChanged += new System.EventHandler(this.txtTelefonoEditar_TextChanged);
             // 
             // txtCedulaEditar
             // 
@@ -613,7 +613,7 @@
             this.label18.Size = new System.Drawing.Size(62, 16);
             this.label18.TabIndex = 13;
             this.label18.Text = "Telefono";
-            this.label18.Click += new System.EventHandler(this.label18_Click);
+//            this.label18.Click += new System.EventHandler(this.label18_Click);
             // 
             // label19
             // 

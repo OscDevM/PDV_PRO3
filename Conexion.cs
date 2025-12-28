@@ -16,7 +16,7 @@ namespace PDV_PRO3
     {
             public static NpgsqlConnection Con()
             {
-            string cadena = "Host=db.gcdmhkypzedogttworxr.supabase.co;Database=postgres;Username=postgres;Password=Germo0112200;SSL Mode=Require;Trust Server Certificate=true"
+            string cadena = "Host=db.gcdmhkypzedogttworxr.supabase.co;Database=postgres;Username=postgres;Password=Germo0112200;SSL Mode=Require;Trust Server Certificate=true";
 
 
             return new NpgsqlConnection(cadena);

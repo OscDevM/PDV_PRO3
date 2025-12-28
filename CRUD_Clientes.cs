@@ -282,16 +282,6 @@ namespace PDV_PRO3
                 CargarGridEditar();
             }
         }
-
-        private void label18_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtTelefonoEditar_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
 

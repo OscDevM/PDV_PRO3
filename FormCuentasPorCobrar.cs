@@ -31,6 +31,8 @@ namespace FrmFacturacion
                 {
                     con.Open();
 
+                    // CONSULTA PARA OBTENER FACTURAS PENDIENTES
+
                     string sql = @"
                         SELECT 
                             cxc.id_cxc,
@@ -56,8 +58,12 @@ namespace FrmFacturacion
                 }
 
                 FormatearGrid();
+
+                // RESALTAR FACTURAS VENCIDAS 
+
                 MarcarVencidas();
             }
+            // MENSAJE ERROR POR PROBLEMAS DE CONEXION PARA CARGAR LAS CUENTAS
             catch (Exception ex)
             {
                 MessageBox.Show(
@@ -68,6 +74,8 @@ namespace FrmFacturacion
                 );
             }
         }
+
+        //APERIENCIA DEL DGV
 
         private void FormatearGrid()
         {
@@ -87,6 +95,7 @@ namespace FrmFacturacion
 
             dgvCxC.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
+        //MARCA LAS RACTURAS VENCIDAS SIN MODIFICAR LA BASE DE DATOS 
 
         private void MarcarVencidas()
         {
@@ -96,6 +105,8 @@ namespace FrmFacturacion
 
                 DateTime vencimiento = Convert.ToDateTime(row.Cells["fecha_vencimiento"].Value);
                 string estado = row.Cells["estado"].Value.ToString();
+
+                //VENCIDA Y NO PAGA
 
                 if (vencimiento < DateTime.Today && estado != "pagada")
                 {
@@ -107,6 +118,8 @@ namespace FrmFacturacion
 
         private void btnPagar_Click(object sender, EventArgs e)
         {
+            //VALIDAR SI HAY UNA FILA SELECCIONADA
+
             if (dgvCxC.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Seleccione una factura");
@@ -116,11 +129,15 @@ namespace FrmFacturacion
             int idCxC = Convert.ToInt32(dgvCxC.SelectedRows[0].Cells["id_cxc"].Value);
             decimal saldo = Convert.ToDecimal(dgvCxC.SelectedRows[0].Cells["saldo"].Value);
 
+            //VALIDAR SI FALTA POR PAGAR O NO 
+
             if (saldo <= 0)
             {
                 MessageBox.Show("La factura ya está pagada");
                 return;
             }
+
+            //CONFIRMACION PARA REALIZAR PAGO
 
             if (MessageBox.Show(
                 "¿Desea marcar esta factura como pagada?",
@@ -156,6 +173,9 @@ namespace FrmFacturacion
                 }
 
                 MessageBox.Show("Factura pagada correctamente");
+
+                //ACTUALIZAR LUEGO DE REALIZAR UN PAGO
+
                 CargarCxC();
             }
             catch (Exception ex)

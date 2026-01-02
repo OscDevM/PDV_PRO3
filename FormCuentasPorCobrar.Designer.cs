@@ -33,23 +33,17 @@
             this.colIdVenta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCliente = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colTotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pagado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.pendiente = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSaldo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colVencimiento = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colEstado = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.gbPago = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.btnPagar = new System.Windows.Forms.Button();
-            this.cbMetodoPago = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtMontoPago = new System.Windows.Forms.TextBox();
-            this.txtSaldo = new System.Windows.Forms.TextBox();
-            this.txtCliente = new System.Windows.Forms.TextBox();
-            this.txtIdVenta = new System.Windows.Forms.TextBox();
+            this.txtBuscar = new System.Windows.Forms.TextBox();
+            this.cboFiltro = new System.Windows.Forms.ComboBox();
+            this.btnBuscar = new System.Windows.Forms.Button();
+            this.btnLimpiar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCxC)).BeginInit();
-            this.gbPago.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -69,6 +63,8 @@
             this.colIdVenta,
             this.colCliente,
             this.colTotal,
+            this.pagado,
+            this.pendiente,
             this.colSaldo,
             this.colVencimiento,
             this.colEstado});
@@ -76,13 +72,13 @@
             this.dgvCxC.Name = "dgvCxC";
             this.dgvCxC.ReadOnly = true;
             this.dgvCxC.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCxC.Size = new System.Drawing.Size(644, 150);
+            this.dgvCxC.Size = new System.Drawing.Size(848, 150);
             this.dgvCxC.TabIndex = 1;
             this.dgvCxC.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCxC_CellContentClick);
             // 
             // colIdVenta
             // 
-            this.colIdVenta.HeaderText = "ID Venta";
+            this.colIdVenta.HeaderText = "Factura";
             this.colIdVenta.Name = "colIdVenta";
             this.colIdVenta.ReadOnly = true;
             // 
@@ -97,6 +93,18 @@
             this.colTotal.HeaderText = "Total";
             this.colTotal.Name = "colTotal";
             this.colTotal.ReadOnly = true;
+            // 
+            // pagado
+            // 
+            this.pagado.HeaderText = "Pagado";
+            this.pagado.Name = "pagado";
+            this.pagado.ReadOnly = true;
+            // 
+            // pendiente
+            // 
+            this.pendiente.HeaderText = "Pendiente";
+            this.pendiente.Name = "pendiente";
+            this.pendiente.ReadOnly = true;
             // 
             // colSaldo
             // 
@@ -116,134 +124,69 @@
             this.colEstado.Name = "colEstado";
             this.colEstado.ReadOnly = true;
             // 
-            // gbPago
-            // 
-            this.gbPago.Controls.Add(this.label6);
-            this.gbPago.Controls.Add(this.btnPagar);
-            this.gbPago.Controls.Add(this.cbMetodoPago);
-            this.gbPago.Controls.Add(this.label5);
-            this.gbPago.Controls.Add(this.label4);
-            this.gbPago.Controls.Add(this.label3);
-            this.gbPago.Controls.Add(this.label2);
-            this.gbPago.Controls.Add(this.txtMontoPago);
-            this.gbPago.Controls.Add(this.txtSaldo);
-            this.gbPago.Controls.Add(this.txtCliente);
-            this.gbPago.Controls.Add(this.txtIdVenta);
-            this.gbPago.Location = new System.Drawing.Point(44, 296);
-            this.gbPago.Name = "gbPago";
-            this.gbPago.Size = new System.Drawing.Size(488, 212);
-            this.gbPago.TabIndex = 2;
-            this.gbPago.TabStop = false;
-            this.gbPago.Text = "Registrar Pago";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(283, 55);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(46, 13);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Método:";
-            // 
             // btnPagar
             // 
-            this.btnPagar.Location = new System.Drawing.Point(335, 118);
+            this.btnPagar.Location = new System.Drawing.Point(820, 480);
             this.btnPagar.Name = "btnPagar";
-            this.btnPagar.Size = new System.Drawing.Size(109, 53);
+            this.btnPagar.Size = new System.Drawing.Size(55, 28);
             this.btnPagar.TabIndex = 9;
             this.btnPagar.Text = "Pagar";
             this.btnPagar.UseVisualStyleBackColor = true;
+            this.btnPagar.Click += new System.EventHandler(this.btnPagar_Click_1);
             // 
-            // cbMetodoPago
+            // txtBuscar
             // 
-            this.cbMetodoPago.FormattingEnabled = true;
-            this.cbMetodoPago.Items.AddRange(new object[] {
-            "Efectivo",
-            "Tarjeta",
-            "Transferencia"});
-            this.cbMetodoPago.Location = new System.Drawing.Point(344, 52);
-            this.cbMetodoPago.Name = "cbMetodoPago";
-            this.cbMetodoPago.Size = new System.Drawing.Size(121, 21);
-            this.cbMetodoPago.TabIndex = 8;
+            this.txtBuscar.Location = new System.Drawing.Point(27, 324);
+            this.txtBuscar.Name = "txtBuscar";
+            this.txtBuscar.Size = new System.Drawing.Size(109, 20);
+            this.txtBuscar.TabIndex = 10;
             // 
-            // label5
+            // cboFiltro
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(57, 177);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(40, 13);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "Monto:";
+            this.cboFiltro.FormattingEnabled = true;
+            this.cboFiltro.Items.AddRange(new object[] {
+            "Cliente",
+            "Factura",
+            "Estado"});
+            this.cboFiltro.Location = new System.Drawing.Point(173, 324);
+            this.cboFiltro.Name = "cboFiltro";
+            this.cboFiltro.Size = new System.Drawing.Size(121, 21);
+            this.cboFiltro.TabIndex = 11;
             // 
-            // label4
+            // btnBuscar
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(57, 138);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(37, 13);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Saldo:";
+            this.btnBuscar.Location = new System.Drawing.Point(46, 379);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(75, 23);
+            this.btnBuscar.TabIndex = 12;
+            this.btnBuscar.Text = "Buscar";
+            this.btnBuscar.UseVisualStyleBackColor = true;
             // 
-            // label3
+            // btnLimpiar
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(57, 98);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(42, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Cliente:";
+            this.btnLimpiar.Location = new System.Drawing.Point(163, 379);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(75, 23);
+            this.btnLimpiar.TabIndex = 13;
+            this.btnLimpiar.Text = "Limpiar";
+            this.btnLimpiar.UseVisualStyleBackColor = true;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(57, 55);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Factura #:";
-            // 
-            // txtMontoPago
-            // 
-            this.txtMontoPago.Location = new System.Drawing.Point(134, 170);
-            this.txtMontoPago.Name = "txtMontoPago";
-            this.txtMontoPago.Size = new System.Drawing.Size(100, 20);
-            this.txtMontoPago.TabIndex = 3;
-            // 
-            // txtSaldo
-            // 
-            this.txtSaldo.Location = new System.Drawing.Point(134, 131);
-            this.txtSaldo.Name = "txtSaldo";
-            this.txtSaldo.Size = new System.Drawing.Size(100, 20);
-            this.txtSaldo.TabIndex = 2;
-            // 
-            // txtCliente
-            // 
-            this.txtCliente.Location = new System.Drawing.Point(134, 91);
-            this.txtCliente.Name = "txtCliente";
-            this.txtCliente.Size = new System.Drawing.Size(100, 20);
-            this.txtCliente.TabIndex = 1;
-            // 
-            // txtIdVenta
-            // 
-            this.txtIdVenta.Location = new System.Drawing.Point(134, 48);
-            this.txtIdVenta.Name = "txtIdVenta";
-            this.txtIdVenta.Size = new System.Drawing.Size(100, 20);
-            this.txtIdVenta.TabIndex = 0;
-            // 
-            // FrmCuentasPorCobrar
+            // FormCuentasPorCobrar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(691, 537);
-            this.Controls.Add(this.gbPago);
+            this.ClientSize = new System.Drawing.Size(912, 537);
+            this.Controls.Add(this.btnLimpiar);
+            this.Controls.Add(this.btnBuscar);
+            this.Controls.Add(this.cboFiltro);
+            this.Controls.Add(this.txtBuscar);
+            this.Controls.Add(this.btnPagar);
             this.Controls.Add(this.dgvCxC);
             this.Controls.Add(this.label1);
-            this.Name = "FrmCuentasPorCobrar";
+            this.Name = "FormCuentasPorCobrar";
             this.Text = "D";
             this.Load += new System.EventHandler(this.FrmCuentasPorCobrar_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvCxC)).EndInit();
-            this.gbPago.ResumeLayout(false);
-            this.gbPago.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -253,23 +196,18 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dgvCxC;
+        private System.Windows.Forms.Button btnPagar;
         private System.Windows.Forms.DataGridViewTextBoxColumn colIdVenta;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCliente;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTotal;
+        private System.Windows.Forms.DataGridViewTextBoxColumn pagado;
+        private System.Windows.Forms.DataGridViewTextBoxColumn pendiente;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSaldo;
         private System.Windows.Forms.DataGridViewTextBoxColumn colVencimiento;
         private System.Windows.Forms.DataGridViewTextBoxColumn colEstado;
-        private System.Windows.Forms.GroupBox gbPago;
-        private System.Windows.Forms.TextBox txtMontoPago;
-        private System.Windows.Forms.TextBox txtSaldo;
-        private System.Windows.Forms.TextBox txtCliente;
-        private System.Windows.Forms.TextBox txtIdVenta;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button btnPagar;
-        private System.Windows.Forms.ComboBox cbMetodoPago;
+        private System.Windows.Forms.TextBox txtBuscar;
+        private System.Windows.Forms.ComboBox cboFiltro;
+        private System.Windows.Forms.Button btnBuscar;
+        private System.Windows.Forms.Button btnLimpiar;
     }
 }

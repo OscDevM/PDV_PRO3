@@ -1,4 +1,5 @@
 ﻿using Npgsql;
+using PDV_PRO3;
 using System;
 using System.Data;
 using System.Drawing;
@@ -13,16 +14,19 @@ namespace FrmFacturacion
             InitializeComponent();
         }
 
+        // EVENTO LOAD DEL FORM
         private void FrmCuentasPorCobrar_Load(object sender, EventArgs e)
         {
             CargarCxC();
         }
 
+        // BOTÓN PARA RECARGAR LAS CUENTAS POR COBRAR
         private void btnCargar_Click(object sender, EventArgs e)
         {
             CargarCxC();
         }
 
+        // CARGA TODAS LAS FACTURAS DE CUENTAS POR COBRAR
         private void CargarCxC()
         {
             try
@@ -31,23 +35,35 @@ namespace FrmFacturacion
                 {
                     con.Open();
 
-                    // CONSULTA PARA OBTENER FACTURAS PENDIENTES
+                    // SALDO = MONTO PAGADO
+                    // PENDIENTE = TOTAL - SALDO
 
                     string sql = @"
-                        SELECT 
-                            cxc.id_cxc,
-                            v.id_venta,
-                            cl.nombre AS cliente,
-                            cxc.total,
-                            cxc.saldo,
-                            cxc.fecha_vencimiento,
-                            cxc.estado
-                        FROM cxc
-                        INNER JOIN ventas v ON v.id_venta = cxc.id_venta
-                        INNER JOIN clientes cl ON cl.id_cliente = v.id_cliente
-                        WHERE cxc.estado <> 'pagada'
-                        ORDER BY cxc.fecha_vencimiento;
-                    ";
+                                  SELECT 
+                                      c.id_cxc,
+                                      v.id_venta,
+                                      cl.nombre AS cliente,
+                                      c.total,
+                                      c.saldo AS pagado,
+                                     (c.total - c.saldo) AS pendiente,
+                                         c.fecha_vencimiento,
+                                      c.estado
+                                     FROM cxc c
+                                    INNER JOIN ventas v ON v.id_venta = c.id_venta
+                                    INNER JOIN clientes cl ON cl.id_cliente = v.id_cliente
+                                    WHERE 1=1
+                                    ";
+
+                    if (!string.IsNullOrWhiteSpace(txtBuscar.Text))
+                    {
+                        if (cboFiltro.Text == "Cliente")
+                            sql += " AND LOWER(cl.nombre) LIKE LOWER(@valor)";
+                        else if (cboFiltro.Text == "Factura")
+                            sql += " AND v.id_venta::text LIKE @valor";
+                        else if (cboFiltro.Text == "Estado")
+                            sql += " AND c.estado = @valor";
+                    }
+
 
                     using (var da = new NpgsqlDataAdapter(sql, con))
                     {
@@ -57,13 +73,16 @@ namespace FrmFacturacion
                     }
                 }
 
+                // FORMATEAR GRID Y MARCAR FACTURAS VENCIDAS
                 FormatearGrid();
 
                 // RESALTAR FACTURAS VENCIDAS 
 
                 MarcarVencidas();
+
             }
             // MENSAJE ERROR POR PROBLEMAS DE CONEXION PARA CARGAR LAS CUENTAS
+
             catch (Exception ex)
             {
                 MessageBox.Show(
@@ -75,28 +94,29 @@ namespace FrmFacturacion
             }
         }
 
-        //APERIENCIA DEL DGV
-
+        // FORMATO DEL DATAGRIDVIEW
         private void FormatearGrid()
         {
             if (dgvCxC.Columns.Count == 0) return;
 
             dgvCxC.Columns["id_cxc"].Visible = false;
+
             dgvCxC.Columns["id_venta"].HeaderText = "Factura";
             dgvCxC.Columns["cliente"].HeaderText = "Cliente";
             dgvCxC.Columns["total"].HeaderText = "Total";
-            dgvCxC.Columns["saldo"].HeaderText = "Saldo";
+            dgvCxC.Columns["pagado"].HeaderText = "Pagado";
+            dgvCxC.Columns["pendiente"].HeaderText = "Pendiente";
             dgvCxC.Columns["fecha_vencimiento"].HeaderText = "Vence";
             dgvCxC.Columns["estado"].HeaderText = "Estado";
 
             dgvCxC.Columns["total"].DefaultCellStyle.Format = "C2";
-            dgvCxC.Columns["saldo"].DefaultCellStyle.Format = "C2";
+            dgvCxC.Columns["pagado"].DefaultCellStyle.Format = "C2";
+            dgvCxC.Columns["pendiente"].DefaultCellStyle.Format = "C2";
             dgvCxC.Columns["fecha_vencimiento"].DefaultCellStyle.Format = "dd/MM/yyyy";
 
             dgvCxC.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
-        //MARCA LAS RACTURAS VENCIDAS SIN MODIFICAR LA BASE DE DATOS 
-
+        // MARCAR FACTURAS VENCIDAS (SOLO VISUAL)
         private void MarcarVencidas()
         {
             foreach (DataGridViewRow row in dgvCxC.Rows)
@@ -116,86 +136,57 @@ namespace FrmFacturacion
             }
         }
 
-        private void btnPagar_Click(object sender, EventArgs e)
+        // BOTÓN PAGAR FACTURA
+        private void btnPagar_Click_1(object sender, EventArgs e)
         {
-            //VALIDAR SI HAY UNA FILA SELECCIONADA
-
+            // Validar selección
             if (dgvCxC.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Seleccione una factura");
+                MessageBox.Show("Seleccione una cuenta por cobrar");
                 return;
             }
 
-            int idCxC = Convert.ToInt32(dgvCxC.SelectedRows[0].Cells["id_cxc"].Value);
-            decimal saldo = Convert.ToDecimal(dgvCxC.SelectedRows[0].Cells["saldo"].Value);
+            DataGridViewRow fila = dgvCxC.SelectedRows[0];
 
-            //VALIDAR SI FALTA POR PAGAR O NO 
+            int idCxC = Convert.ToInt32(fila.Cells["id_cxc"].Value);
+            int idVenta = Convert.ToInt32(fila.Cells["id_venta"].Value);
+            string cliente = fila.Cells["cliente"].Value.ToString();
+            decimal total = Convert.ToDecimal(fila.Cells["total"].Value);
+            decimal pagado = Convert.ToDecimal(fila.Cells["pagado"].Value);
+            decimal pendiente = Convert.ToDecimal(fila.Cells["pendiente"].Value);
 
-            if (saldo <= 0)
+            // Si ya está pagada, no permitir pago
+            if (pendiente <= 0)
             {
-                MessageBox.Show("La factura ya está pagada");
+                MessageBox.Show("Esta factura ya está saldada");
                 return;
             }
 
-            //CONFIRMACION PARA REALIZAR PAGO
-
-            if (MessageBox.Show(
-                "¿Desea marcar esta factura como pagada?",
-                "Confirmar pago",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) != DialogResult.Yes)
+            // Abrir formulario de pago
+            using (var frm = new FrmPagoCxC(
+                idCxC,
+                idVenta,
+                cliente,
+                total,
+                pagado,
+                pendiente
+            ))
             {
-                return;
+                frm.ShowDialog();
             }
 
-            try
-            {
-                using (var con = Conexion.GetConexion())
-                {
-                    con.Open();
-                    using (var tx = con.BeginTransaction())
-                    {
-                        string sql = @"
-                            UPDATE cxc
-                            SET saldo = 0,
-                                estado = 'pagada'
-                            WHERE id_cxc = @id;
-                        ";
-
-                        using (var cmd = new NpgsqlCommand(sql, con))
-                        {
-                            cmd.Parameters.AddWithValue("@id", idCxC);
-                            cmd.ExecuteNonQuery();
-                        }
-
-                        tx.Commit();
-                    }
-                }
-
-                MessageBox.Show("Factura pagada correctamente");
-
-                //ACTUALIZAR LUEGO DE REALIZAR UN PAGO
-
-                CargarCxC();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(
-                    "Error al pagar la factura:\n" + ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
+            // Refrescar listado al volver
+            CargarCxC();
         }
-
-        private void btnCerrar_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void dgvCxC_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            // Evento requerido por el Designer (no se usa)
         }
+
     }
 }
+      
+
+        
+    
+

@@ -15,6 +15,20 @@ namespace PDV_PRO3
         {
             DataTable dt = new DataTable();
 
+            string columna;
+
+            switch (campo)
+            {
+                case "nombre":
+                case "documento_identificacion":
+                case "telefono":
+                case "correo":
+                    columna = campo;
+                    break;
+                default:
+                    throw new Exception("Campo de búsqueda no válido");
+            }
+
             string sql = $@"
                 SELECT 
                     id_cliente,
@@ -22,12 +36,10 @@ namespace PDV_PRO3
                     nombre,
                     telefono,
                     correo,
-                    direccion,
-                    limite_credito,
-                    activo
+                    direccion
                 FROM clientes
                 WHERE activo = TRUE
-                  AND {campo} ILIKE @valor
+                  AND {columna} ILIKE @valor
                 ORDER BY nombre;
             ";
 
@@ -93,7 +105,6 @@ namespace PDV_PRO3
         // VALIDAR CÉDULA
         public bool ExisteCedula(string cedula)
         {
-
             string sql = @"
                 SELECT COUNT(1)
                 FROM clientes
@@ -112,7 +123,6 @@ namespace PDV_PRO3
                 }
             }
         }
-
 
         // LISTAR CLIENTES
         public DataTable ListarClientes()
@@ -167,27 +177,27 @@ namespace PDV_PRO3
             }
         }
 
-        // EDITAR LOS FOKIN CLIENTES
-
+        // EDITAR CLIENTE
         public bool EditarCliente(
-                    int idCliente,
-                    string nombre,
-                    string cedula,
-                    string telefono,
-                    string correo,
-                    string direccion
-)
+            int idCliente,
+            string nombre,
+            string cedula,
+            string telefono,
+            string correo,
+            string direccion
+        )
         {
             string sql = @"
-        UPDATE clientes
-        SET
-            nombre = @nombre,
-            documento_identificacion = @cedula,
-            telefono = @telefono,
-            correo = @correo,
-            direccion = @direccion
-        WHERE id_cliente = @id;
-    ";
+                UPDATE clientes
+                SET
+                    nombre = @nombre,
+                    documento_identificacion = @cedula,
+                    telefono = @telefono,
+                    correo = @correo,
+                    direccion = @direccion
+                WHERE id_cliente = @id
+                  AND activo = TRUE;
+            ";
 
             using (var con = Conexion.Con())
             {
@@ -206,8 +216,6 @@ namespace PDV_PRO3
                 }
             }
         }
-
-
     }
 }
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +17,102 @@ namespace PDV_PRO3
         public FrmPagoCxC()
         {
             InitializeComponent();
+        }
+        private void RegistrarPago(decimal monto)
+        {
+            if (monto <= 0 || monto > _pendiente)
+            {
+                MessageBox.Show("Monto inválido");
+                return;
+            }
+
+            using (var con = Conexion.GetConexion())
+            {
+                con.Open();
+                using (var tx = con.BeginTransaction())
+                {
+                    // INSERTAR PAGO
+
+                    string sqlPago = @"
+                    INSERT INTO pagos (id_venta, metodo, monto, usuario)
+                    VALUES (@venta, 'efectivo', @monto, 1);
+                    ";
+
+
+                    using (var cmd = new NpgsqlCommand(sqlPago, con))
+                    {
+                        cmd.Parameters.AddWithValue("@venta", _idVenta);
+                        cmd.Parameters.AddWithValue("@monto", monto);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // ACTUALIZAR CxC
+                    string sqlCxC = @"
+                UPDATE cxc
+                SET saldo = saldo + @monto,
+                    estado = CASE
+                        WHEN saldo + @monto >= total THEN 'pagada'
+                        ELSE 'parcial'
+                    END
+                WHERE id_cxc = @id;
+            ";
+
+                    using (var cmd = new NpgsqlCommand(sqlCxC, con))
+                    {
+                        cmd.Parameters.AddWithValue("@monto", monto);
+                        cmd.Parameters.AddWithValue("@id", _idCxC);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    tx.Commit();
+                }
+            }
+
+            MessageBox.Show("Pago registrado correctamente");
+            Close();
+        }
+
+        private int _idCxC;
+        private int _idVenta;
+        private decimal _pendiente;
+
+        public FrmPagoCxC(
+            int idCxC,
+            int idVenta,
+            string cliente,
+            decimal total,
+            decimal pagado,
+            decimal pendiente)
+        {
+            InitializeComponent();
+
+            _idCxC = idCxC;
+            _idVenta = idVenta;
+            _pendiente = pendiente;
+
+            lblCliente.Text = cliente;
+            lblFactura.Text = idVenta.ToString();
+            lblTotal.Text = total.ToString("C2");
+            lblPagado.Text = pagado.ToString("C2");
+            lblPendiente.Text = pendiente.ToString("C2");
+        }
+
+        private void FrmPagoCxC_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAgregarPago_Click(object sender, EventArgs e)
+        {
+            using (var frm = new FrmInputMonto(_pendiente))
+            {
+                if (frm.ShowDialog() != DialogResult.OK)
+                    return;
+
+                decimal monto = frm.Monto;
+
+                RegistrarPago(monto);
+            }
         }
     }
 }

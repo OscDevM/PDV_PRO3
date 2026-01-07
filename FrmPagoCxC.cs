@@ -16,10 +16,5 @@ namespace PDV_PRO3
         {
             InitializeComponent();
         }
-
-        private void FrmPagoCxC_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

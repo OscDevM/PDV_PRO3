@@ -133,6 +133,11 @@ namespace PDV_PRO3
             txtCorreoEliminar.Clear();
             txtDireccionEliminar.Clear();
         }
+
+        private void tabPage3_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

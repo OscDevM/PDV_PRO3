@@ -115,7 +115,6 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(628, 450);
             this.tabControl1.TabIndex = 0;
-//            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -219,7 +218,6 @@
             this.btnBuscar.TabIndex = 2;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
-//            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // txtBuscar
             // 
@@ -281,7 +279,6 @@
             this.btnAgregar.TabIndex = 10;
             this.btnAgregar.Text = "AGREGAR";
             this.btnAgregar.UseVisualStyleBackColor = true;
-     //       this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click);
             // 
             // label5
             // 
@@ -397,7 +394,7 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Eliminar";
             this.tabPage3.UseVisualStyleBackColor = true;
-         //   this.tabPage3.Click += new System.EventHandler(this.tabPage3_Click);
+            this.tabPage3.Click += new System.EventHandler(this.tabPage3_Click);
             // 
             // pictureBox3
             // 
@@ -616,7 +613,6 @@
             this.btnEditar.TabIndex = 21;
             this.btnEditar.Text = "Editar";
             this.btnEditar.UseVisualStyleBackColor = true;
-         //   this.btnEditar.Click += new System.EventHandler(this.btnEditar_Click);
             // 
             // txtDireccionEditar
             // 
@@ -653,7 +649,6 @@
             this.txtNombreEditar.Name = "txtNombreEditar";
             this.txtNombreEditar.Size = new System.Drawing.Size(225, 22);
             this.txtNombreEditar.TabIndex = 16;
-//            this.txtNombreEditar.TextChanged += new System.EventHandler(this.txtNombreEditar_TextChanged);
             // 
             // label16
             // 
@@ -716,7 +711,6 @@
             this.MaximizeBox = false;
             this.Name = "CRUD_Clientes";
             this.Text = "Administrador de Clientes";
- //           this.Load += new System.EventHandler(this.CRUD_Clientes_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();

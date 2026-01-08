@@ -8,7 +8,7 @@ using Npgsql;
 
 public class Conexion
 {
-    private static string cadena =
+    public static string cadena =
         "Host=db.gcdmhkypzedogttworxr.supabase.co;Database=postgres;Username=postgres;Password=Germo0112200;SSL Mode=Require;Trust Server Certificate=true";
 
     public static NpgsqlConnection GetConexion()

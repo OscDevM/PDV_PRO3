@@ -17,6 +17,8 @@ namespace PDV_PRO3
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormFacturacion());
+            Application.Run(new FrmStockBajo());
+            Application.Run(new FrmVentasDiarias());
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace PDV_PRO3
 {
-    partial class Form1
+    partial class FormLogin
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -21,7 +21,7 @@
         }
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLogin));
             this.label4 = new System.Windows.Forms.Label();
             this.BtnSalir = new System.Windows.Forms.Button();
             this.BtnIniciar_sesión = new System.Windows.Forms.Button();
@@ -51,6 +51,7 @@
             this.BtnSalir.TabIndex = 14;
             this.BtnSalir.Text = "Salir";
             this.BtnSalir.UseVisualStyleBackColor = true;
+            this.BtnSalir.Click += new System.EventHandler(this.BtnSalir_Click_1);
             // 
             // BtnIniciar_sesión
             // 
@@ -109,7 +110,7 @@
             this.label1.TabIndex = 8;
             this.label1.Text = "Sistema De Venta";
             // 
-            // Form1
+            // FormLogin
             // 
             this.ClientSize = new System.Drawing.Size(342, 176);
             this.Controls.Add(this.label4);
@@ -123,7 +124,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Form1";
+            this.Name = "FormLogin";
             this.Load += new System.EventHandler(this.Form1_Load_1);
             this.ResumeLayout(false);
             this.PerformLayout();

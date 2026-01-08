@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Login_con_Métodos_en_C_2;
+using Npgsql;
+using System;
 using System.Windows.Forms;
 
 namespace PDV_PRO3
 {
-    public partial class Form1 : Form
+    public partial class FormLogin : Form
     {
-        public Form1()
+        private readonly string cadenaConexion;
+
+        public FormLogin()
         {
             InitializeComponent();
         }
@@ -27,12 +24,8 @@ namespace PDV_PRO3
 
         }
 
-        private void BtnSalir_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
 
-      
+
         private void Form1_Load_1(object sender, EventArgs e)
         {
 
@@ -41,16 +34,29 @@ namespace PDV_PRO3
         private void BtnIniciar_sesión_Click(object sender, EventArgs e)
         {
             {
-                if (TxtUsuario.Text == "" || TxtContraseña.Text == "")
+                ClaDatos Datos = new ClaDatos();
+                if (Datos.Entrar(TxtUsuario.Text, TxtContraseña.Text) == true)
                 {
-                    MessageBox.Show("Complete todos los campos");
-                    return;
+                    Form Formulario = new FormMenuPrincipal();
+                    Formulario.Show();
+                    this.Hide();
+
                 }
-                /*Form Formulario = new formMenuPrincipal();
-                Formulario.Show();
-                this.Hide();*/
+                else
+                {
+                    MessageBox.Show("Usuario o Clave incorrecta, Por favor verificar");
+                    TxtUsuario.Focus();
+                    TxtUsuario.Clear();
+                    TxtContraseña.Clear();
+                }
             }
 
         }
+
+        private void BtnSalir_Click_1(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
     }
 }

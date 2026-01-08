@@ -33,25 +33,26 @@ namespace PDV_PRO3
 
         private void BtnIniciar_sesión_Click(object sender, EventArgs e)
         {
-            {
-                ClaDatos Datos = new ClaDatos();
-                if (Datos.Entrar(TxtUsuario.Text, TxtContraseña.Text) == true)
-                {
-                    Form Formulario = new FormMenuPrincipal();
-                    Formulario.Show();
-                    this.Hide();
+             {
+                /*   ClaDatos Datos = new ClaDatos();
+              if (Datos.Entrar(TxtUsuario.Text, TxtContraseña.Text) == true)
+              {
+                  Form Formulario = new FormMenuPrincipal();
+                  Formulario.Show();
+                  this.Hide();
 
-                }
-                else
-                {
-                    MessageBox.Show("Usuario o Clave incorrecta, Por favor verificar");
-                    TxtUsuario.Focus();
-                    TxtUsuario.Clear();
-                    TxtContraseña.Clear();
-                }
+              }
+              else
+              {
+                  MessageBox.Show("Usuario o Clave incorrecta, Por favor verificar");
+                  TxtUsuario.Focus();
+                  TxtUsuario.Clear();
+                  TxtContraseña.Clear();   */
             }
-
         }
+
+         
+              
 
         private void BtnSalir_Click_1(object sender, EventArgs e)
         {

@@ -29,33 +29,33 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuPrincipal));
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.PanelVertical = new System.Windows.Forms.Panel();
             this.panelRegistrosSubmenu1 = new System.Windows.Forms.Panel();
             this.BtnSalir = new System.Windows.Forms.Button();
             this.BtnAcercade = new System.Windows.Forms.Button();
+            this.BtnProductos = new System.Windows.Forms.Button();
             this.BtnUsuario = new System.Windows.Forms.Button();
             this.BtnClientes = new System.Windows.Forms.Button();
+            this.BtnConsultarFactura = new System.Windows.Forms.Button();
             this.BtnFacturación = new System.Windows.Forms.Button();
             this.panelContenido = new System.Windows.Forms.Panel();
             this.LblMenuPrincipal = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.panel1.SuspendLayout();
+            this.PanelPrincipal = new System.Windows.Forms.Panel();
+            this.PanelVertical.SuspendLayout();
             this.panelRegistrosSubmenu1.SuspendLayout();
             this.panelContenido.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // PanelVertical
             // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(25)))), ((int)(((byte)(42)))));
-            this.panel1.Controls.Add(this.panelRegistrosSubmenu1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.panel1.Location = new System.Drawing.Point(0, 82);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(174, 453);
-            this.panel1.TabIndex = 10;
+            this.PanelVertical.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(25)))), ((int)(((byte)(42)))));
+            this.PanelVertical.Controls.Add(this.panelRegistrosSubmenu1);
+            this.PanelVertical.Dock = System.Windows.Forms.DockStyle.Left;
+            this.PanelVertical.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.PanelVertical.Location = new System.Drawing.Point(0, 82);
+            this.PanelVertical.Name = "PanelVertical";
+            this.PanelVertical.Size = new System.Drawing.Size(174, 453);
+            this.PanelVertical.TabIndex = 10;
             // 
             // panelRegistrosSubmenu1
             // 
@@ -63,10 +63,10 @@
             this.panelRegistrosSubmenu1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(117)))), ((int)(((byte)(255)))));
             this.panelRegistrosSubmenu1.Controls.Add(this.BtnSalir);
             this.panelRegistrosSubmenu1.Controls.Add(this.BtnAcercade);
-            this.panelRegistrosSubmenu1.Controls.Add(this.button1);
+            this.panelRegistrosSubmenu1.Controls.Add(this.BtnProductos);
             this.panelRegistrosSubmenu1.Controls.Add(this.BtnUsuario);
             this.panelRegistrosSubmenu1.Controls.Add(this.BtnClientes);
-            this.panelRegistrosSubmenu1.Controls.Add(this.button2);
+            this.panelRegistrosSubmenu1.Controls.Add(this.BtnConsultarFactura);
             this.panelRegistrosSubmenu1.Controls.Add(this.BtnFacturación);
             this.panelRegistrosSubmenu1.Location = new System.Drawing.Point(0, 42);
             this.panelRegistrosSubmenu1.Name = "panelRegistrosSubmenu1";
@@ -109,6 +109,21 @@
             this.BtnAcercade.UseVisualStyleBackColor = false;
             this.BtnAcercade.Click += new System.EventHandler(this.BtnAcercade_Click);
             // 
+            // BtnProductos
+            // 
+            this.BtnProductos.BackColor = System.Drawing.Color.DarkOrchid;
+            this.BtnProductos.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnProductos.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.BtnProductos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnProductos.ForeColor = System.Drawing.Color.White;
+            this.BtnProductos.Location = new System.Drawing.Point(0, 196);
+            this.BtnProductos.Name = "BtnProductos";
+            this.BtnProductos.Size = new System.Drawing.Size(174, 49);
+            this.BtnProductos.TabIndex = 6;
+            this.BtnProductos.Text = "Productos";
+            this.BtnProductos.UseVisualStyleBackColor = false;
+            this.BtnProductos.Click += new System.EventHandler(this.button1_Click);
+            // 
             // BtnUsuario
             // 
             this.BtnUsuario.BackColor = System.Drawing.Color.DarkOrchid;
@@ -144,6 +159,20 @@
             this.BtnClientes.Text = "Clientes";
             this.BtnClientes.UseVisualStyleBackColor = false;
             this.BtnClientes.Click += new System.EventHandler(this.BtnClientes_Click);
+            // 
+            // BtnConsultarFactura
+            // 
+            this.BtnConsultarFactura.BackColor = System.Drawing.Color.DarkOrchid;
+            this.BtnConsultarFactura.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BtnConsultarFactura.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.BtnConsultarFactura.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BtnConsultarFactura.ForeColor = System.Drawing.Color.White;
+            this.BtnConsultarFactura.Location = new System.Drawing.Point(0, 49);
+            this.BtnConsultarFactura.Name = "BtnConsultarFactura";
+            this.BtnConsultarFactura.Size = new System.Drawing.Size(174, 49);
+            this.BtnConsultarFactura.TabIndex = 7;
+            this.BtnConsultarFactura.Text = "Consultar Factura";
+            this.BtnConsultarFactura.UseVisualStyleBackColor = false;
             // 
             // BtnFacturación
             // 
@@ -185,41 +214,12 @@
             this.LblMenuPrincipal.TabIndex = 0;
             this.LblMenuPrincipal.Text = "Menu Principal";
             // 
-            // panel2
+            // PanelPrincipal
             // 
-            this.panel2.Location = new System.Drawing.Point(194, 97);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(816, 426);
-            this.panel2.TabIndex = 12;
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.DarkOrchid;
-            this.button1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(0, 196);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(174, 49);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Productos";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.DarkOrchid;
-            this.button2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(0, 49);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(174, 49);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "Consultar Factura";
-            this.button2.UseVisualStyleBackColor = false;
+            this.PanelPrincipal.Location = new System.Drawing.Point(194, 97);
+            this.PanelPrincipal.Name = "PanelPrincipal";
+            this.PanelPrincipal.Size = new System.Drawing.Size(816, 426);
+            this.PanelPrincipal.TabIndex = 12;
             // 
             // MenuPrincipal
             // 
@@ -227,8 +227,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1022, 535);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.PanelPrincipal);
+            this.Controls.Add(this.PanelVertical);
             this.Controls.Add(this.panelContenido);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -236,8 +236,8 @@
             this.MinimizeBox = false;
             this.Name = "MenuPrincipal";
             this.Text = " Menu";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.PanelVertical.ResumeLayout(false);
+            this.PanelVertical.PerformLayout();
             this.panelRegistrosSubmenu1.ResumeLayout(false);
             this.panelContenido.ResumeLayout(false);
             this.panelContenido.PerformLayout();
@@ -247,7 +247,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel PanelVertical;
         private System.Windows.Forms.Panel panelRegistrosSubmenu1;
         private System.Windows.Forms.Button BtnSalir;
         private System.Windows.Forms.Button BtnAcercade;
@@ -256,9 +256,9 @@
         private System.Windows.Forms.Button BtnFacturación;
         private System.Windows.Forms.Panel panelContenido;
         private System.Windows.Forms.Label LblMenuPrincipal;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button BtnProductos;
+        private System.Windows.Forms.Panel PanelPrincipal;
+        private System.Windows.Forms.Button BtnConsultarFactura;
     }
 }
 

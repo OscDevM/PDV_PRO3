@@ -72,7 +72,6 @@ namespace PDV_PRO3
         {
             if (apartadoSeleccionado != null)
             {
-
                 apartadoSeleccionado.Visible = true;
             }
             AbrirFormularioHijo(new FormFacturacion());
@@ -89,7 +88,6 @@ namespace PDV_PRO3
         {
             if (apartadoSeleccionado != null)
             {
-
                 apartadoSeleccionado.Visible = true;
             }
             AbrirFormularioHijo(new Vista_MenuPrincipal());

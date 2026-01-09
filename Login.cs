@@ -16,5 +16,26 @@ namespace PDV_PRO3
         {
             InitializeComponent();
         }
+
+        ClaseUsuario _claseUsuario = new ClaseUsuario();
+
+        private void bttnAceptar_Click(object sender, EventArgs e)
+        {
+            if(txtUsuario.TextLength == 0 || txtPassword.TextLength == 0)
+            {
+                MessageBox.Show("Porfavor llenar todos los campos");
+                return;
+            }
+
+            MessageBox.Show("holaaaaa");
+            if (_claseUsuario.VerificarUsuario(txtUsuario.Text, txtPassword.Text))
+            {
+                Form1 menuprincipal = new Form1();
+                menuprincipal.login = this;
+                menuprincipal.Show();
+                this.Hide();
+            }
+            
+        }
     }
 }

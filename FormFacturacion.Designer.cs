@@ -221,7 +221,7 @@
             this.gbTotales.Controls.Add(this.lblSubtotal);
             this.gbTotales.Location = new System.Drawing.Point(31, 412);
             this.gbTotales.Name = "gbTotales";
-            this.gbTotales.Size = new System.Drawing.Size(374, 136);
+            this.gbTotales.Size = new System.Drawing.Size(374, 109);
             this.gbTotales.TabIndex = 8;
             this.gbTotales.TabStop = false;
             this.gbTotales.Text = "Totales";
@@ -340,7 +340,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(596, 643);
+            this.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.ClientSize = new System.Drawing.Size(596, 579);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnAnular);
             this.Controls.Add(this.btnFacturar);
@@ -354,6 +355,7 @@
             this.Controls.Add(this.lblUsuario);
             this.Controls.Add(this.lblFecha);
             this.Controls.Add(this.lblTitulo);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FormFacturacion";
             this.Text = "Usuario:";
             this.Load += new System.EventHandler(this.FrmFacturacion_Load);

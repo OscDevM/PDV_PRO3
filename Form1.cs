@@ -18,7 +18,7 @@ namespace PDV_PRO3
         }
 
         // aqui se almacena el formulario del login para que cuando se cierre el menu principal el login tambien 
-        public Form login;
+        public Form formularioOriginal;
 
         //este formulario almacena el formulario que esta actualmente en el panel para asi poder cerrarlo cuando se abra otro
         private Form formularioPadre;
@@ -54,15 +54,18 @@ namespace PDV_PRO3
         private void Form1_Load(object sender, EventArgs e)
         {
             lblUsuario.Text = ClaseUsuario._usuario;
+            AbrirFormularioHijo(new Vista_MenuPrincipal());
+            inicioToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = inicioToolStripMenuItem;
 
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            login.Close();
-            AbrirFormularioHijo(new Vista_MenuPrincipal());
-            inicioToolStripMenuItem.Visible = false;
-            apartadoSeleccionado = inicioToolStripMenuItem;
+            if(formularioOriginal != null)
+            {
+                formularioOriginal.Close();
+            }
         }
 
         private void facturarToolStripMenuItem_Click(object sender, EventArgs e)
@@ -92,6 +95,23 @@ namespace PDV_PRO3
             AbrirFormularioHijo(new Vista_MenuPrincipal());
             inicioToolStripMenuItem.Visible = false;
             apartadoSeleccionado = inicioToolStripMenuItem;
+        }
+
+        private void cerrarProgramaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(MessageBox.Show("¿Deseas continuar?", "Confirmacion",MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                ClaseUsuario._usuario = "";
+                ClaseUsuario._idusuario = 0;
+                formularioOriginal.Show();
+                formularioOriginal = null;
+                this.Close();
+            }
         }
     }
 }

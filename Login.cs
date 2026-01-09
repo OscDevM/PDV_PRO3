@@ -27,13 +27,16 @@ namespace PDV_PRO3
                 return;
             }
 
-            MessageBox.Show("holaaaaa");
             if (_claseUsuario.VerificarUsuario(txtUsuario.Text, txtPassword.Text))
             {
                 Form1 menuprincipal = new Form1();
                 menuprincipal.login = this;
                 menuprincipal.Show();
                 this.Hide();
+            }
+            else
+            {
+                MessageBox.Show("Usuario o Contraseña equivocada");
             }
             
         }

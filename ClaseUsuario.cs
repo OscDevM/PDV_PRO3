@@ -33,7 +33,7 @@ namespace PDV_PRO3
 
                         _idusuario = Convert.ToInt32(cmd.ExecuteScalar());
                         _usuario = usuario;
-                        return _idusuario != null;
+                        return _idusuario > 0;
                     } 
                 }
             }

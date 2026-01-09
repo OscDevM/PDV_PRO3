@@ -105,6 +105,7 @@
     <Compile Include="FormFacturacion.Designer.cs">
       <DependentUpon>FormFacturacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Funciones.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>

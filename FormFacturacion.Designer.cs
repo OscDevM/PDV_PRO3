@@ -304,7 +304,6 @@
             this.btnAnular.TabIndex = 11;
             this.btnAnular.Text = "Anular";
             this.btnAnular.UseVisualStyleBackColor = true;
-            this.btnAnular.Visible = false;
             this.btnAnular.Click += new System.EventHandler(this.btnAnular_Click);
             // 
             // label1

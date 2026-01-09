@@ -19,6 +19,7 @@ namespace PDV_PRO3
 
         ClaseUsuario _claseUsuario = new ClaseUsuario();
 
+
         private void bttnAceptar_Click(object sender, EventArgs e)
         {
             if(txtUsuario.TextLength == 0 || txtPassword.TextLength == 0)
@@ -33,12 +34,22 @@ namespace PDV_PRO3
                 menuprincipal.formularioOriginal = this;
                 menuprincipal.Show();
                 this.Hide();
+                Funciones.Limpiar(this);
             }
             else
             {
                 MessageBox.Show("Usuario o Contraseña equivocada");
+                Funciones.Limpiar(this);
             }
             
+        }
+
+        private void bttnCancelar_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("¿Deseas continuar?", "Confirmacion", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                this.Close();
+            }
         }
     }
 }

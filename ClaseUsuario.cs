@@ -11,7 +11,7 @@ namespace PDV_PRO3
     internal class ClaseUsuario
     {
         public static string _usuario;
-        public static int? _idusuario;
+        public static int _idusuario = 0;
 
         public bool VerificarUsuario(string usuario, string clave)
         {

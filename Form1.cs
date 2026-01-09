@@ -60,6 +60,9 @@ namespace PDV_PRO3
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             login.Close();
+            AbrirFormularioHijo(new Vista_MenuPrincipal());
+            inicioToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = inicioToolStripMenuItem;
         }
 
         private void facturarToolStripMenuItem_Click(object sender, EventArgs e)
@@ -77,6 +80,18 @@ namespace PDV_PRO3
         private void lblUsuario_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void inicioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (apartadoSeleccionado != null)
+            {
+
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new Vista_MenuPrincipal());
+            inicioToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = inicioToolStripMenuItem;
         }
     }
 }

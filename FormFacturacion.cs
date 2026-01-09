@@ -82,7 +82,7 @@ namespace PDV_PRO3
                 idCliente = Convert.ToInt32(txtNombreCliente.Tag);
             }
 
-            int idUsuario = 1; // Usuario logueado (luego de que de haga y conecta al login), Sebastian: Usuario admin agregado con el ID 1 para pruebas
+            int idUsuario = ClaseUsuario._idusuario; // Llamar el usuario de esta manera
             string tipo;
             if (cbTipoVenta.SelectedIndex == 0)
             {
@@ -319,5 +319,14 @@ namespace PDV_PRO3
             return ITBIS;
         }
 
+        private void lblUsuarioValor_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblUsuario_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

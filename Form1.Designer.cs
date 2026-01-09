@@ -46,6 +46,9 @@
             this.lblUsuario = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.inicioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.otroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cerrarSesionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cerrarProgramaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,7 +60,8 @@
             this.facturasToolStripMenuItem,
             this.inventarioToolStripMenuItem,
             this.clientesToolStripMenuItem,
-            this.usuariosToolStripMenuItem});
+            this.usuariosToolStripMenuItem,
+            this.otroToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -168,9 +172,11 @@
             // lblUsuario
             // 
             this.lblUsuario.AutoSize = true;
-            this.lblUsuario.Location = new System.Drawing.Point(752, 0);
+            this.lblUsuario.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.lblUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUsuario.Location = new System.Drawing.Point(736, 4);
             this.lblUsuario.Name = "lblUsuario";
-            this.lblUsuario.Size = new System.Drawing.Size(43, 13);
+            this.lblUsuario.Size = new System.Drawing.Size(64, 20);
             this.lblUsuario.TabIndex = 1;
             this.lblUsuario.Text = "Usuario";
             this.lblUsuario.Click += new System.EventHandler(this.lblUsuario_Click);
@@ -187,6 +193,28 @@
             this.inicioToolStripMenuItem.Name = "inicioToolStripMenuItem";
             this.inicioToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.inicioToolStripMenuItem.Text = "Inicio";
+            this.inicioToolStripMenuItem.Click += new System.EventHandler(this.inicioToolStripMenuItem_Click);
+            // 
+            // otroToolStripMenuItem
+            // 
+            this.otroToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cerrarSesionToolStripMenuItem,
+            this.cerrarProgramaToolStripMenuItem});
+            this.otroToolStripMenuItem.Name = "otroToolStripMenuItem";
+            this.otroToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.otroToolStripMenuItem.Text = "Otro";
+            // 
+            // cerrarSesionToolStripMenuItem
+            // 
+            this.cerrarSesionToolStripMenuItem.Name = "cerrarSesionToolStripMenuItem";
+            this.cerrarSesionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cerrarSesionToolStripMenuItem.Text = "Cerrar Sesion";
+            // 
+            // cerrarProgramaToolStripMenuItem
+            // 
+            this.cerrarProgramaToolStripMenuItem.Name = "cerrarProgramaToolStripMenuItem";
+            this.cerrarProgramaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cerrarProgramaToolStripMenuItem.Text = "Cerrar Programa";
             // 
             // Form1
             // 
@@ -198,7 +226,7 @@
             this.Controls.Add(this.panel1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Menu Principal";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -228,6 +256,9 @@
         private System.Windows.Forms.Label lblUsuario;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripMenuItem inicioToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem otroToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cerrarSesionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cerrarProgramaToolStripMenuItem;
     }
 }
 

@@ -31,8 +31,6 @@
             this.lblTitulo = new System.Windows.Forms.Label();
             this.lblFecha = new System.Windows.Forms.Label();
             this.lblFechaValor = new System.Windows.Forms.Label();
-            this.lblUsuario = new System.Windows.Forms.Label();
-            this.lblUsuarioValor = new System.Windows.Forms.Label();
             this.gbCliente = new System.Windows.Forms.GroupBox();
             this.txtNombreCliente = new System.Windows.Forms.TextBox();
             this.lblNombreCliente = new System.Windows.Forms.Label();
@@ -88,24 +86,6 @@
             this.lblFechaValor.Size = new System.Drawing.Size(72, 13);
             this.lblFechaValor.TabIndex = 2;
             this.lblFechaValor.Text = "(fecha actual)";
-            // 
-            // lblUsuario
-            // 
-            this.lblUsuario.AutoSize = true;
-            this.lblUsuario.Location = new System.Drawing.Point(429, 9);
-            this.lblUsuario.Name = "lblUsuario";
-            this.lblUsuario.Size = new System.Drawing.Size(46, 13);
-            this.lblUsuario.TabIndex = 3;
-            this.lblUsuario.Text = "Usuario:";
-            // 
-            // lblUsuarioValor
-            // 
-            this.lblUsuarioValor.AutoSize = true;
-            this.lblUsuarioValor.Location = new System.Drawing.Point(481, 9);
-            this.lblUsuarioValor.Name = "lblUsuarioValor";
-            this.lblUsuarioValor.Size = new System.Drawing.Size(94, 13);
-            this.lblUsuarioValor.TabIndex = 4;
-            this.lblUsuarioValor.Text = "(usuario logueado)";
             // 
             // gbCliente
             // 
@@ -351,8 +331,6 @@
             this.Controls.Add(this.dgvDetalle);
             this.Controls.Add(this.gbProducto);
             this.Controls.Add(this.gbCliente);
-            this.Controls.Add(this.lblUsuarioValor);
-            this.Controls.Add(this.lblUsuario);
             this.Controls.Add(this.lblFecha);
             this.Controls.Add(this.lblTitulo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -376,8 +354,6 @@
         private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.Label lblFecha;
         private System.Windows.Forms.Label lblFechaValor;
-        private System.Windows.Forms.Label lblUsuario;
-        private System.Windows.Forms.Label lblUsuarioValor;
         private System.Windows.Forms.GroupBox gbCliente;
         private System.Windows.Forms.Button btnBuscarCliente;
         private System.Windows.Forms.TextBox txtDocumento;

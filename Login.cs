@@ -29,6 +29,7 @@ namespace PDV_PRO3
 
             if (_claseUsuario.VerificarUsuario(txtUsuario.Text, txtPassword.Text))
             {
+                MessageBox.Show(ClaseUsuario._idusuario+"");
                 Form1 menuprincipal = new Form1();
                 menuprincipal.login = this;
                 menuprincipal.Show();

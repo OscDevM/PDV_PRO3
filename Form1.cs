@@ -73,5 +73,10 @@ namespace PDV_PRO3
             facturarToolStripMenuItem.Visible = false;
             apartadoSeleccionado = facturarToolStripMenuItem;
         }
+
+        private void lblUsuario_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

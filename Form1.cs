@@ -111,5 +111,16 @@ namespace PDV_PRO3
                 this.Close();
             }
         }
+
+        private void productosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (apartadoSeleccionado != null)
+            {
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new FrmProductos());
+            productosToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = productosToolStripMenuItem;
+        }
     }
 }

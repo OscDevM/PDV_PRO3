@@ -51,5 +51,10 @@ namespace PDV_PRO3
                 this.Close();
             }
         }
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

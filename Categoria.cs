@@ -23,6 +23,11 @@ namespace PDV_PRO3
 
         private void Categoria_Load(object sender, EventArgs e)
         {
+            LlamarDatos();
+        }
+
+        public void LlamarDatos()
+        {
             using (var conn = Conexion.GetConexion())
             {
                 conn.Open();
@@ -99,12 +104,16 @@ namespace PDV_PRO3
             }
             Funciones.Limpiar(this);
             insertar = true;
+            cbEstatus.Visible = false;
+            LlamarDatos();
         }
 
         private void bttnCancelar_Click(object sender, EventArgs e)
         {
             Funciones.Limpiar(this);
             insertar = true;
+            cbEstatus.Visible = false;
+            LlamarDatos();
         }
     }
 }

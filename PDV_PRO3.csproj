@@ -12,7 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp></NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -97,7 +98,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClaseUsuario.cs" />
+    <Compile Include="ClienteDAO.cs" />
     <Compile Include="Conexion.cs" />
+    <Compile Include="CRUD_Clientes.cs" />
+    <Compile Include="CRUD_Clientes.Designer.cs">
+      <DependentUpon>CRUD_Clientes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,6 +138,9 @@
     <Compile Include="Vista_MenuPrincipal.Designer.cs">
       <DependentUpon>Vista_MenuPrincipal.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="CRUD_Clientes.resx">
+      <DependentUpon>CRUD_Clientes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

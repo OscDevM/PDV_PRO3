@@ -21,4 +21,3 @@ public class Conexion
         return new NpgsqlConnection(cadena);
     }
 }
-}

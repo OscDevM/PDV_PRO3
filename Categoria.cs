@@ -27,7 +27,7 @@ namespace PDV_PRO3
             {
                 conn.Open();
 
-                string sql = "SELECT * FROM categoria_productos ORDER BY id_categoria";
+                string sql = "SELECT * FROM categoria_producto ORDER BY id_categoria";
                 using (var da = new NpgsqlDataAdapter(sql, conn))
                 {
 
@@ -53,6 +53,50 @@ namespace PDV_PRO3
             {
                 cbEstatus.SelectedIndex = 1;
             }
+        }
+
+        private void bttnGuardar_Click(object sender, EventArgs e)
+        {
+            using (var conn = Conexion.GetConexion())
+            {
+                conn.Open();
+                if (insertar)
+                {
+                    string sql = "INSERT INTO categoria_producto (nombre, descripcion) VALUES (@nombre, @descripcion)";
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@nombre", txtNombre.Text);
+                        cmd.Parameters.AddWithValue("@descripcion", txtDescripcion.Text);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    string sql = @"UPDATE categoria_producto 
+                   SET nombre=@nombre, descripcion=@descripcion, activo = @activo 
+                   WHERE id_categoria=@id_categoria";
+
+                    bool activo;
+                    if (cbEstatus.SelectedIndex == 0)
+                    {
+                        activo = true;
+                    }
+                    else
+                    {
+                        activo = false;
+                    }
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@nombre", txtNombre.Text);
+                        cmd.Parameters.AddWithValue("@descripcion", txtDescripcion.Text);
+                        cmd.Parameters.AddWithValue("@activo", activo); 
+                        cmd.Parameters.AddWithValue("@id_categoria", idCategoria);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                
+            }
+            Funciones.Limpiar(this);
         }
     }
 }

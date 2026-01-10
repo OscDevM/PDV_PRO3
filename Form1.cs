@@ -166,5 +166,16 @@ namespace PDV_PRO3
             clientesToolStripMenuItem.Visible = false;
             apartadoSeleccionado = clientesToolStripMenuItem;
         }
+
+        private void categoriaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (apartadoSeleccionado != null)
+            {
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new Categoria());
+            categoriaToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = categoriaToolStripMenuItem;
+        }
     }
 }

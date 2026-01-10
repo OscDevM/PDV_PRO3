@@ -97,6 +97,13 @@ namespace PDV_PRO3
                 
             }
             Funciones.Limpiar(this);
+            insertar = true;
+        }
+
+        private void bttnCancelar_Click(object sender, EventArgs e)
+        {
+            Funciones.Limpiar(this);
+            insertar = true;
         }
     }
 }

@@ -49,6 +49,7 @@
             this.cerrarProgramaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lblUsuario = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.descuentosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -81,7 +82,8 @@
             this.facturasToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.facturarToolStripMenuItem,
             this.verFacturasToolStripMenuItem,
-            this.cuentasPorCobrarToolStripMenuItem});
+            this.cuentasPorCobrarToolStripMenuItem,
+            this.descuentosToolStripMenuItem});
             this.facturasToolStripMenuItem.Name = "facturasToolStripMenuItem";
             this.facturasToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.facturasToolStripMenuItem.Text = "Facturas";
@@ -226,6 +228,13 @@
             this.panel1.TabIndex = 2;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
+            // descuentosToolStripMenuItem
+            // 
+            this.descuentosToolStripMenuItem.Name = "descuentosToolStripMenuItem";
+            this.descuentosToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.descuentosToolStripMenuItem.Text = "Descuentos";
+            this.descuentosToolStripMenuItem.Click += new System.EventHandler(this.descuentosToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -270,5 +279,6 @@
         private System.Windows.Forms.ToolStripMenuItem otroToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cerrarSesionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cerrarProgramaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem descuentosToolStripMenuItem;
     }
 }

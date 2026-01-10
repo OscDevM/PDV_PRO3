@@ -177,5 +177,16 @@ namespace PDV_PRO3
             categoriaToolStripMenuItem.Visible = false;
             apartadoSeleccionado = categoriaToolStripMenuItem;
         }
+
+        private void descuentosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (apartadoSeleccionado != null)
+            {
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new Descuentos());
+            descuentosToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = descuentosToolStripMenuItem;
+        }
     }
 }

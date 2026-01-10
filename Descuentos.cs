@@ -27,8 +27,6 @@ namespace PDV_PRO3
             LlamarDatos();
         }
 
-        
-
         public void LlamarDatos()
         {
             using (var conn = Conexion.GetConexion())

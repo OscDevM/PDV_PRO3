@@ -8,9 +8,6 @@ using Npgsql;
 
 public class ProductoDAO
 {
-    private string cadenaConexion =
-        "Host=db.gcdmhkypzedogttworxr.supabase.co;Database=postgres;Username=postgres;Password=Germo0112200;SSL Mode=Require;Trust Server Certificate=true";
-
     public int CrearProducto(
         string codigoBarra,
         string nombre,
@@ -26,7 +23,7 @@ public class ProductoDAO
     {
         try
         {
-            using (NpgsqlConnection con = new NpgsqlConnection(cadenaConexion))
+            using (var con = Conexion.GetConexion())
             {
                 con.Open();
 
@@ -72,7 +69,7 @@ public class ProductoDAO
     {
         DataTable dt = new DataTable();
 
-        using (NpgsqlConnection con = new NpgsqlConnection(cadenaConexion))
+        using (var con = Conexion.GetConexion())
         {
             string sql = @"
                         SELECT 
@@ -111,7 +108,7 @@ public class ProductoDAO
     {
         try
         {
-            using (NpgsqlConnection con = new NpgsqlConnection(cadenaConexion))
+            using (var con = Conexion.GetConexion())
             {
                 con.Open();
 
@@ -142,7 +139,7 @@ public class ProductoDAO
     {
         try
         {
-            using (NpgsqlConnection con = new NpgsqlConnection(cadenaConexion))
+            using (var con = Conexion.GetConexion())
             {
                 con.Open();
 
@@ -166,7 +163,7 @@ public class ProductoDAO
     {
         DataTable dt = new DataTable();
 
-        using (NpgsqlConnection con = new NpgsqlConnection(cadenaConexion))
+        using (var con = Conexion.GetConexion())
         {
             string sql = "SELECT id_categoria, nombre FROM categoria_producto WHERE activo = TRUE";
             using (NpgsqlDataAdapter da = new NpgsqlDataAdapter(sql, con))
@@ -180,7 +177,7 @@ public class ProductoDAO
     {
         DataTable dt = new DataTable();
 
-        using (NpgsqlConnection con = new NpgsqlConnection(cadenaConexion))
+        using (var con = Conexion.GetConexion())
         {
             string sql = "SELECT id_inventario, lugar FROM inventario";
             using (NpgsqlDataAdapter da = new NpgsqlDataAdapter(sql, con))

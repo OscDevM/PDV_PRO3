@@ -49,9 +49,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(252, 47);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(317, 29);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 13);
+            this.label1.Size = new System.Drawing.Size(218, 25);
             this.label1.TabIndex = 0;
             this.label1.Text = "Cuentas por Cobrar";
             // 
@@ -68,11 +69,11 @@
             this.colSaldo,
             this.colVencimiento,
             this.colEstado});
-            this.dgvCxC.Location = new System.Drawing.Point(27, 114);
+            this.dgvCxC.Location = new System.Drawing.Point(27, 66);
             this.dgvCxC.Name = "dgvCxC";
             this.dgvCxC.ReadOnly = true;
             this.dgvCxC.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvCxC.Size = new System.Drawing.Size(848, 150);
+            this.dgvCxC.Size = new System.Drawing.Size(848, 230);
             this.dgvCxC.TabIndex = 1;
             this.dgvCxC.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCxC_CellContentClick);
             // 
@@ -126,17 +127,19 @@
             // 
             // btnPagar
             // 
-            this.btnPagar.Location = new System.Drawing.Point(820, 480);
+            this.btnPagar.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.btnPagar.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPagar.Location = new System.Drawing.Point(807, 316);
             this.btnPagar.Name = "btnPagar";
-            this.btnPagar.Size = new System.Drawing.Size(55, 28);
+            this.btnPagar.Size = new System.Drawing.Size(68, 39);
             this.btnPagar.TabIndex = 9;
             this.btnPagar.Text = "Pagar";
-            this.btnPagar.UseVisualStyleBackColor = true;
+            this.btnPagar.UseVisualStyleBackColor = false;
             this.btnPagar.Click += new System.EventHandler(this.btnPagar_Click_1);
             // 
             // txtBuscar
             // 
-            this.txtBuscar.Location = new System.Drawing.Point(27, 324);
+            this.txtBuscar.Location = new System.Drawing.Point(27, 316);
             this.txtBuscar.Name = "txtBuscar";
             this.txtBuscar.Size = new System.Drawing.Size(109, 20);
             this.txtBuscar.TabIndex = 10;
@@ -148,14 +151,15 @@
             "Cliente",
             "Factura",
             "Estado"});
-            this.cboFiltro.Location = new System.Drawing.Point(173, 324);
+            this.cboFiltro.Location = new System.Drawing.Point(163, 316);
             this.cboFiltro.Name = "cboFiltro";
             this.cboFiltro.Size = new System.Drawing.Size(121, 21);
             this.cboFiltro.TabIndex = 11;
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(46, 379);
+            this.btnBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBuscar.Location = new System.Drawing.Point(27, 342);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(75, 23);
             this.btnBuscar.TabIndex = 12;
@@ -164,7 +168,8 @@
             // 
             // btnLimpiar
             // 
-            this.btnLimpiar.Location = new System.Drawing.Point(163, 379);
+            this.btnLimpiar.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLimpiar.Location = new System.Drawing.Point(163, 343);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(75, 23);
             this.btnLimpiar.TabIndex = 13;
@@ -175,7 +180,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(912, 537);
+            this.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.ClientSize = new System.Drawing.Size(912, 431);
             this.Controls.Add(this.btnLimpiar);
             this.Controls.Add(this.btnBuscar);
             this.Controls.Add(this.cboFiltro);

@@ -43,7 +43,7 @@ namespace PDV_PRO3
                 ORDER BY nombre;
             ";
 
-            using (var conexion = Conexion.Con())
+            using (var conexion = Conexion.GetConexion())
             {
                 conexion.Open();
 
@@ -85,7 +85,7 @@ namespace PDV_PRO3
                 );
             ";
 
-            using (var conexion = Conexion.Con())
+            using (var conexion = Conexion.GetConexion())
             {
                 conexion.Open();
 
@@ -112,7 +112,7 @@ namespace PDV_PRO3
                   AND activo = TRUE;
             ";
 
-            using (var conexion = Conexion.Con())
+            using (var conexion = Conexion.GetConexion())
             {
                 conexion.Open();
 
@@ -142,7 +142,7 @@ namespace PDV_PRO3
                 ORDER BY nombre;
             ";
 
-            using (var con = Conexion.Con())
+            using (var con = Conexion.GetConexion())
             {
                 con.Open();
 
@@ -165,7 +165,7 @@ namespace PDV_PRO3
                 WHERE id_cliente = @id;
             ";
 
-            using (var con = Conexion.Con())
+            using (var con = Conexion.GetConexion())
             {
                 con.Open();
 
@@ -199,7 +199,7 @@ namespace PDV_PRO3
                   AND activo = TRUE;
             ";
 
-            using (var con = Conexion.Con())
+            using (var con = Conexion.GetConexion())
             {
                 con.Open();
 

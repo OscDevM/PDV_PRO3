@@ -6,20 +6,25 @@ CREATE OR REPLACE FUNCTION RegistrarFactura(
     p_tipo VARCHAR,
     p_subtotal NUMERIC,
     p_impuesto NUMERIC,
-    p_total NUMERIC
+    p_total NUMERIC,
+    p_pagado NUMERIC
 ) RETURNS INT AS $$
 DECLARE
     v_id_venta INT;
+    v_dias_gracia INT;
 BEGIN
     -- Insertar la venta (solo cabecera)
-    INSERT INTO ventas(id_cliente, id_usuario, tipo, subtotal, impuesto, total)
-    VALUES (p_id_cliente, p_id_usuario, p_tipo, p_subtotal, p_impuesto, p_total)
+    INSERT INTO ventas(id_cliente, id_usuario, tipo, subtotal, impuesto, total, pagado)
+    VALUES (p_id_cliente, p_id_usuario, p_tipo, p_subtotal, p_impuesto, p_total, p_pagado)
     RETURNING id_venta INTO v_id_venta;
 
     -- Si es a crédito, crear registro en CxC
     IF p_tipo = 'credito' THEN
-        INSERT INTO cxc(id_venta, fecha_emision, fecha_vencimiento, total, saldo, estado)
-        VALUES (v_id_venta, CURRENT_DATE, CURRENT_DATE + INTERVAL '30 days', p_total, p_total, 'pendiente');
+        SELECT dias_gracia INTO v_dias_gracia FROM clientes WHERE id_cliente = p_id_cliente; 
+        
+        INSERT INTO cxc(id_venta, fecha_emision, fecha_vencimiento, total, saldo, estado) 
+        VALUES 
+        (v_id_venta, CURRENT_DATE, CURRENT_DATE + (v_dias_gracia || ' days')::interval, p_total - p_pagado, 0, 'pendiente' );
     END IF;
 
     -- Retornar el ID de la venta creada
@@ -27,14 +32,13 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
 -- Procedimiento 1.5: insertar detalles de venta
 CREATE OR REPLACE FUNCTION RegistrarDetalleFactura(
     p_id_venta INT,
     p_id_producto INT,
     p_cantidad INT,
     p_precio_unitario NUMERIC,
-    p_impuesto_porcentaje NUMERIC,
+    p_impuesto NUMERIC,
     p_descuento NUMERIC
 ) RETURNS VOID AS $$
 BEGIN

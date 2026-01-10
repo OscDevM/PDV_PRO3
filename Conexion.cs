@@ -9,17 +9,16 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Net;
 
 
-namespace PDV_PRO3
+using Npgsql;
+
+public class Conexion
 {
+    private static string cadena =
+        "Host=db.gcdmhkypzedogttworxr.supabase.co;Database=postgres;Username=postgres;Password=Germo0112200;SSL Mode=Require;Trust Server Certificate=true";
 
-    public class Conexion
+    public static NpgsqlConnection GetConexion()
     {
-            public static NpgsqlConnection Con()
-            {
-            string cadena = "Host=db.gcdmhkypzedogttworxr.supabase.co;Database=postgres;Username=postgres;Password=Germo0112200;SSL Mode=Require;Trust Server Certificate=true";
-
-
-            return new NpgsqlConnection(cadena);
-            }
+        return new NpgsqlConnection(cadena);
     }
+}
 }

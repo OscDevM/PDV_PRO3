@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,89 @@ namespace PDV_PRO3
 {
     public partial class Descuentos : Form
     {
+        int idProducto;
+
         public Descuentos()
         {
             InitializeComponent();
+        }
+
+        private void Descuentos_Load(object sender, EventArgs e)
+        {
+            LlamarDatos();
+        }
+
+        public void LlamarDatos()
+        {
+            using (var conn = Conexion.GetConexion())
+            {
+                conn.Open();
+
+                string sql = "SELECT " +
+                    "d.id_descuento, " +
+                    "p.codigo_barra, " +
+                    "p.nombre AS nombre_producto, " +
+                    "d.descuento, " +
+                    "d.porcentaje_descuento, " +
+                    "d.activo " +
+                    "FROM descuentos d " +
+                    "INNER JOIN productos p ON d.id_producto = p.id_producto;";
+
+                using (var da = new NpgsqlDataAdapter(sql, conn))
+                {
+
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    dgvDescuentos.DataSource = dt;
+                }
+            }
+        }
+
+        private void txtCodigoBarras_TextChanged(object sender, EventArgs e)
+        {
+            if(txtCodigoBarras.TextLength== 13)
+            {
+                using (var con = Conexion.GetConexion())
+                {
+                    con.Open();
+
+                    NpgsqlCommand cmd = new NpgsqlCommand("SELECT " +
+                        "id_producto, " +
+                        "nombre, " +
+                        "precio " +
+                        "FROM productos WHERE codigo_barra = @codigo_barra;", con);
+
+                    cmd.Parameters.AddWithValue("@codigo_barra", txtCodigoBarras.Text);
+
+                    using (var da = new NpgsqlDataAdapter(cmd))
+                    {
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+                        if(dt.Rows.Count == 1)
+                        {
+                            idProducto = Convert.ToInt32(dt.Rows[0]["id_producto"]);
+                            txtNombre.Text = dt.Rows[0]["nombre"].ToString();
+                            txtPrecio.Text = dt.Rows[0]["precio"].ToString();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Producto no encontrado favor revisar codigo de barras");
+                        }
+                    }
+
+                    
+                }
+
+                
+            }
+        }
+
+        private void txtPorcentajeDescuento_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true; 
+            }
         }
     }
 }

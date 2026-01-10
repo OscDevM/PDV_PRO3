@@ -110,6 +110,9 @@
     <Compile Include="CRUD_Clientes.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CRUD_Clientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CRUD_Clientes.Designer.cs">
       <DependentUpon>CRUD_Clientes.cs</DependentUpon>
     </Compile>

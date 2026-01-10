@@ -11,7 +11,6 @@ public class ProductoDAO
     private string cadenaConexion =
         "Host=db.gcdmhkypzedogttworxr.supabase.co;Database=postgres;Username=postgres;Password=Germo0112200;SSL Mode=Require;Trust Server Certificate=true";
 
-    // REGISTRAR PRODUCTO NUEVO
     public int CrearProducto(
         string codigoBarra,
         string nombre,
@@ -69,7 +68,6 @@ public class ProductoDAO
         }
     }
 
-    // LISTAR PRODUCTOS
     public DataTable ListarProductos()
     {
         DataTable dt = new DataTable();
@@ -109,7 +107,6 @@ public class ProductoDAO
         return dt;
     }
 
-    // AGREGAR STOCK
     public void AgregarStock(int idProducto, int cantidad, string referencia, int usuario)
     {
         try
@@ -141,7 +138,6 @@ public class ProductoDAO
         }
     }
 
-    // ELIMINAR PRODUCTO
     public void EliminarProducto(int idProducto)
     {
         try
@@ -166,8 +162,6 @@ public class ProductoDAO
             throw new Exception("Error al eliminar producto: " + ex.Message);
         }
     }
-
-    // COMBO CATEGORÍAS
     public DataTable ListarCategorias()
     {
         DataTable dt = new DataTable();
@@ -182,8 +176,6 @@ public class ProductoDAO
         }
         return dt;
     }
-
-    // COMBO INVENTARIOS
     public DataTable ListarInventarios()
     {
         DataTable dt = new DataTable();

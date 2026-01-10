@@ -8,9 +8,6 @@ using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using System.Net;
 
-
-using Npgsql;
-
 public class Conexion
 {
     private static string cadena =

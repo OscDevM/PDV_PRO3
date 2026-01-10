@@ -116,6 +116,12 @@
     <Compile Include="FrmInputMonto.Designer.cs">
       <DependentUpon>FrmInputMonto.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmPagoCxC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPagoCxC.Designer.cs">
+      <DependentUpon>FrmPagoCxC.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormCuentasPorCobrar.resx">
@@ -126,6 +132,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmInputMonto.resx">
       <DependentUpon>FrmInputMonto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPagoCxC.resx">
+      <DependentUpon>FrmPagoCxC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

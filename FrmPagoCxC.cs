@@ -1,4 +1,5 @@
 ﻿
+using FrmFacturacion;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,10 @@ namespace PDV_PRO3
         {
             InitializeComponent();
         }
+        private void FrmPagoCxC_Load(object sender, EventArgs e)
+        {
+
+        }
         private void RegistrarPago(decimal monto)
         {
             if (monto <= 0 || monto > _pendiente)
@@ -26,51 +31,81 @@ namespace PDV_PRO3
                 return;
             }
 
-            using (var con = Conexion.GetConexion())
+            try
             {
-                con.Open();
-                using (var tx = con.BeginTransaction())
+                using (var con = Conexion.GetConexion())
                 {
-                    // INSERTAR PAGO
-
-                    string sqlPago = @"
+                    con.Open();
+                    using (var tx = con.BeginTransaction())
+                    {
+                        // INSERTAR PAGO
+                        string sqlPago = @"
                     INSERT INTO pagos (id_venta, metodo, monto, usuario)
                     VALUES (@venta, 'efectivo', @monto, 1);
-                    ";
+                ";
 
+                        var r = MessageBox.Show(
+                            $"¿Confirmar pago de {monto:C2}?",
+                            "Confirmar pago",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question);
 
-                    using (var cmd = new NpgsqlCommand(sqlPago, con))
-                    {
-                        cmd.Parameters.AddWithValue("@venta", _idVenta);
-                        cmd.Parameters.AddWithValue("@monto", monto);
-                        cmd.ExecuteNonQuery();
+                        if (r != DialogResult.Yes)
+                            return;
+
+                        using (var cmd = new NpgsqlCommand(sqlPago, con))
+                        {
+                            cmd.Parameters.AddWithValue("@venta", _idVenta);
+                            cmd.Parameters.AddWithValue("@monto", monto);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // ACTUALIZAR CxC
+                        string sqlCxC = @"
+                    UPDATE cxc
+                    SET saldo = saldo + @monto,
+                        estado = CASE
+                            WHEN saldo + @monto >= total THEN 'pagada'
+                            ELSE 'parcial'
+                        END
+                    WHERE id_cxc = @id;
+                ";
+
+                        using (var cmd = new NpgsqlCommand(sqlCxC, con))
+                        {
+                            cmd.Parameters.AddWithValue("@monto", monto);
+                            cmd.Parameters.AddWithValue("@id", _idCxC);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        tx.Commit();
                     }
-
-                    // ACTUALIZAR CxC
-                    string sqlCxC = @"
-                UPDATE cxc
-                SET saldo = saldo + @monto,
-                    estado = CASE
-                        WHEN saldo + @monto >= total THEN 'pagada'
-                        ELSE 'parcial'
-                    END
-                WHERE id_cxc = @id;
-            ";
-
-                    using (var cmd = new NpgsqlCommand(sqlCxC, con))
-                    {
-                        cmd.Parameters.AddWithValue("@monto", monto);
-                        cmd.Parameters.AddWithValue("@id", _idCxC);
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    tx.Commit();
                 }
-            }
 
-            MessageBox.Show("Pago registrado correctamente");
+                MessageBox.Show("Pago registrado correctamente");
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al registrar el pago:\n" + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+            //  MENSAJE PRIMERO
+            MessageBox.Show(
+                "Pago registrado correctamente",
+                "Pago",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+
+          
             Close();
         }
+
 
         private int _idCxC;
         private int _idVenta;
@@ -97,11 +132,6 @@ namespace PDV_PRO3
             lblPendiente.Text = pendiente.ToString("C2");
         }
 
-        private void FrmPagoCxC_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnAgregarPago_Click(object sender, EventArgs e)
         {
             using (var frm = new FrmInputMonto(_pendiente))
@@ -111,8 +141,28 @@ namespace PDV_PRO3
 
                 decimal monto = frm.Monto;
 
+                // CONFIRMACIÓN DEL USUARIO
+                var resp = MessageBox.Show(
+                    $"¿Confirmar pago de {monto:C2}?",
+                    "Confirmar pago",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (resp != DialogResult.Yes)
+                    return;
+
                 RegistrarPago(monto);
             }
+        }
+        // BOTÓN CERRAR → VOLVER A CxC
+        private void btnCerrar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+
+            // Volver a Cuentas por Cobrar
+            FormCuentasPorCobrar frm = new FormCuentasPorCobrar();
+            frm.Show();
         }
     }
 }

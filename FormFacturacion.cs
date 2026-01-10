@@ -82,7 +82,7 @@ namespace PDV_PRO3
                 idCliente = Convert.ToInt32(txtNombreCliente.Tag);
             }
 
-            int idUsuario = 1; // Usuario logueado (luego de que de haga y conecta al login), Sebastian: Usuario admin agregado con el ID 1 para pruebas
+            int idUsuario = ClaseUsuario._idusuario; // Llamar el usuario de esta manera
             string tipo;
             if (cbTipoVenta.SelectedIndex == 0)
             {
@@ -149,7 +149,9 @@ namespace PDV_PRO3
             }
 
             MessageBox.Show("Factura registrada correctamente");
-            Limpiar(this);
+            Funciones.Limpiar(this);
+            dgvDetalle.DataSource = null;
+            hayCliente = false;
 
         }
 
@@ -177,41 +179,19 @@ namespace PDV_PRO3
             return true;
         }
 
-        public void Limpiar(Form C)
-        {
-            dgvDetalle.DataSource = null;
-            hayCliente = false;
-            foreach(var c in C.Controls)
-            {
-                if(c is TextBox)
-                {
-                    ((TextBox)c).Clear();
-                }
-                if (c is ComboBox)
-                {
-                    ((ComboBox)c).SelectedIndex = 0;
-                }
-                if(c is GroupBox)
-                {
-                    foreach(var i in ((GroupBox)c).Controls)
-                    {
-
-                        if (i is TextBox)
-                        {
-                            ((TextBox)i).Clear();
-                        }
-                    }
-                }
-            }
-
-        }
+       
 
 
         // =========================
         // EVENTOS VACÍOS (DESIGNER)
         // =========================
         private void gbCliente_Enter(object sender, EventArgs e) { }
-        private void btnAnular_Click(object sender, EventArgs e) { }
+        private void btnAnular_Click(object sender, EventArgs e) 
+        {
+            Funciones.Limpiar(this);
+            dgvDetalle.DataSource = null;
+            hayCliente = false;
+        }
 
         //buscar los productos en base al codigo de barras
         private void txtProducto_TextChanged(object sender, EventArgs e)
@@ -319,5 +299,14 @@ namespace PDV_PRO3
             return ITBIS;
         }
 
+        private void lblUsuarioValor_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblUsuario_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

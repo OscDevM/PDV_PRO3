@@ -14,6 +14,7 @@ namespace PDV_PRO3
     public partial class Descuentos : Form
     {
         int idProducto;
+        int idDescuento;
         bool insertar;
 
         public Descuentos()
@@ -25,6 +26,8 @@ namespace PDV_PRO3
         {
             LlamarDatos();
         }
+
+        
 
         public void LlamarDatos()
         {
@@ -90,6 +93,7 @@ namespace PDV_PRO3
                 
             }
         }
+        
 
         private void txtPorcentajeDescuento_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -102,10 +106,10 @@ namespace PDV_PRO3
         private void dgvDescuentos_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             insertar = false;
-            idProducto = Convert.ToInt32(dgvDescuentos.CurrentRow.Cells["id_categoria"].Value);
-            txtCodigoBarras.Text = dgvDescuentos.CurrentRow.Cells["nombre"].Value.ToString();
-            txtNombre.Text = dgvDescuentos.CurrentRow.Cells["nombre"].Value.ToString();
-            //txtDescripcion.Text = dgvDescuentos.CurrentRow.Cells["descripcion"].Value.ToString();
+            idDescuento = Convert.ToInt32(dgvDescuentos.CurrentRow.Cells["id_descuento"].Value);
+            txtCodigoBarras.Text = dgvDescuentos.CurrentRow.Cells["codigo_barra"].Value.ToString();
+            txtDescuento.Text = dgvDescuentos.CurrentRow.Cells["descuento"].Value.ToString();
+            txtPorcentajeDescuento.Text = dgvDescuentos.CurrentRow.Cells["porcentaje_descuento"].Value.ToString();
 
             if (Convert.ToBoolean(dgvDescuentos.CurrentRow.Cells["activo"].Value) == true)
             {
@@ -116,6 +120,61 @@ namespace PDV_PRO3
                 cbEstatus.SelectedIndex = 1;
             }
             cbEstatus.Visible = true;
+        }
+
+        private void bttnGuardar_Click(object sender, EventArgs e)
+        {
+            if (Funciones.Verificar(this) == false)
+            {
+                MessageBox.Show("Porfavor llenar todos los campos");
+                return;
+            }
+
+            using (var conn = Conexion.GetConexion())
+            {
+                conn.Open();
+                if (insertar)
+                {
+                    string sql = "INSERT INTO descuentos (descuento, porcentaje_descuento,id_producto) VALUES (@descuento, @porcentaje_descuento,@id_producto)";
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@descuento", txtDescuento.Text);
+                        cmd.Parameters.AddWithValue("@porcentaje_descuento", NpgsqlTypes.NpgsqlDbType.Integer, Convert.ToInt32(txtPorcentajeDescuento.Text));
+                        cmd.Parameters.AddWithValue("@id_producto", idProducto);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    string sql = @"UPDATE descuentos 
+                   SET descuento=@descuento, porcentaje_descuento=@porcentaje_descuento, id_producto=@id_producto, activo = @activo 
+                   WHERE id_descuento=@id_descuento";
+
+                    bool activo;
+                    if (cbEstatus.SelectedIndex == 0)
+                    {
+                        activo = true;
+                    }
+                    else
+                    {
+                        activo = false;
+                    }
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@descuento", txtDescuento.Text);
+                        cmd.Parameters.AddWithValue("@porcentaje_descuento",NpgsqlTypes.NpgsqlDbType.Integer,Convert.ToInt32(txtPorcentajeDescuento.Text));
+                        cmd.Parameters.AddWithValue("@activo", activo);
+                        cmd.Parameters.AddWithValue("@id_producto", idProducto);
+                        cmd.Parameters.AddWithValue("@id_descuento", idDescuento);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+            }
+            Funciones.Limpiar(this);
+            insertar = true;
+            cbEstatus.Visible = false;
+            LlamarDatos();
         }
     }
 }

@@ -63,6 +63,12 @@ namespace PDV_PRO3
 
         private void bttnGuardar_Click(object sender, EventArgs e)
         {
+            if (Funciones.Verificar(this) == false)
+            {
+                MessageBox.Show("Porfavor llenar todos los campos");
+                return;
+            }
+
             using (var conn = Conexion.GetConexion())
             {
                 conn.Open();

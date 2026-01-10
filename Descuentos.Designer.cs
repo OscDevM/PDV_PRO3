@@ -188,6 +188,7 @@
             this.bttnGuardar.TabIndex = 22;
             this.bttnGuardar.Text = "Guardar";
             this.bttnGuardar.UseVisualStyleBackColor = true;
+            this.bttnGuardar.Click += new System.EventHandler(this.bttnGuardar_Click);
             // 
             // dgvDescuentos
             // 

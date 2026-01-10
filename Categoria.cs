@@ -45,7 +45,7 @@ namespace PDV_PRO3
             txtNombre.Text = dgvCategorias.CurrentRow.Cells["nombre"].Value.ToString();
             txtDescripcion.Text = dgvCategorias.CurrentRow.Cells["descripcion"].Value.ToString();
 
-            if(dgvCategorias.CurrentRow.Cells["activo"].Value.ToString() == "TRUE")
+            if(Convert.ToBoolean(dgvCategorias.CurrentRow.Cells["activo"].Value) == true )
             {
                 cbEstatus.SelectedIndex = 0;
             }
@@ -53,6 +53,7 @@ namespace PDV_PRO3
             {
                 cbEstatus.SelectedIndex = 1;
             }
+            cbEstatus.Visible = true;
         }
 
         private void bttnGuardar_Click(object sender, EventArgs e)

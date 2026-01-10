@@ -92,6 +92,7 @@
             this.cbEstatus.Name = "cbEstatus";
             this.cbEstatus.Size = new System.Drawing.Size(121, 21);
             this.cbEstatus.TabIndex = 13;
+            this.cbEstatus.Visible = false;
             // 
             // label3
             // 
@@ -101,6 +102,7 @@
             this.label3.Size = new System.Drawing.Size(42, 13);
             this.label3.TabIndex = 14;
             this.label3.Text = "Estatus";
+            this.label3.Visible = false;
             // 
             // bttnGuardar
             // 

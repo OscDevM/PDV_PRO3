@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FrmFacturacion;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -44,6 +45,13 @@ namespace PDV_PRO3
 
         private void cuentasPorCobrarToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (apartadoSeleccionado != null)
+            {
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new FormCuentasPorCobrar());
+            cuentasPorCobrarToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = cuentasPorCobrarToolStripMenuItem;
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

@@ -42,45 +42,45 @@
             this.lblCliente.AutoSize = true;
             this.lblCliente.Location = new System.Drawing.Point(42, 58);
             this.lblCliente.Name = "lblCliente";
-            this.lblCliente.Size = new System.Drawing.Size(49, 13);
+            this.lblCliente.Size = new System.Drawing.Size(39, 13);
             this.lblCliente.TabIndex = 0;
-            this.lblCliente.Text = "lblCliente";
+            this.lblCliente.Text = "Cliente";
             // 
             // lblFactura
             // 
             this.lblFactura.AutoSize = true;
             this.lblFactura.Location = new System.Drawing.Point(142, 58);
             this.lblFactura.Name = "lblFactura";
-            this.lblFactura.Size = new System.Drawing.Size(53, 13);
+            this.lblFactura.Size = new System.Drawing.Size(43, 13);
             this.lblFactura.TabIndex = 1;
-            this.lblFactura.Text = "lblFactura";
+            this.lblFactura.Text = "Factura";
             // 
             // lblTotal
             // 
             this.lblTotal.AutoSize = true;
             this.lblTotal.Location = new System.Drawing.Point(260, 58);
             this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(41, 13);
+            this.lblTotal.Size = new System.Drawing.Size(31, 13);
             this.lblTotal.TabIndex = 2;
-            this.lblTotal.Text = "lblTotal";
+            this.lblTotal.Text = "Total";
             // 
             // lblPagado
             // 
             this.lblPagado.AutoSize = true;
             this.lblPagado.Location = new System.Drawing.Point(380, 58);
             this.lblPagado.Name = "lblPagado";
-            this.lblPagado.Size = new System.Drawing.Size(54, 13);
+            this.lblPagado.Size = new System.Drawing.Size(44, 13);
             this.lblPagado.TabIndex = 3;
-            this.lblPagado.Text = "lblPagado";
+            this.lblPagado.Text = "Pagado";
             // 
             // lblPendiente
             // 
             this.lblPendiente.AutoSize = true;
             this.lblPendiente.Location = new System.Drawing.Point(521, 58);
             this.lblPendiente.Name = "lblPendiente";
-            this.lblPendiente.Size = new System.Drawing.Size(65, 13);
+            this.lblPendiente.Size = new System.Drawing.Size(55, 13);
             this.lblPendiente.TabIndex = 4;
-            this.lblPendiente.Text = "lblPendiente";
+            this.lblPendiente.Text = "Pendiente";
             // 
             // btnAgregarPago
             // 

@@ -25,7 +25,6 @@ namespace PDV_PRO3
                 {
                     foreach (var i in ((GroupBox)c).Controls)
                     {
-
                         if (i is TextBox)
                         {
                             ((TextBox)i).Clear();

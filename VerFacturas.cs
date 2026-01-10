@@ -85,5 +85,11 @@ namespace PDV_PRO3
                 }
             }
         }
+
+        private void bttnCancelar_Click(object sender, EventArgs e)
+        {
+            Funciones.Limpiar(this);
+            LlamarDatos();
+        }
     }
 }

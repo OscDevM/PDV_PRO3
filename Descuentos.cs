@@ -176,5 +176,13 @@ namespace PDV_PRO3
             cbEstatus.Visible = false;
             LlamarDatos();
         }
+
+        private void bttnCancelar_Click(object sender, EventArgs e)
+        {
+            Funciones.Limpiar(this);
+            insertar = true;
+            cbEstatus.Visible = false;
+            LlamarDatos();
+        }
     }
 }

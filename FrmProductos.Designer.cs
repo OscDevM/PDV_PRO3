@@ -129,7 +129,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(482, 125);
+            this.label5.Location = new System.Drawing.Point(325, 90);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(34, 13);
             this.label5.TabIndex = 9;
@@ -137,7 +137,7 @@
             // 
             // txtCosto
             // 
-            this.txtCosto.Location = new System.Drawing.Point(523, 122);
+            this.txtCosto.Location = new System.Drawing.Point(366, 87);
             this.txtCosto.Name = "txtCosto";
             this.txtCosto.Size = new System.Drawing.Size(100, 20);
             this.txtCosto.TabIndex = 8;
@@ -145,7 +145,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(642, 125);
+            this.label6.Location = new System.Drawing.Point(509, 125);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(35, 13);
             this.label6.TabIndex = 11;
@@ -153,7 +153,7 @@
             // 
             // txtStock
             // 
-            this.txtStock.Location = new System.Drawing.Point(683, 122);
+            this.txtStock.Location = new System.Drawing.Point(550, 122);
             this.txtStock.Name = "txtStock";
             this.txtStock.Size = new System.Drawing.Size(100, 20);
             this.txtStock.TabIndex = 10;
@@ -201,13 +201,13 @@
             this.dgvProductos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvProductos.Location = new System.Drawing.Point(38, 272);
             this.dgvProductos.Name = "dgvProductos";
-            this.dgvProductos.Size = new System.Drawing.Size(929, 218);
+            this.dgvProductos.Size = new System.Drawing.Size(745, 218);
             this.dgvProductos.TabIndex = 16;
             this.dgvProductos.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvProductos_CellDoubleClick);
             // 
             // txtCantidad
             // 
-            this.txtCantidad.Location = new System.Drawing.Point(867, 122);
+            this.txtCantidad.Location = new System.Drawing.Point(550, 87);
             this.txtCantidad.Name = "txtCantidad";
             this.txtCantidad.Size = new System.Drawing.Size(100, 20);
             this.txtCantidad.TabIndex = 17;
@@ -215,10 +215,10 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.label9.Location = new System.Drawing.Point(803, 125);
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.label9.Location = new System.Drawing.Point(494, 90);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(58, 16);
+            this.label9.Size = new System.Drawing.Size(49, 13);
             this.label9.TabIndex = 18;
             this.label9.Text = "Cantidad";
             // 
@@ -255,7 +255,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(871, 234);
+            this.label10.Location = new System.Drawing.Point(707, 128);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(18, 13);
             this.label10.TabIndex = 23;
@@ -264,7 +264,7 @@
             // 
             // txtIdProducto
             // 
-            this.txtIdProducto.Location = new System.Drawing.Point(921, 231);
+            this.txtIdProducto.Location = new System.Drawing.Point(737, 125);
             this.txtIdProducto.Name = "txtIdProducto";
             this.txtIdProducto.ReadOnly = true;
             this.txtIdProducto.Size = new System.Drawing.Size(46, 20);
@@ -323,7 +323,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1010, 511);
+            this.ClientSize = new System.Drawing.Size(818, 511);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.btnNuevo);
             this.Controls.Add(this.button1);

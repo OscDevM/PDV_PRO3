@@ -89,14 +89,14 @@
             // facturarToolStripMenuItem
             // 
             this.facturarToolStripMenuItem.Name = "facturarToolStripMenuItem";
-            this.facturarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.facturarToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.facturarToolStripMenuItem.Text = "Facturar";
             this.facturarToolStripMenuItem.Click += new System.EventHandler(this.facturarToolStripMenuItem_Click);
             // 
             // verFacturasToolStripMenuItem
             // 
             this.verFacturasToolStripMenuItem.Name = "verFacturasToolStripMenuItem";
-            this.verFacturasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.verFacturasToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.verFacturasToolStripMenuItem.Text = "Ver facturas";
             // 
             // cuentasPorCobrarToolStripMenuItem
@@ -104,7 +104,7 @@
             this.cuentasPorCobrarToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.pagosToolStripMenuItem1});
             this.cuentasPorCobrarToolStripMenuItem.Name = "cuentasPorCobrarToolStripMenuItem";
-            this.cuentasPorCobrarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cuentasPorCobrarToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.cuentasPorCobrarToolStripMenuItem.Text = "Cuentas Por Cobrar";
             this.cuentasPorCobrarToolStripMenuItem.Click += new System.EventHandler(this.cuentasPorCobrarToolStripMenuItem_Click);
             // 
@@ -148,6 +148,7 @@
             this.clientesToolStripMenuItem.Name = "clientesToolStripMenuItem";
             this.clientesToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.clientesToolStripMenuItem.Text = "Clientes";
+            this.clientesToolStripMenuItem.Click += new System.EventHandler(this.clientesToolStripMenuItem_Click);
             // 
             // usuariosToolStripMenuItem
             // 

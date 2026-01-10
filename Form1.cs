@@ -166,5 +166,38 @@ namespace PDV_PRO3
             clientesToolStripMenuItem.Visible = false;
             apartadoSeleccionado = clientesToolStripMenuItem;
         }
+
+        private void categoriaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (apartadoSeleccionado != null)
+            {
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new Categoria());
+            categoriaToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = categoriaToolStripMenuItem;
+        }
+
+        private void descuentosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (apartadoSeleccionado != null)
+            {
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new Descuentos());
+            descuentosToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = descuentosToolStripMenuItem;
+        }
+
+        private void verFacturasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (apartadoSeleccionado != null)
+            {
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new VerFacturas());
+            verFacturasToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = verFacturasToolStripMenuItem;
+        }
     }
 }

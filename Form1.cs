@@ -111,5 +111,33 @@ namespace PDV_PRO3
                 this.Close();
             }
         }
+
+        private void inventario1ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+      
+            if (apartadoSeleccionado != null)
+            {
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new crud_inventario());
+            inventarioToolStripMenuItem1.Visible = false;
+            apartadoSeleccionado = inventarioToolStripMenuItem1;
+        }
+        
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+        
+        }
+
+        private void facturasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void inventarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

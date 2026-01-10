@@ -188,5 +188,16 @@ namespace PDV_PRO3
             descuentosToolStripMenuItem.Visible = false;
             apartadoSeleccionado = descuentosToolStripMenuItem;
         }
+
+        private void verFacturasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (apartadoSeleccionado != null)
+            {
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new VerFacturas());
+            verFacturasToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = verFacturasToolStripMenuItem;
+        }
     }
 }

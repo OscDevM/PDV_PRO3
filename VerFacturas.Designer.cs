@@ -64,7 +64,7 @@
             this.dgvDetalles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDetalles.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvDetalles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDetalles.Location = new System.Drawing.Point(411, 74);
+            this.dgvDetalles.Location = new System.Drawing.Point(399, 74);
             this.dgvDetalles.Name = "dgvDetalles";
             this.dgvDetalles.ReadOnly = true;
             this.dgvDetalles.RowHeadersVisible = false;
@@ -132,11 +132,11 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(408, 58);
+            this.label3.Location = new System.Drawing.Point(396, 58);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(112, 13);
+            this.label3.Size = new System.Drawing.Size(110, 13);
             this.label3.TabIndex = 32;
-            this.label3.Text = "Detalles De la Factura";
+            this.label3.Text = "Detalles de la Factura";
             // 
             // VerFacturas
             // 

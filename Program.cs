@@ -16,7 +16,7 @@ namespace PDV_PRO3
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new VerFacturas());
+            Application.Run(new Login());
         }
     }
 }

@@ -99,8 +99,9 @@
             // verFacturasToolStripMenuItem
             // 
             this.verFacturasToolStripMenuItem.Name = "verFacturasToolStripMenuItem";
-            this.verFacturasToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.verFacturasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.verFacturasToolStripMenuItem.Text = "Ver facturas";
+            this.verFacturasToolStripMenuItem.Click += new System.EventHandler(this.verFacturasToolStripMenuItem_Click);
             // 
             // cuentasPorCobrarToolStripMenuItem
             // 

@@ -56,7 +56,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.txtPrecio);
             this.groupBox1.Controls.Add(this.txtNombre);
-            this.groupBox1.Location = new System.Drawing.Point(558, 21);
+            this.groupBox1.Location = new System.Drawing.Point(597, 22);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(200, 239);
             this.groupBox1.TabIndex = 0;
@@ -201,8 +201,9 @@
             this.dgvDescuentos.ReadOnly = true;
             this.dgvDescuentos.RowHeadersVisible = false;
             this.dgvDescuentos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDescuentos.Size = new System.Drawing.Size(540, 216);
+            this.dgvDescuentos.Size = new System.Drawing.Size(579, 216);
             this.dgvDescuentos.TabIndex = 21;
+            this.dgvDescuentos.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDescuentos_CellDoubleClick);
             // 
             // Descuentos
             // 

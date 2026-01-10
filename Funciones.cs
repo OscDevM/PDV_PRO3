@@ -34,5 +34,20 @@ namespace PDV_PRO3
             }
 
         }
+
+        public static bool Verificar(Form formulario)
+        {
+            foreach(var c in formulario.Controls)
+            {
+                if(c is TextBox)
+                {
+                    if(((TextBox)c).TextLength == 0)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
     }
 }

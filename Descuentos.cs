@@ -14,6 +14,7 @@ namespace PDV_PRO3
     public partial class Descuentos : Form
     {
         int idProducto;
+        bool insertar;
 
         public Descuentos()
         {
@@ -96,6 +97,25 @@ namespace PDV_PRO3
             {
                 e.Handled = true; 
             }
+        }
+
+        private void dgvDescuentos_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            insertar = false;
+            idProducto = Convert.ToInt32(dgvDescuentos.CurrentRow.Cells["id_categoria"].Value);
+            txtCodigoBarras.Text = dgvDescuentos.CurrentRow.Cells["nombre"].Value.ToString();
+            txtNombre.Text = dgvDescuentos.CurrentRow.Cells["nombre"].Value.ToString();
+            //txtDescripcion.Text = dgvDescuentos.CurrentRow.Cells["descripcion"].Value.ToString();
+
+            if (Convert.ToBoolean(dgvDescuentos.CurrentRow.Cells["activo"].Value) == true)
+            {
+                cbEstatus.SelectedIndex = 0;
+            }
+            else
+            {
+                cbEstatus.SelectedIndex = 1;
+            }
+            cbEstatus.Visible = true;
         }
     }
 }

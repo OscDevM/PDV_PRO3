@@ -98,8 +98,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClaseUsuario.cs" />
+    <Compile Include="InventarioDAO.cs" />
     <Compile Include="ClienteDAO.cs" />
     <Compile Include="Conexion.cs" />
+    <Compile Include="crud-inventario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="crud-inventario.Designer.cs">
+      <DependentUpon>crud-inventario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CRUD_Clientes.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CRUD_Clientes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,6 +128,7 @@
     <Compile Include="FrmProductos.Designer.cs">
       <DependentUpon>FrmProductos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Inventario.cs" />
     <Compile Include="ProductoDAO.cs" />
     <Compile Include="FormFacturacion.cs">
       <SubType>Form</SubType>
@@ -140,6 +151,9 @@
     <Compile Include="Vista_MenuPrincipal.Designer.cs">
       <DependentUpon>Vista_MenuPrincipal.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="crud-inventario.resx">
+      <DependentUpon>crud-inventario.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CRUD_Clientes.resx">
       <DependentUpon>CRUD_Clientes.cs</DependentUpon>
     </EmbeddedResource>

@@ -147,7 +147,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormFacturacion.resx">
       <DependentUpon>FormFacturacion.cs</DependentUpon>
+<<<<<<< HEAD
 	</EmbeddedResource>	
+=======
+    </EmbeddedResource>
+>>>>>>> 31f3315cc1e026e4982fefa18c03d2a5d478ec93
     <EmbeddedResource Include="FrmProductos.resx">
       <DependentUpon>FrmProductos.cs</DependentUpon>
     </EmbeddedResource>

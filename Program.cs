@@ -17,7 +17,7 @@ namespace PDV_PRO3
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Usuario());
+            Application.Run(new Login());
         }
     }
 }

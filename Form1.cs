@@ -258,5 +258,22 @@ namespace PDV_PRO3
             apartadoSeleccionado = pagosToolStripMenuItem1;
 
         }
+
+        private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ClaseUsuario.VerificarPermiso("Gestionar_Usuarios") == false)
+            {
+                MessageBox.Show("No tienes permiso para este apartado");
+                return;
+            }
+
+            if (apartadoSeleccionado != null)
+            {
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new Usuario());
+            usuariosToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = usuariosToolStripMenuItem;
+        }
     }
 }

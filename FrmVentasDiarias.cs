@@ -12,7 +12,7 @@ namespace PDV_PRO3
 {
     public partial class FrmVentasDiarias : Form
     {
-        ReportesDAO dao = new ReportesDAO();
+        ReportesDAOS dao = new ReportesDAOS();
 
         public FrmVentasDiarias()
         {

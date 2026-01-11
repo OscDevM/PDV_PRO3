@@ -275,5 +275,29 @@ namespace PDV_PRO3
             usuariosToolStripMenuItem.Visible = false;
             apartadoSeleccionado = usuariosToolStripMenuItem;
         }
+
+        private void reportesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (apartadoSeleccionado != null)
+            {
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new FrmStockBajo());
+            reportesToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = reportesToolStripMenuItem;
+
+        }
+
+        private void reportesDeVentasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (apartadoSeleccionado != null)
+            {
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new FrmVentasDiarias());
+            reportesDeVentasToolStripMenuItem.Visible = false;
+            apartadoSeleccionado = reportesDeVentasToolStripMenuItem;
+
+        }
     }
 }

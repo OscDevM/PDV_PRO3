@@ -35,10 +35,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cbBuscarPor = new System.Windows.Forms.ComboBox();
             this.txtBuscar = new System.Windows.Forms.TextBox();
-            this.dgvDetalles = new System.Windows.Forms.DataGridView();
-            this.dgvFacturas = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvDetalles)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvFacturas)).BeginInit();
+            this.dgvPagos = new System.Windows.Forms.DataGridView();
+            this.dgvCXC = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPagos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCXC)).BeginInit();
             this.SuspendLayout();
             // 
             // label3
@@ -58,6 +58,7 @@
             this.bttnCancelar.TabIndex = 40;
             this.bttnCancelar.Text = "Cancelar";
             this.bttnCancelar.UseVisualStyleBackColor = true;
+            this.bttnCancelar.Click += new System.EventHandler(this.bttnCancelar_Click);
             // 
             // bttnBuscar
             // 
@@ -67,6 +68,7 @@
             this.bttnBuscar.TabIndex = 39;
             this.bttnBuscar.Text = "Buscar";
             this.bttnBuscar.UseVisualStyleBackColor = true;
+            this.bttnBuscar.Click += new System.EventHandler(this.bttnBuscar_Click);
             // 
             // label2
             // 
@@ -105,35 +107,36 @@
             this.txtBuscar.Size = new System.Drawing.Size(100, 20);
             this.txtBuscar.TabIndex = 35;
             // 
-            // dgvDetalles
+            // dgvPagos
             // 
-            this.dgvDetalles.AllowUserToAddRows = false;
-            this.dgvDetalles.AllowUserToDeleteRows = false;
-            this.dgvDetalles.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvDetalles.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvDetalles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDetalles.Location = new System.Drawing.Point(403, 109);
-            this.dgvDetalles.Name = "dgvDetalles";
-            this.dgvDetalles.ReadOnly = true;
-            this.dgvDetalles.RowHeadersVisible = false;
-            this.dgvDetalles.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDetalles.Size = new System.Drawing.Size(392, 286);
-            this.dgvDetalles.TabIndex = 34;
+            this.dgvPagos.AllowUserToAddRows = false;
+            this.dgvPagos.AllowUserToDeleteRows = false;
+            this.dgvPagos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvPagos.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvPagos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPagos.Location = new System.Drawing.Point(403, 109);
+            this.dgvPagos.Name = "dgvPagos";
+            this.dgvPagos.ReadOnly = true;
+            this.dgvPagos.RowHeadersVisible = false;
+            this.dgvPagos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvPagos.Size = new System.Drawing.Size(392, 286);
+            this.dgvPagos.TabIndex = 34;
             // 
-            // dgvFacturas
+            // dgvCXC
             // 
-            this.dgvFacturas.AllowUserToAddRows = false;
-            this.dgvFacturas.AllowUserToDeleteRows = false;
-            this.dgvFacturas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvFacturas.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dgvFacturas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvFacturas.Location = new System.Drawing.Point(5, 179);
-            this.dgvFacturas.Name = "dgvFacturas";
-            this.dgvFacturas.ReadOnly = true;
-            this.dgvFacturas.RowHeadersVisible = false;
-            this.dgvFacturas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvFacturas.Size = new System.Drawing.Size(392, 216);
-            this.dgvFacturas.TabIndex = 33;
+            this.dgvCXC.AllowUserToAddRows = false;
+            this.dgvCXC.AllowUserToDeleteRows = false;
+            this.dgvCXC.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvCXC.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvCXC.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvCXC.Location = new System.Drawing.Point(5, 179);
+            this.dgvCXC.Name = "dgvCXC";
+            this.dgvCXC.ReadOnly = true;
+            this.dgvCXC.RowHeadersVisible = false;
+            this.dgvCXC.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvCXC.Size = new System.Drawing.Size(392, 216);
+            this.dgvCXC.TabIndex = 33;
+            this.dgvCXC.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCXC_CellDoubleClick);
             // 
             // VerPagos
             // 
@@ -147,13 +150,13 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cbBuscarPor);
             this.Controls.Add(this.txtBuscar);
-            this.Controls.Add(this.dgvDetalles);
-            this.Controls.Add(this.dgvFacturas);
+            this.Controls.Add(this.dgvPagos);
+            this.Controls.Add(this.dgvCXC);
             this.Name = "VerPagos";
             this.Text = "VerPagos";
             this.Load += new System.EventHandler(this.VerPagos_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvDetalles)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvFacturas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPagos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvCXC)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -168,7 +171,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cbBuscarPor;
         private System.Windows.Forms.TextBox txtBuscar;
-        private System.Windows.Forms.DataGridView dgvDetalles;
-        private System.Windows.Forms.DataGridView dgvFacturas;
+        private System.Windows.Forms.DataGridView dgvPagos;
+        private System.Windows.Forms.DataGridView dgvCXC;
     }
 }

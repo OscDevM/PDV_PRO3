@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtCodigoBarras = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.txtPrecio = new System.Windows.Forms.TextBox();
+            this.txtNombre = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.cbEstatus = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtDescuento = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.txtNombre = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtPrecio = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.txtCodigoBarras = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.txtPorcentajeDescuento = new System.Windows.Forms.TextBox();
             this.bttnCancelar = new System.Windows.Forms.Button();
@@ -62,6 +62,58 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Producto para el descuento";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(17, 18);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(87, 13);
+            this.label5.TabIndex = 22;
+            this.label5.Text = "Codigo de barras";
+            // 
+            // txtCodigoBarras
+            // 
+            this.txtCodigoBarras.Location = new System.Drawing.Point(16, 37);
+            this.txtCodigoBarras.MaxLength = 13;
+            this.txtCodigoBarras.Name = "txtCodigoBarras";
+            this.txtCodigoBarras.Size = new System.Drawing.Size(100, 20);
+            this.txtCodigoBarras.TabIndex = 21;
+            this.txtCodigoBarras.TextChanged += new System.EventHandler(this.txtCodigoBarras_TextChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(21, 149);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(37, 13);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "Precio";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(17, 77);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(44, 13);
+            this.label2.TabIndex = 18;
+            this.label2.Text = "Nombre";
+            // 
+            // txtPrecio
+            // 
+            this.txtPrecio.Enabled = false;
+            this.txtPrecio.Location = new System.Drawing.Point(20, 168);
+            this.txtPrecio.Name = "txtPrecio";
+            this.txtPrecio.Size = new System.Drawing.Size(100, 20);
+            this.txtPrecio.TabIndex = 19;
+            // 
+            // txtNombre
+            // 
+            this.txtNombre.Enabled = false;
+            this.txtNombre.Location = new System.Drawing.Point(16, 96);
+            this.txtNombre.Name = "txtNombre";
+            this.txtNombre.Size = new System.Drawing.Size(100, 20);
+            this.txtNombre.TabIndex = 17;
             // 
             // label3
             // 
@@ -101,58 +153,6 @@
             this.txtDescuento.Name = "txtDescuento";
             this.txtDescuento.Size = new System.Drawing.Size(100, 20);
             this.txtDescuento.TabIndex = 15;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 77);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 13);
-            this.label2.TabIndex = 18;
-            this.label2.Text = "Nombre";
-            // 
-            // txtNombre
-            // 
-            this.txtNombre.Enabled = false;
-            this.txtNombre.Location = new System.Drawing.Point(16, 96);
-            this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(100, 20);
-            this.txtNombre.TabIndex = 17;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(21, 149);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(37, 13);
-            this.label4.TabIndex = 20;
-            this.label4.Text = "Precio";
-            // 
-            // txtPrecio
-            // 
-            this.txtPrecio.Enabled = false;
-            this.txtPrecio.Location = new System.Drawing.Point(20, 168);
-            this.txtPrecio.Name = "txtPrecio";
-            this.txtPrecio.Size = new System.Drawing.Size(100, 20);
-            this.txtPrecio.TabIndex = 19;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(17, 18);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(87, 13);
-            this.label5.TabIndex = 22;
-            this.label5.Text = "Codigo de barras";
-            // 
-            // txtCodigoBarras
-            // 
-            this.txtCodigoBarras.Location = new System.Drawing.Point(16, 37);
-            this.txtCodigoBarras.MaxLength = 13;
-            this.txtCodigoBarras.Name = "txtCodigoBarras";
-            this.txtCodigoBarras.Size = new System.Drawing.Size(100, 20);
-            this.txtCodigoBarras.TabIndex = 21;
-            this.txtCodigoBarras.TextChanged += new System.EventHandler(this.txtCodigoBarras_TextChanged);
             // 
             // label6
             // 
@@ -211,6 +211,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.bttnCancelar);
             this.Controls.Add(this.bttnGuardar);

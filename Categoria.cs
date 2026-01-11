@@ -44,6 +44,7 @@ namespace PDV_PRO3
                 cbEstatus.SelectedIndex = 1;
             }
             cbEstatus.Visible = true;
+            label3.Visible = true;
         }
 
         private void bttnGuardar_Click(object sender, EventArgs e)
@@ -96,6 +97,7 @@ namespace PDV_PRO3
             Funciones.Limpiar(this);
             insertar = true;
             cbEstatus.Visible = false;
+            label3.Visible = false;
             dgvCategorias.DataSource = Funciones.LlamarDatos("SELECT * FROM categoria_producto ORDER BY id_categoria");
         }
 
@@ -104,6 +106,7 @@ namespace PDV_PRO3
             Funciones.Limpiar(this);
             insertar = true;
             cbEstatus.Visible = false;
+            label3.Visible = false;
             dgvCategorias.DataSource = Funciones.LlamarDatos("SELECT * FROM categoria_producto ORDER BY id_categoria");
         }
     }

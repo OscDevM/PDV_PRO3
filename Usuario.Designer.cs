@@ -36,9 +36,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtNombre = new System.Windows.Forms.TextBox();
             this.dgvUsuarios = new System.Windows.Forms.DataGridView();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtUsuario = new System.Windows.Forms.TextBox();
             this.cbEstatus = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.txtContrasena = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUsuarios)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,6 +52,7 @@
             this.bttnCancelar.TabIndex = 25;
             this.bttnCancelar.Text = "Cancelar";
             this.bttnCancelar.UseVisualStyleBackColor = true;
+            this.bttnCancelar.Click += new System.EventHandler(this.bttnCancelar_Click);
             // 
             // bttnGuardar
             // 
@@ -59,16 +62,16 @@
             this.bttnGuardar.TabIndex = 24;
             this.bttnGuardar.Text = "Guardar";
             this.bttnGuardar.UseVisualStyleBackColor = true;
+            this.bttnGuardar.Click += new System.EventHandler(this.bttnGuardar_Click);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(217, 16);
+            this.label3.Location = new System.Drawing.Point(221, 73);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(23, 13);
             this.label3.TabIndex = 23;
             this.label3.Text = "Rol";
-            this.label3.Visible = false;
             // 
             // cbRol
             // 
@@ -77,16 +80,16 @@
             this.cbRol.Items.AddRange(new object[] {
             "Activo",
             "Desactivo"});
-            this.cbRol.Location = new System.Drawing.Point(220, 35);
+            this.cbRol.Location = new System.Drawing.Point(224, 89);
             this.cbRol.Name = "cbRol";
             this.cbRol.Size = new System.Drawing.Size(121, 21);
             this.cbRol.TabIndex = 22;
-            this.cbRol.Visible = false;
+            this.cbRol.SelectedIndexChanged += new System.EventHandler(this.cbRol_SelectedIndexChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(111, 19);
+            this.label2.Location = new System.Drawing.Point(9, 74);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(43, 13);
             this.label2.TabIndex = 21;
@@ -122,13 +125,14 @@
             this.dgvUsuarios.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvUsuarios.Size = new System.Drawing.Size(540, 150);
             this.dgvUsuarios.TabIndex = 18;
+            this.dgvUsuarios.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsuarios_CellDoubleClick);
             // 
-            // textBox1
+            // txtUsuario
             // 
-            this.textBox1.Location = new System.Drawing.Point(114, 35);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 26;
+            this.txtUsuario.Location = new System.Drawing.Point(12, 90);
+            this.txtUsuario.Name = "txtUsuario";
+            this.txtUsuario.Size = new System.Drawing.Size(100, 20);
+            this.txtUsuario.TabIndex = 26;
             // 
             // cbEstatus
             // 
@@ -137,7 +141,7 @@
             this.cbEstatus.Items.AddRange(new object[] {
             "Activo",
             "Desactivo"});
-            this.cbEstatus.Location = new System.Drawing.Point(12, 86);
+            this.cbEstatus.Location = new System.Drawing.Point(123, 34);
             this.cbEstatus.Name = "cbEstatus";
             this.cbEstatus.Size = new System.Drawing.Size(121, 21);
             this.cbEstatus.TabIndex = 27;
@@ -146,12 +150,28 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 71);
+            this.label4.Location = new System.Drawing.Point(120, 19);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(42, 13);
             this.label4.TabIndex = 28;
             this.label4.Text = "Estatus";
             this.label4.Visible = false;
+            // 
+            // txtContrasena
+            // 
+            this.txtContrasena.Location = new System.Drawing.Point(118, 90);
+            this.txtContrasena.Name = "txtContrasena";
+            this.txtContrasena.Size = new System.Drawing.Size(100, 20);
+            this.txtContrasena.TabIndex = 30;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(115, 71);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(61, 13);
+            this.label5.TabIndex = 29;
+            this.label5.Text = "Contraseña";
             // 
             // Usuario
             // 
@@ -159,9 +179,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.txtContrasena);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.cbEstatus);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtUsuario);
             this.Controls.Add(this.bttnCancelar);
             this.Controls.Add(this.bttnGuardar);
             this.Controls.Add(this.label3);
@@ -189,8 +211,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.DataGridView dgvUsuarios;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtUsuario;
         private System.Windows.Forms.ComboBox cbEstatus;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtContrasena;
+        private System.Windows.Forms.Label label5;
     }
 }

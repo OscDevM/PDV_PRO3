@@ -238,6 +238,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Usuario.resx">
+      <DependentUpon>Usuario.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VerFacturas.resx">
       <DependentUpon>VerFacturas.cs</DependentUpon>
     </EmbeddedResource>

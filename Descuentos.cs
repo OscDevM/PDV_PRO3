@@ -104,6 +104,7 @@ namespace PDV_PRO3
             {
                 cbEstatus.SelectedIndex = 1;
             }
+            label3.Visible = true;
             cbEstatus.Visible = true;
         }
 
@@ -159,6 +160,7 @@ namespace PDV_PRO3
             Funciones.Limpiar(this);
             insertar = true;
             cbEstatus.Visible = false;
+            label3.Visible = false;
             LlenarDatagrid();
         }
 
@@ -167,6 +169,7 @@ namespace PDV_PRO3
             Funciones.Limpiar(this);
             insertar = true;
             cbEstatus.Visible = false;
+            label3.Visible = false;
             LlenarDatagrid();
         }
     }

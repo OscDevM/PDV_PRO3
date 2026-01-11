@@ -78,6 +78,12 @@ namespace PDV_PRO3
 
         private void facturarToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (ClaseUsuario.VerificarPermiso("Crear_Facturas") == false)
+            {
+                MessageBox.Show("No tienes permiso para este apartado");
+                return;
+            }
+
             if (apartadoSeleccionado != null)
             {
                 apartadoSeleccionado.Visible = true;
@@ -132,21 +138,6 @@ namespace PDV_PRO3
             apartadoSeleccionado = inventarioToolStripMenuItem1;
         }
         
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-        
-        }
-
-        private void facturasToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void inventarioToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void productosToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -206,6 +197,18 @@ namespace PDV_PRO3
             AbrirFormularioHijo(new VerFacturas());
             verFacturasToolStripMenuItem.Visible = false;
             apartadoSeleccionado = verFacturasToolStripMenuItem;
+        }
+
+        private void pagosToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (apartadoSeleccionado != null)
+            {
+                apartadoSeleccionado.Visible = true;
+            }
+            AbrirFormularioHijo(new VerPagos());
+            pagosToolStripMenuItem1.Visible = false;
+            apartadoSeleccionado = pagosToolStripMenuItem1;
+
         }
     }
 }

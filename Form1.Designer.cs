@@ -84,7 +84,6 @@
             this.facturasToolStripMenuItem.Name = "facturasToolStripMenuItem";
             this.facturasToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.facturasToolStripMenuItem.Text = "Facturas";
-            this.facturasToolStripMenuItem.Click += new System.EventHandler(this.facturasToolStripMenuItem_Click);
             // 
             // facturarToolStripMenuItem
             // 
@@ -105,15 +104,16 @@
             this.cuentasPorCobrarToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.pagosToolStripMenuItem1});
             this.cuentasPorCobrarToolStripMenuItem.Name = "cuentasPorCobrarToolStripMenuItem";
-            this.cuentasPorCobrarToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.cuentasPorCobrarToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cuentasPorCobrarToolStripMenuItem.Text = "Cuentas Por Cobrar";
             this.cuentasPorCobrarToolStripMenuItem.Click += new System.EventHandler(this.cuentasPorCobrarToolStripMenuItem_Click);
             // 
             // pagosToolStripMenuItem1
             // 
             this.pagosToolStripMenuItem1.Name = "pagosToolStripMenuItem1";
-            this.pagosToolStripMenuItem1.Size = new System.Drawing.Size(106, 22);
+            this.pagosToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.pagosToolStripMenuItem1.Text = "Pagos";
+            this.pagosToolStripMenuItem1.Click += new System.EventHandler(this.pagosToolStripMenuItem1_Click);
             // 
             // descuentosToolStripMenuItem
             // 
@@ -131,7 +131,6 @@
             this.inventarioToolStripMenuItem.Name = "inventarioToolStripMenuItem";
             this.inventarioToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
             this.inventarioToolStripMenuItem.Text = "Inventario";
-            this.inventarioToolStripMenuItem.Click += new System.EventHandler(this.inventarioToolStripMenuItem_Click);
             // 
             // productosToolStripMenuItem
             // 
@@ -209,7 +208,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(800, 527);
             this.panel1.TabIndex = 2;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // Form1
             // 

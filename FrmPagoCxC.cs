@@ -41,7 +41,7 @@ namespace PDV_PRO3
                         // INSERTAR PAGO
                         string sqlPago = @"
                     INSERT INTO pagos (id_venta, metodo, monto, usuario)
-                    VALUES (@venta, 'efectivo', @monto, 1);
+                    VALUES (@venta, 'efectivo', @monto, @usuario);
                 ";
 
                         var r = MessageBox.Show(
@@ -57,6 +57,7 @@ namespace PDV_PRO3
                         {
                             cmd.Parameters.AddWithValue("@venta", _idVenta);
                             cmd.Parameters.AddWithValue("@monto", monto);
+                            cmd.Parameters.AddWithValue("@usuario", ClaseUsuario._idusuario);
                             cmd.ExecuteNonQuery();
                         }
 

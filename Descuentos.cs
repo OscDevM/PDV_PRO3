@@ -24,16 +24,12 @@ namespace PDV_PRO3
 
         private void Descuentos_Load(object sender, EventArgs e)
         {
-            LlamarDatos();
+            LlenarDatagrid();
         }
 
-        public void LlamarDatos()
+        public void LlenarDatagrid()
         {
-            using (var conn = Conexion.GetConexion())
-            {
-                conn.Open();
-
-                string sql = "SELECT " +
+            dgvDescuentos.DataSource = Funciones.LlamarDatos("SELECT " +
                     "d.id_descuento, " +
                     "p.codigo_barra, " +
                     "p.nombre AS nombre_producto, " +
@@ -41,16 +37,7 @@ namespace PDV_PRO3
                     "d.porcentaje_descuento, " +
                     "d.activo " +
                     "FROM descuentos d " +
-                    "INNER JOIN productos p ON d.id_producto = p.id_producto;";
-
-                using (var da = new NpgsqlDataAdapter(sql, conn))
-                {
-
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    dgvDescuentos.DataSource = dt;
-                }
-            }
+                    "INNER JOIN productos p ON d.id_producto = p.id_producto;");
         }
 
         private void txtCodigoBarras_TextChanged(object sender, EventArgs e)
@@ -117,6 +104,7 @@ namespace PDV_PRO3
             {
                 cbEstatus.SelectedIndex = 1;
             }
+            label3.Visible = true;
             cbEstatus.Visible = true;
         }
 
@@ -172,7 +160,8 @@ namespace PDV_PRO3
             Funciones.Limpiar(this);
             insertar = true;
             cbEstatus.Visible = false;
-            LlamarDatos();
+            label3.Visible = false;
+            LlenarDatagrid();
         }
 
         private void bttnCancelar_Click(object sender, EventArgs e)
@@ -180,7 +169,8 @@ namespace PDV_PRO3
             Funciones.Limpiar(this);
             insertar = true;
             cbEstatus.Visible = false;
-            LlamarDatos();
+            label3.Visible = false;
+            LlenarDatagrid();
         }
     }
 }

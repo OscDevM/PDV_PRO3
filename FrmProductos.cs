@@ -14,7 +14,6 @@ namespace PDV_PRO3
     {
         ProductoDAO productoDAO = new ProductoDAO();
         int idProductoSeleccionado = 0;
-        int usuarioActual = 1; // eto e temporal
 
         public FrmProductos()
         {
@@ -73,7 +72,7 @@ namespace PDV_PRO3
                     int.Parse(txtStock.Text),
                     (int)cmbCategoria.SelectedValue,
                     cmbImpuesto.Text,
-                    usuarioActual,
+                    ClaseUsuario._idusuario,
                     "Stock inicial",
                     (int)cmbInventario.SelectedValue
                 );
@@ -145,7 +144,7 @@ namespace PDV_PRO3
                 idProductoSeleccionado,
                 cantidad,
                 "Reposición",
-                usuarioActual
+                ClaseUsuario._idusuario
             );
 
             MessageBox.Show("Stock actualizado");

@@ -23,25 +23,10 @@ namespace PDV_PRO3
 
         private void Categoria_Load(object sender, EventArgs e)
         {
-            LlamarDatos();
+            dgvCategorias.DataSource = Funciones.LlamarDatos("SELECT * FROM categoria_producto ORDER BY id_categoria");
         }
 
-        public void LlamarDatos()
-        {
-            using (var conn = Conexion.GetConexion())
-            {
-                conn.Open();
-
-                string sql = "SELECT * FROM categoria_producto ORDER BY id_categoria";
-                using (var da = new NpgsqlDataAdapter(sql, conn))
-                {
-
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    dgvCategorias.DataSource = dt;
-                }
-            }
-        }
+        
 
         private void dgvCategorias_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -59,6 +44,7 @@ namespace PDV_PRO3
                 cbEstatus.SelectedIndex = 1;
             }
             cbEstatus.Visible = true;
+            label3.Visible = true;
         }
 
         private void bttnGuardar_Click(object sender, EventArgs e)
@@ -111,7 +97,8 @@ namespace PDV_PRO3
             Funciones.Limpiar(this);
             insertar = true;
             cbEstatus.Visible = false;
-            LlamarDatos();
+            label3.Visible = false;
+            dgvCategorias.DataSource = Funciones.LlamarDatos("SELECT * FROM categoria_producto ORDER BY id_categoria");
         }
 
         private void bttnCancelar_Click(object sender, EventArgs e)
@@ -119,7 +106,8 @@ namespace PDV_PRO3
             Funciones.Limpiar(this);
             insertar = true;
             cbEstatus.Visible = false;
-            LlamarDatos();
+            label3.Visible = false;
+            dgvCategorias.DataSource = Funciones.LlamarDatos("SELECT * FROM categoria_producto ORDER BY id_categoria");
         }
     }
 }

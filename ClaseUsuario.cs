@@ -43,5 +43,31 @@ namespace PDV_PRO3
                 return false;
             }
         }
+
+        public static bool VerificarPermiso(string permiso)
+        {
+            try
+            {
+                using (var conn = Conexion.GetConexion())
+                {
+                    conn.Open();
+
+                    string sql = @"SELECT VerificarPermisoUsuario(@id_usuario, @codigo_permiso)";
+
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id_usuario", _idusuario);
+                        cmd.Parameters.AddWithValue("@codigo_permiso", permiso);
+
+                        return Convert.ToBoolean(cmd.ExecuteScalar());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+                return false;
+            }
+        }
     }
 }

@@ -16,5 +16,10 @@ namespace PDV_PRO3
         {
             InitializeComponent();
         }
+
+        private void VerPagos_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

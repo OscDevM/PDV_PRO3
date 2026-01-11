@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,6 +50,23 @@ namespace PDV_PRO3
                 }
             }
             return true;
+        }
+
+        public static DataTable LlamarDatos(string sql)
+        {
+            using (var conn = Conexion.GetConexion())
+            {
+                conn.Open();
+
+                using (var da = new NpgsqlDataAdapter(sql, conn))
+                {
+
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+                    return dt;
+                    
+                }
+            }
         }
     }
 }

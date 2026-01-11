@@ -20,27 +20,11 @@ namespace PDV_PRO3
 
         private void VerFacturas_Load(object sender, EventArgs e)
         {
-            LlamarDatos();
+            dgvFacturas.DataSource = Funciones.LlamarDatos("SELECT * From Ventas;");
             cbBuscarPor.SelectedIndex = 0;
         }
 
-        public void LlamarDatos()
-        {
-            using (var conn = Conexion.GetConexion())
-            {
-                conn.Open();
-
-                string sql = "SELECT * From Ventas;";
-
-                using (var da = new NpgsqlDataAdapter(sql, conn))
-                {
-
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    dgvFacturas.DataSource = dt;
-                }
-            }
-        }
+        
 
         private void bttnBuscar_Click(object sender, EventArgs e)
         {
@@ -89,7 +73,7 @@ namespace PDV_PRO3
         private void bttnCancelar_Click(object sender, EventArgs e)
         {
             Funciones.Limpiar(this);
-            LlamarDatos();
+            dgvFacturas.DataSource = Funciones.LlamarDatos("SELECT * From Ventas;");
             dgvDetalles.DataSource = null;
         }
 
